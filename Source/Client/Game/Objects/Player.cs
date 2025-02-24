@@ -5,6 +5,7 @@ using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
 using System.Reflection;
 using Core.Data.Actors;
+using Core.Data.Actors.Players;
 
 namespace Client
 {
@@ -84,7 +85,7 @@ namespace Client
             Core.Type.Player[index].Y = 0;
             Core.Type.Player[index].YOffset = 0;
 
-            Core.Type.Player[index].Hotbar = new Core.Type.HotbarStruct[(Constant.MAX_HOTBAR)];
+            Core.Type.Player[index].Hotbar = new HotbarSlotStruct[(Constant.MAX_HOTBAR)];
             Core.Type.Player[index].GatherSkills = new Core.Type.ResourceTypetruct[(int)Core.Enum.ResourceType.Count];
             Core.Type.Player[index].GatherSkills = new Core.Type.ResourceTypetruct[(int)Core.Enum.ResourceType.Count];
 

@@ -19,6 +19,7 @@ using static Core.Enum;
 using static Core.Global.Command;
 using System.Reflection;
 using Core.Data.Actors;
+using Core.Data.Actors.Players;
 
 namespace Server
 {
@@ -1502,7 +1503,7 @@ namespace Server
             Core.Type.Player[index].X = 0;
             Core.Type.Player[index].Y = 0;
 
-            Core.Type.Player[index].Hotbar = new Core.Type.HotbarStruct[Core.Constant.MAX_HOTBAR];
+            Core.Type.Player[index].Hotbar = new HotbarSlotStruct[Core.Constant.MAX_HOTBAR];
             for (int i = 0, loopTo5 = Core.Constant.MAX_HOTBAR; i < loopTo5; i++)
             {
                 Core.Type.Player[index].Hotbar[i].Slot = -1;

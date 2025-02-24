@@ -1,4 +1,5 @@
 ﻿using Core.Data.Actors;
+using Core.Data.Actors.Players;
 using Core.Database;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
@@ -363,7 +364,7 @@ namespace Core
             public byte Dir;
 
             // Hotbar
-            public HotbarStruct[] Hotbar;
+            public HotbarSlotStruct[] Hotbar;
 
             // Event
             public byte[] Switches;
@@ -555,12 +556,6 @@ namespace Core
         public struct MapDataStruct
         {
             public MapNPCStruct[] NPC;
-        }
-
-        public struct HotbarStruct
-        {
-            public int Slot;
-            public byte SlotType;
         }
 
         public struct SkillBufferRec
