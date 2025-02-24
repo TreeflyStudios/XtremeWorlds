@@ -2,6 +2,7 @@
 using static Core.Global.Command;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
+using Core.Data.Actors;
 
 namespace Client
 {
@@ -18,7 +19,7 @@ namespace Client
 
             for (x = 0; x < Constant.MAX_PLAYERS; x++)
             {
-                Core.Type.Bank[x].Item = new Core.Type.PlayerInvStruct[(Constant.MAX_BANK + 1)];
+                Core.Type.Bank[x].Item = new InventorySlotStruct[(Constant.MAX_BANK + 1)];
 
                 for (i = 0; i < Constant.MAX_BANK; i++)
                 {

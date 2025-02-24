@@ -18,6 +18,7 @@ using static Core.Type;
 using static Core.Enum;
 using static Core.Global.Command;
 using System.Reflection;
+using Core.Data.Actors;
 
 namespace Server
 {
@@ -1396,7 +1397,7 @@ namespace Server
 
             Core.Type.TempPlayer[index].SkillCD = new int[Core.Constant.MAX_PLAYER_SKILLS];
             Core.Type.TempPlayer[index].PetSkillCD = new int[Core.Constant.MAX_PET_SKILLS];
-            Core.Type.TempPlayer[index].TradeOffer = new PlayerInvStruct[Core.Constant.MAX_INV];
+            Core.Type.TempPlayer[index].TradeOffer = new InventorySlotStruct[Core.Constant.MAX_INV];
 
             Core.Type.TempPlayer[index].SkillCD = new int[Core.Constant.MAX_PLAYER_SKILLS];
             Core.Type.TempPlayer[index].PetSkillCD = new int[Core.Constant.MAX_PET_SKILLS];
@@ -1444,7 +1445,7 @@ namespace Server
 
         public static void ClearBank(int index)
         {
-            Bank[index].Item = new PlayerInvStruct[Core.Constant.MAX_BANK + 1];
+            Bank[index].Item = new InventorySlotStruct[Core.Constant.MAX_BANK + 1];
             for (int i = 0; i < Core.Constant.MAX_BANK; i++)
             {
                 Bank[index].Item[i].Num = -1;
@@ -1466,7 +1467,7 @@ namespace Server
             for (int i = 0, loopTo = (byte)EquipmentType.Count; i < loopTo; i++)
                 Core.Type.Player[index].Equipment[i] = -1;
 
-            Core.Type.Player[index].Inv = new Core.Type.PlayerInvStruct[Core.Constant.MAX_INV];
+            Core.Type.Player[index].Inv = new InventorySlotStruct[Core.Constant.MAX_INV];
             for (int i = 0, loopTo1 = Core.Constant.MAX_INV; i < loopTo1; i++)
             {
                 Core.Type.Player[index].Inv[i].Num = -1;

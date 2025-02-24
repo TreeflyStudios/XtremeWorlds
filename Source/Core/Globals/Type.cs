@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using Core.Data.Actors;
 using Core.Database;
 
 namespace Core
@@ -31,8 +32,8 @@ namespace Core
         public static PlayerStruct[] Player = new PlayerStruct[Constant.MAX_PLAYERS];
         public static ProjectileStruct[] Projectile = new ProjectileStruct[Constant.MAX_PROJECTILES];
         public static MapProjectileStruct[,] MapProjectile = new MapProjectileStruct[Constant.MAX_MAPS, Constant.MAX_PROJECTILES];
-        public static PlayerInvStruct[] TradeYourOffer = new PlayerInvStruct[(Constant.MAX_INV)];
-        public static PlayerInvStruct[] TradeTheirOffer = new PlayerInvStruct[(Constant.MAX_INV)];
+        public static InventorySlotStruct[] TradeYourOffer = new InventorySlotStruct[(Constant.MAX_INV)];
+        public static InventorySlotStruct[] TradeTheirOffer = new InventorySlotStruct[(Constant.MAX_INV)];
         public static PartyStruct Party;
         public static MapResourceStruct[] MapResource;
         public static CharList Char;
@@ -121,13 +122,6 @@ namespace Core
             public TradeItemStruct[] TradeItem;
         }
 
-        public struct PlayerInvStruct
-        {
-            public int Num;
-            public int Value;
-            public byte Bound;
-        }
-
         public struct PlayerSkillStruct
         {
             public int Num;
@@ -136,7 +130,7 @@ namespace Core
 
         public struct BankStruct
         {
-            public PlayerInvStruct[] Item;
+            public InventorySlotStruct[] Item;
         }
 
         public struct TileDataStruct
@@ -356,7 +350,7 @@ namespace Core
             public int[] Equipment;
 
             // Inventory
-            public PlayerInvStruct[] Inv;
+            public InventorySlotStruct[] Inv;
 
             public PlayerSkillStruct[] Skill;
 
@@ -418,7 +412,7 @@ namespace Core
             public int TradeRequest;
 
             public double InTrade;
-            public PlayerInvStruct[] TradeOffer;
+            public InventorySlotStruct[] TradeOffer;
             public bool AcceptTrade;
 
             public EventMapStruct EventMap;

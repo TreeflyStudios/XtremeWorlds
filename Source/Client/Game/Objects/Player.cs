@@ -4,6 +4,7 @@ using static Core.Global.Command;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
 using System.Reflection;
+using Core.Data.Actors;
 
 namespace Client
 {
@@ -52,7 +53,7 @@ namespace Client
             Core.Type.Player[index].Points = 0;
             Core.Type.Player[index].Sprite = 0;
 
-            Core.Type.Player[index].Inv = new Core.Type.PlayerInvStruct[(Constant.MAX_INV)];
+            Core.Type.Player[index].Inv = new InventorySlotStruct[(Constant.MAX_INV)];
             for (int x = 0; x < Constant.MAX_INV; x++)
             {
                 Core.Type.Player[index].Inv[x].Num = -1;

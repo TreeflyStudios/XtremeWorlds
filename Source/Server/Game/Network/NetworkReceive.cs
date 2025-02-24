@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using Core;
+using Core.Data.Actors;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
@@ -2392,8 +2393,8 @@ namespace Server
             int itemNum;
             int tradeTarget;
             int i;
-            var tmpTradeItem = new PlayerInvStruct[Core.Constant.MAX_INV];
-            var tmpTradeItem2 = new PlayerInvStruct[Core.Constant.MAX_INV];
+            var tmpTradeItem = new InventorySlotStruct[Core.Constant.MAX_INV];
+            var tmpTradeItem2 = new InventorySlotStruct[Core.Constant.MAX_INV];
 
             Core.Type.TempPlayer[index].AcceptTrade = true;
 
