@@ -1106,14 +1106,6 @@ namespace Core
         public static AutotileStruct[,] Autotile;
         public static MapEventStruct[] MapEvents;
 
-        public struct RectangleStruct
-        {
-            public int Top;
-            public int Right;
-            public int Bottom;
-            public int Left;
-        }
-
         public struct QuarterTileStruct
         {
             public Vector2[] QuarterTile;

@@ -1412,16 +1412,13 @@ namespace Client
 
         public static long IsHotbar(long StartX, long StartY)
         {
-            long IsHotbarRet = default;
-            Core.Type.RectangleStruct tempRec;
+            long IsHotbarRet = -1;
+            
             long i;
 
             for (i = 0L; i < Constant.MAX_HOTBAR; i++)
             {
-                tempRec.Top = (int)(StartY + GameState.HotbarTop);
-                tempRec.Left = (int)(StartX + i * GameState.HotbarOffsetX);
-                tempRec.Right = tempRec.Left + GameState.PicX;
-                tempRec.Bottom = tempRec.Top + GameState.PicY;
+                Rectangle tempRec = new((int)(StartX + (i * GameState.HotbarOffsetX)), (int)(StartY + GameState.HotbarTop), GameState.PicX, GameState.PicY);
 
                 if (Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot >= 0)
                 {
@@ -1436,7 +1433,7 @@ namespace Client
                 }
             }
 
-            return -1;
+            return IsHotbarRet;
         }
 
         public static void ShowInvDesc(long x, long y, long invNum)
