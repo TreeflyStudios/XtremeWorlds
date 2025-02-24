@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using Core.Data.Actors;
+﻿using Core.Data.Actors;
 using Core.Database;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using Color = System.Drawing.Color;
 
 namespace Core
 {
@@ -1113,15 +1114,9 @@ namespace Core
             public int Left;
         }
 
-        public struct PointStruct
-        {
-            public int X;
-            public int Y;
-        }
-
         public struct QuarterTileStruct
         {
-            public PointStruct[] QuarterTile;
+            public Vector2[] QuarterTile;
             public byte RenderState;
             public int[] SrcX;
             public int[] SrcY;
@@ -1134,11 +1129,11 @@ namespace Core
         }
 
         // autotiling
-        public static PointStruct[] AutoIn = new PointStruct[5];
-        public static PointStruct[] AutoNw = new PointStruct[5];
-        public static PointStruct[] AutoNe = new PointStruct[5];
-        public static PointStruct[] AutoSw = new PointStruct[5];
-        public static PointStruct[] AutoSe = new PointStruct[5];
+        public static Vector2[] AutoIn = new Vector2[5];
+        public static Vector2[] AutoNw = new Vector2[5];
+        public static Vector2[] AutoNe = new Vector2[5];
+        public static Vector2[] AutoSw = new Vector2[5];
+        public static Vector2[] AutoSe = new Vector2[5];
 
         public struct ChatStruct
         {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic.CompilerServices;
+using Microsoft.Xna.Framework;
 
 namespace Client
 {
@@ -24,7 +25,7 @@ namespace Client
                     {
                         Core.Type.Autotile[x, y].Layer[i].SrcX = new int[5];
                         Core.Type.Autotile[x, y].Layer[i].SrcY = new int[5];
-                        Core.Type.Autotile[x, y].Layer[i].QuarterTile = new Core.Type.PointStruct[5];
+                        Core.Type.Autotile[x, y].Layer[i].QuarterTile = new Vector2[5];
                     }
                 }
             }
@@ -323,7 +324,7 @@ namespace Client
                     {
                         Core.Type.Autotile[x, y].Layer[i].SrcX = new int[5];
                         Core.Type.Autotile[x, y].Layer[i].SrcY = new int[5];
-                        Core.Type.Autotile[x, y].Layer[i].QuarterTile = new Core.Type.PointStruct[5];
+                        Core.Type.Autotile[x, y].Layer[i].QuarterTile = new Vector2[5];
                     }
                 }
             }
@@ -440,8 +441,8 @@ namespace Client
                 // cache tileset positioning
                 for (quarterNum = 0; quarterNum <= 4; quarterNum++)
                 {
-                    Core.Type.Autotile[x, y].Layer[layerNum].SrcX[quarterNum] = Core.Type.MyMap.Tile[x, y].Layer[layerNum].X * 32 + Core.Type.Autotile[x, y].Layer[layerNum].QuarterTile[quarterNum].X;
-                    Core.Type.Autotile[x, y].Layer[layerNum].SrcY[quarterNum] = Core.Type.MyMap.Tile[x, y].Layer[layerNum].Y * 32 + Core.Type.Autotile[x, y].Layer[layerNum].QuarterTile[quarterNum].Y;
+                    Core.Type.Autotile[x, y].Layer[layerNum].SrcX[quarterNum] = Core.Type.MyMap.Tile[x, y].Layer[layerNum].X * 32 + (int)Core.Type.Autotile[x, y].Layer[layerNum].QuarterTile[quarterNum].X;
+                    Core.Type.Autotile[x, y].Layer[layerNum].SrcY[quarterNum] = Core.Type.MyMap.Tile[x, y].Layer[layerNum].Y * 32 + (int)Core.Type.Autotile[x, y].Layer[layerNum].QuarterTile[quarterNum].Y;
                 }
             }
         }
