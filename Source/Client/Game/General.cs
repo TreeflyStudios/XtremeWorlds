@@ -167,89 +167,89 @@ namespace Client
             switch (Resolution)
             {
                 case 1:
-                    {
-                        Width = 1920;
-                        Height = 1080;
-                        break;
-                    }
+                {
+                    Width = 1920;
+                    Height = 1080;
+                    break;
+                }
                 case 2:
-                    {
-                        Width = 1680;
-                        Height = 1050;
-                        break;
-                    }
+                {
+                    Width = 1680;
+                    Height = 1050;
+                    break;
+                }
                 case 3:
-                    {
-                        Width = 1600;
-                        Height = 900;
-                        break;
-                    }
+                {
+                    Width = 1600;
+                    Height = 900;
+                    break;
+                }
                 case 4:
-                    {
-                        Width = 1440;
-                        Height = 900;
-                        break;
-                    }
+                {
+                    Width = 1440;
+                    Height = 900;
+                    break;
+                }
                 case 5:
-                    {
-                        Width = 1440;
-                        Height = 1050;
-                        break;
-                    }
+                {
+                    Width = 1440;
+                    Height = 1050;
+                    break;
+                }
                 case 6:
-                    {
-                        Width = 1366;
-                        Height = 768;
-                        break;
-                    }
+                {
+                    Width = 1366;
+                    Height = 768;
+                    break;
+                }
                 case 7:
-                    {
-                        Width = 1360;
-                        Height = 1024;
-                        break;
-                    }
+                {
+                    Width = 1360;
+                    Height = 1024;
+                    break;
+                }
                 case 8:
-                    {
-                        Width = 1360;
-                        Height = 768;
-                        break;
-                    }
+                {
+                    Width = 1360;
+                    Height = 768;
+                    break;
+                }
                 case 9:
-                    {
-                        Width = 1280;
-                        Height = 1024;
-                        break;
-                    }
+                {
+                    Width = 1280;
+                    Height = 1024;
+                    break;
+                }
                 case 10:
-                    {
-                        Width = 1280;
-                        Height = 800;
-                        break;
-                    }
+                {
+                    Width = 1280;
+                    Height = 800;
+                    break;
+                }
                 case 11:
-                    {
-                        Width = 1280;
-                        Height = 768;
-                        break;
-                    }
+                {
+                    Width = 1280;
+                    Height = 768;
+                    break;
+                }
                 case 12:
-                    {
-                        Width = 1280;
-                        Height = 720;
-                        break;
-                    }
+                {
+                    Width = 1280;
+                    Height = 720;
+                    break;
+                }
                 case 13:
-                    {
-                        Width = 1120;
-                        Height = 864;
-                        break;
-                    }
+                {
+                    Width = 1120;
+                    Height = 864;
+                    break;
+                }
                 case 14:
-                    {
-                        Width = 1024;
-                        Height = 768;
-                        break;
-                    }
+                {
+                    Width = 1024;
+                    Height = 768;
+                    break;
+                }
             }
 
             return default;
@@ -354,67 +354,67 @@ namespace Client
             switch (digit)
             {
                 case '1':
-                    {
-                        return '!';
-                    }
+                {
+                    return '!';
+                }
                 case '2':
-                    {
-                        return '@';
-                    }
+                {
+                    return '@';
+                }
                 case '3':
-                    {
-                        return '#';
-                    }
+                {
+                    return '#';
+                }
                 case '4':
-                    {
-                        return '$';
-                    }
+                {
+                    return '$';
+                }
                 case '5':
-                    {
-                        return '%';
-                    }
+                {
+                    return '%';
+                }
                 case '6':
-                    {
-                        return '^';
-                    }
+                {
+                    return '^';
+                }
                 case '7':
-                    {
-                        return '&';
-                    }
+                {
+                    return '&';
+                }
                 case '8':
-                    {
-                        return '*';
-                    }
+                {
+                    return '*';
+                }
                 case '9':
-                    {
-                        return '(';
-                    }
+                {
+                    return '(';
+                }
                 case '0':
-                    {
-                        return ')';
-                    }
+                {
+                    return ')';
+                }
 
                 default:
-                    {
-                        return digit;
-                    }
+                {
+                    return digit;
+                }
             }
         }
 
         public static long IsEq(long StartX, long StartY)
         {
             long IsEqRet = default;
-            Core.Type.RectStruct tempRec;
             long i;
 
             for (i = 0L; i < (int)Core.Enum.EquipmentType.Count; i++)
             {
                 if (Conversions.ToBoolean(GetPlayerEquipment(GameState.MyIndex, (Core.Enum.EquipmentType)i)))
                 {
-                    tempRec.Top = StartY + GameState.EqTop + GameState.PicY * (i / GameState.EqColumns);
-                    tempRec.Bottom = tempRec.Top + GameState.PicY;
-                    tempRec.Left = StartX + GameState.EqLeft + (GameState.EqOffsetX + GameState.PicX) * (i % GameState.EqColumns);
-                    tempRec.Right = tempRec.Left + GameState.PicX;
+                    Rectangle tempRec = new(
+                        (int)(StartX + GameState.EqLeft + (GameState.EqOffsetX + GameState.PicX) * (i % GameState.EqColumns)),
+                        (int)(StartY + GameState.EqTop + GameState.PicY * (i / GameState.EqColumns)),
+                        GameState.PicX,
+                        GameState.PicY);
 
                     if (GameState.CurMouseX >= tempRec.Left & GameState.CurMouseX <= tempRec.Right)
                     {
@@ -432,18 +432,18 @@ namespace Client
 
         public static long IsInv(long StartX, long StartY)
         {
-            long IsInvRet = default;
-            Core.Type.RectStruct tempRec;
+            long IsInvRet = -1;
             long i;
 
             for (i = 0L; i < Constant.MAX_INV; i++)
             {
                 if (GetPlayerInv(GameState.MyIndex, (int)i) >= 0)
                 {
-                    tempRec.Top = StartY + GameState.InvTop + (GameState.InvOffsetY + GameState.PicY) * (i / GameState.InvColumns);
-                    tempRec.Bottom = tempRec.Top + GameState.PicY;
-                    tempRec.Left = StartX + GameState.InvLeft + (GameState.InvOffsetX + GameState.PicX) * (i % GameState.InvColumns);
-                    tempRec.Right = tempRec.Left + GameState.PicX;
+                    Rectangle tempRec = new(
+                        (int)(StartX + GameState.InvLeft + (GameState.InvOffsetX + GameState.PicX) * (i % GameState.InvColumns)),
+                        (int)(StartY + GameState.InvTop + (GameState.InvOffsetY + GameState.PicY) * (i / GameState.InvColumns)),
+                        GameState.PicX,
+                        GameState.PicY);
 
                     if (GameState.CurMouseX >= tempRec.Left & GameState.CurMouseX <= tempRec.Right)
                     {
@@ -456,23 +456,23 @@ namespace Client
                 }
             }
 
-            return -1;
+            return IsInvRet;
         }
 
         public static long IsSkill(long StartX, long StartY)
         {
-            long IsSkillRet = default;
-            Core.Type.RectStruct tempRec;
+            long IsSkillRet = -1;
             long i;
 
             for (i = 0L; i < Constant.MAX_PLAYER_SKILLS; i++)
             {
                 if (Core.Type.Player[GameState.MyIndex].Skill[(int)i].Num >= 0)
                 {
-                    tempRec.Top = StartY + GameState.SkillTop + (GameState.SkillOffsetY + GameState.PicY) * (i / GameState.SkillColumns);
-                    tempRec.Bottom = tempRec.Top + GameState.PicY;
-                    tempRec.Left = StartX + GameState.SkillLeft + (GameState.SkillOffsetX + GameState.PicX) * (i % GameState.SkillColumns);
-                    tempRec.Right = tempRec.Left + GameState.PicX;
+                    Rectangle tempRec = new(
+                        (int)(StartX + GameState.SkillLeft + (GameState.SkillOffsetX + GameState.PicX) * (i % GameState.SkillColumns)),
+                        (int)(StartY + GameState.SkillTop + (GameState.SkillOffsetY + GameState.PicY) * (i / GameState.SkillColumns)),
+                        GameState.PicX,
+                        GameState.PicY);
 
                     if (GameState.CurMouseX >= tempRec.Left & GameState.CurMouseX <= tempRec.Right)
                     {
@@ -485,22 +485,22 @@ namespace Client
                 }
             }
 
-            return -1;
+            return IsSkillRet;
         }
 
         public static long IsBank(long StartX, long StartY)
         {
             byte IsBankRet = default;
-            Core.Type.RectStruct tempRec;
 
             for (byte i = 0; i < Constant.MAX_BANK; i++)
             {
                 if (GetBank(GameState.MyIndex, (byte)i) >= 0)
                 {
-                    tempRec.Top = StartY + GameState.BankTop + (GameState.BankOffsetY + GameState.PicY) * (i / GameState.BankColumns);
-                    tempRec.Bottom = tempRec.Top + GameState.PicY;
-                    tempRec.Left = StartX + GameState.BankLeft + (GameState.BankOffsetX + GameState.PicX) * (i % GameState.BankColumns);
-                    tempRec.Right = tempRec.Left + GameState.PicX;
+                    Rectangle tempRec = new(
+                        (int)(StartX + GameState.BankLeft + (GameState.BankOffsetX + GameState.PicX) * (i % GameState.BankColumns)),
+                        (int)(StartY + GameState.BankTop + (GameState.BankOffsetY + GameState.PicY) * (i / GameState.BankColumns)),
+                        GameState.PicX,
+                        GameState.PicY);
 
                     if (GameState.CurMouseX >= tempRec.Left & GameState.CurMouseX <= tempRec.Right)
                     {
@@ -514,22 +514,21 @@ namespace Client
 
             }
 
-            return -1;
-
+            return IsBankRet;
         }
 
         public static long IsShop(long StartX, long StartY)
         {
-            long IsShopRet = default;
-            Core.Type.RectStruct tempRec;
+            long IsShopRet = -1;
             long i;
 
             for (i = 0L; i < Constant.MAX_TRADES; i++)
             {
-                tempRec.Top = StartY + GameState.ShopTop + (GameState.ShopOffsetY + GameState.PicY) * (i / GameState.ShopColumns);
-                tempRec.Bottom = tempRec.Top + GameState.PicY;
-                tempRec.Left = StartX + GameState.ShopLeft + (GameState.ShopOffsetX + GameState.PicX) * (i % GameState.ShopColumns);
-                tempRec.Right = tempRec.Left + GameState.PicX;
+                Rectangle tempRec = new(
+                        (int)(StartX + GameState.ShopLeft + (GameState.ShopOffsetX + GameState.PicX) * (i % GameState.ShopColumns)),
+                        (int)(StartY + GameState.ShopTop + (GameState.ShopOffsetY + GameState.PicY) * (i / GameState.ShopColumns)),
+                        GameState.PicX,
+                        GameState.PicY);
 
                 if (GameState.CurMouseX >= tempRec.Left & GameState.CurMouseX <= tempRec.Right)
                 {
@@ -541,21 +540,21 @@ namespace Client
                 }
             }
 
-            return -1;
+            return IsShopRet;
         }
 
         public static long IsTrade(long StartX, long StartY)
         {
-            long IsTradeRet = default;
-            Core.Type.RectStruct tempRec;
+            long IsTradeRet = -1;
             long i;
 
             for (i = 0L; i < Constant.MAX_INV; i++)
             {
-                tempRec.Top = StartY + GameState.TradeTop + (GameState.TradeOffsetY + GameState.PicY) * (i / GameState.TradeColumns);
-                tempRec.Bottom = tempRec.Top + GameState.PicY;
-                tempRec.Left = StartX + GameState.TradeLeft + (GameState.TradeOffsetX + GameState.PicX) * (i % GameState.TradeColumns);
-                tempRec.Right = tempRec.Left + GameState.PicX;
+                Rectangle tempRec = new(
+                        (int)(StartX + GameState.TradeLeft + (GameState.TradeOffsetX + GameState.PicX) * (i % GameState.TradeColumns)),
+                        (int)(StartY + GameState.TradeTop + (GameState.TradeOffsetY + GameState.PicY) * (i / GameState.TradeColumns)),
+                        GameState.PicX,
+                        GameState.PicY);
 
                 if (GameState.CurMouseX >= tempRec.Left & GameState.CurMouseX <= tempRec.Right)
                 {
@@ -567,7 +566,7 @@ namespace Client
                 }
             }
 
-            return -1;
+            return IsTradeRet;
         }
 
     }

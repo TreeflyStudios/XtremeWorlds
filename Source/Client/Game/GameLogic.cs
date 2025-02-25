@@ -2,6 +2,7 @@
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using static Core.Global.Command;
 
 namespace Client
@@ -18,36 +19,36 @@ namespace Client
                 switch (Core.Type.MyMapNPC[(int)MapNPCNum].Dir)
                 {
                     case (int)Core.Enum.DirectionType.Up:
-                        {
-                            Core.Type.MyMapNPC[(int)MapNPCNum].YOffset = (int)Math.Round(Core.Type.MyMapNPC[(int)MapNPCNum].YOffset - GameState.ElapsedTime / 1000d * (GameState.WalkSpeed * GameState.SizeY));
-                            if (Core.Type.MyMapNPC[(int)MapNPCNum].YOffset < 0)
-                                Core.Type.MyMapNPC[(int)MapNPCNum].YOffset = 0;
-                            break;
-                        }
+                    {
+                        Core.Type.MyMapNPC[(int)MapNPCNum].YOffset = (int)Math.Round(Core.Type.MyMapNPC[(int)MapNPCNum].YOffset - GameState.ElapsedTime / 1000d * (GameState.WalkSpeed * GameState.SizeY));
+                        if (Core.Type.MyMapNPC[(int)MapNPCNum].YOffset < 0)
+                            Core.Type.MyMapNPC[(int)MapNPCNum].YOffset = 0;
+                        break;
+                    }
 
                     case (int)Core.Enum.DirectionType.Down:
-                        {
-                            Core.Type.MyMapNPC[(int)MapNPCNum].YOffset = (int)Math.Round(Core.Type.MyMapNPC[(int)MapNPCNum].YOffset + GameState.ElapsedTime / 1000d * (GameState.WalkSpeed * GameState.SizeY));
-                            if (Core.Type.MyMapNPC[(int)MapNPCNum].YOffset > 0)
-                                Core.Type.MyMapNPC[(int)MapNPCNum].YOffset = 0;
-                            break;
-                        }
+                    {
+                        Core.Type.MyMapNPC[(int)MapNPCNum].YOffset = (int)Math.Round(Core.Type.MyMapNPC[(int)MapNPCNum].YOffset + GameState.ElapsedTime / 1000d * (GameState.WalkSpeed * GameState.SizeY));
+                        if (Core.Type.MyMapNPC[(int)MapNPCNum].YOffset > 0)
+                            Core.Type.MyMapNPC[(int)MapNPCNum].YOffset = 0;
+                        break;
+                    }
 
                     case (int)Core.Enum.DirectionType.Left:
-                        {
-                            Core.Type.MyMapNPC[(int)MapNPCNum].XOffset = (int)Math.Round(Core.Type.MyMapNPC[(int)MapNPCNum].XOffset - GameState.ElapsedTime / 1000d * (GameState.WalkSpeed * GameState.SizeX));
-                            if (Core.Type.MyMapNPC[(int)MapNPCNum].XOffset < 0)
-                                Core.Type.MyMapNPC[(int)MapNPCNum].XOffset = 0;
-                            break;
-                        }
+                    {
+                        Core.Type.MyMapNPC[(int)MapNPCNum].XOffset = (int)Math.Round(Core.Type.MyMapNPC[(int)MapNPCNum].XOffset - GameState.ElapsedTime / 1000d * (GameState.WalkSpeed * GameState.SizeX));
+                        if (Core.Type.MyMapNPC[(int)MapNPCNum].XOffset < 0)
+                            Core.Type.MyMapNPC[(int)MapNPCNum].XOffset = 0;
+                        break;
+                    }
 
                     case (int)Core.Enum.DirectionType.Right:
-                        {
-                            Core.Type.MyMapNPC[(int)MapNPCNum].XOffset = (int)Math.Round(Core.Type.MyMapNPC[(int)MapNPCNum].XOffset + GameState.ElapsedTime / 1000d * (GameState.WalkSpeed * GameState.SizeX));
-                            if (Core.Type.MyMapNPC[(int)MapNPCNum].XOffset > 0)
-                                Core.Type.MyMapNPC[(int)MapNPCNum].XOffset = 0;
-                            break;
-                        }
+                    {
+                        Core.Type.MyMapNPC[(int)MapNPCNum].XOffset = (int)Math.Round(Core.Type.MyMapNPC[(int)MapNPCNum].XOffset + GameState.ElapsedTime / 1000d * (GameState.WalkSpeed * GameState.SizeX));
+                        if (Core.Type.MyMapNPC[(int)MapNPCNum].XOffset > 0)
+                            Core.Type.MyMapNPC[(int)MapNPCNum].XOffset = 0;
+                        break;
+                    }
                 }
 
                 // Check if completed walking over to the next tile
@@ -309,565 +310,565 @@ namespace Client
                 switch (command[0] ?? "")
                 {
                     case "/emote":
+                    {
+                        // Checks to make sure we have more than one string in the array
+                        if (Information.UBound(command) < 1 || !Information.IsNumeric(command[1]))
                         {
-                            // Checks to make sure we have more than one string in the array
-                            if (Information.UBound(command) < 1 || !Information.IsNumeric(command[1]))
-                            {
-                                Text.AddText(Languages.Language.Chat.Emote, (int)Core.Enum.ColorType.Yellow);
-                                goto Continue1;
-                            }
-
-                            NetworkSend.SendUseEmote(Conversions.ToInteger(command[1]));
-                            break;
+                            Text.AddText(Languages.Language.Chat.Emote, (int)Core.Enum.ColorType.Yellow);
+                            goto Continue1;
                         }
+
+                        NetworkSend.SendUseEmote(Conversions.ToInteger(command[1]));
+                        break;
+                    }
 
                     case "/help":
-                        {
-                            Text.AddText(Languages.Language.Chat.Help1, (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(Languages.Language.Chat.Help2, (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(Languages.Language.Chat.Help3, (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(Languages.Language.Chat.Help4, (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(Languages.Language.Chat.Help5, (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(Languages.Language.Chat.Help6, (int)Core.Enum.ColorType.Yellow);
-                            break;
-                        }
+                    {
+                        Text.AddText(Languages.Language.Chat.Help1, (int)Core.Enum.ColorType.Yellow);
+                        Text.AddText(Languages.Language.Chat.Help2, (int)Core.Enum.ColorType.Yellow);
+                        Text.AddText(Languages.Language.Chat.Help3, (int)Core.Enum.ColorType.Yellow);
+                        Text.AddText(Languages.Language.Chat.Help4, (int)Core.Enum.ColorType.Yellow);
+                        Text.AddText(Languages.Language.Chat.Help5, (int)Core.Enum.ColorType.Yellow);
+                        Text.AddText(Languages.Language.Chat.Help6, (int)Core.Enum.ColorType.Yellow);
+                        break;
+                    }
 
                     case "/info":
+                    {
+                        if (GameState.MyTarget >= 0)
                         {
-                            if (GameState.MyTarget >= 0)
+                            if (GameState.MyTargetType == (int)Core.Enum.TargetType.Player)
                             {
-                                if (GameState.MyTargetType == (int)Core.Enum.TargetType.Player)
-                                {
-                                    NetworkSend.SendPlayerInfo(GetPlayerName(GameState.MyTarget));
-                                    goto Continue1;
-                                }
-                            }
-
-                            // Checks to make sure we have more than one string in the array
-                            if (Information.UBound(command) < 1 || Information.IsNumeric(command[1]))
-                            {
-                                Text.AddText(Languages.Language.Chat.Info, (int)Core.Enum.ColorType.Yellow);
+                                NetworkSend.SendPlayerInfo(GetPlayerName(GameState.MyTarget));
                                 goto Continue1;
                             }
-
-                            NetworkSend.SendPlayerInfo(command[1]);
-                            break;
                         }
+
+                        // Checks to make sure we have more than one string in the array
+                        if (Information.UBound(command) < 1 || Information.IsNumeric(command[1]))
+                        {
+                            Text.AddText(Languages.Language.Chat.Info, (int)Core.Enum.ColorType.Yellow);
+                            goto Continue1;
+                        }
+
+                        NetworkSend.SendPlayerInfo(command[1]);
+                        break;
+                    }
 
                     // Whos Online
                     case "/who":
-                        {
-                            NetworkSend.SendWhosOnline();
-                            break;
-                        }
+                    {
+                        NetworkSend.SendWhosOnline();
+                        break;
+                    }
 
                     // Requets level up
                     case "/levelup":
-                        {
-                            NetworkSend.SendRequestLevelUp();
-                            break;
-                        }
+                    {
+                        NetworkSend.SendRequestLevelUp();
+                        break;
+                    }
 
                     // Checking fps
                     case "/fps":
-                        {
-                            GameState.Bfps = !GameState.Bfps;
-                            break;
-                        }
+                    {
+                        GameState.Bfps = !GameState.Bfps;
+                        break;
+                    }
 
                     case "/lps":
-                        {
-                            GameState.Blps = !GameState.Blps;
-                            break;
-                        }
+                    {
+                        GameState.Blps = !GameState.Blps;
+                        break;
+                    }
 
                     // Request stats
                     case "/stats":
-                        {
-                            buffer = new ByteStream(4);
-                            buffer.WriteInt32((int)Packets.ClientPackets.CGetStats);
-                            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
-                            buffer.Dispose();
-                            break;
-                        }
+                    {
+                        buffer = new ByteStream(4);
+                        buffer.WriteInt32((int)Packets.ClientPackets.CGetStats);
+                        NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+                        buffer.Dispose();
+                        break;
+                    }
 
                     case "/party":
+                    {
+                        if (GameState.MyTarget >= 0)
                         {
-                            if (GameState.MyTarget >= 0)
+                            if (GameState.MyTargetType == (int)Core.Enum.TargetType.Player)
                             {
-                                if (GameState.MyTargetType == (int)Core.Enum.TargetType.Player)
-                                {
-                                    Party.SendPartyRequest(GetPlayerName(GameState.MyTarget));
-                                    goto Continue1;
-                                }
-                            }
-
-                            // Make sure they are actually sending something
-                            if (Information.UBound(command) < 1 || Information.IsNumeric(command[1]))
-                            {
-                                Text.AddText(Languages.Language.Chat.Party, (int)Core.Enum.ColorType.BrightRed);
+                                Party.SendPartyRequest(GetPlayerName(GameState.MyTarget));
                                 goto Continue1;
                             }
-
-                            Party.SendPartyRequest(command[1]);
-                            break;
                         }
+
+                        // Make sure they are actually sending something
+                        if (Information.UBound(command) < 1 || Information.IsNumeric(command[1]))
+                        {
+                            Text.AddText(Languages.Language.Chat.Party, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
+                        }
+
+                        Party.SendPartyRequest(command[1]);
+                        break;
+                    }
 
                     // Join party
                     case "/join":
-                        {
-                            Party.SendAcceptParty();
-                            break;
-                        }
+                    {
+                        Party.SendAcceptParty();
+                        break;
+                    }
 
                     // Leave party
                     case "/leave":
-                        {
-                            Party.SendLeaveParty();
-                            break;
-                        }
+                    {
+                        Party.SendLeaveParty();
+                        break;
+                    }
 
                     // Trade
                     case "/trade":
+                    {
+                        if (GameState.MyTarget >= 0)
                         {
-                            if (GameState.MyTarget >= 0)
+                            if (GameState.MyTargetType == (int)Core.Enum.TargetType.Player)
                             {
-                                if (GameState.MyTargetType == (int)Core.Enum.TargetType.Player)
-                                {
-                                    Trade.SendTradeRequest(GetPlayerName(GameState.MyTarget));
-                                    goto Continue1;
-                                }
-                            }
-
-                            // Make sure they are actually sending something
-                            if (Information.UBound(command) < 1 || Information.IsNumeric(command[1]))
-                            {
-                                Text.AddText(Languages.Language.Chat.Trade, (int)Core.Enum.ColorType.BrightRed);
+                                Trade.SendTradeRequest(GetPlayerName(GameState.MyTarget));
                                 goto Continue1;
                             }
-
-                            Trade.SendTradeRequest(command[1]);
-                            break;
                         }
+
+                        // Make sure they are actually sending something
+                        if (Information.UBound(command) < 1 || Information.IsNumeric(command[1]))
+                        {
+                            Text.AddText(Languages.Language.Chat.Trade, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
+                        }
+
+                        Trade.SendTradeRequest(command[1]);
+                        break;
+                    }
 
                     // // Moderator Admin Commands //
                     // Admin Help
                     case "/admin":
+                    {
+                        if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Moderator)
                         {
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Moderator)
-                            {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            Text.AddText(Languages.Language.Chat.Admin1, (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(Languages.Language.Chat.Admin2, (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(Languages.Language.Chat.AdminGblMsg, (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(Languages.Language.Chat.AdminPvtMsg, (int)Core.Enum.ColorType.Yellow);
-                            break;
+                            Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
                         }
+
+                        Text.AddText(Languages.Language.Chat.Admin1, (int)Core.Enum.ColorType.Yellow);
+                        Text.AddText(Languages.Language.Chat.Admin2, (int)Core.Enum.ColorType.Yellow);
+                        Text.AddText(Languages.Language.Chat.AdminGblMsg, (int)Core.Enum.ColorType.Yellow);
+                        Text.AddText(Languages.Language.Chat.AdminPvtMsg, (int)Core.Enum.ColorType.Yellow);
+                        break;
+                    }
 
                     case "/acp":
-                        {
-                            NetworkSend.SendRequestAdmin();
-                            break;
-                        }
+                    {
+                        NetworkSend.SendRequestAdmin();
+                        break;
+                    }
 
                     // Kicking a player
                     case "/kick":
+                    {
+
+                        if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Moderator)
                         {
-
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Moderator)
-                            {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            if (Information.UBound(command) < 1 || Information.IsNumeric(command[1]))
-                            {
-                                Text.AddText(Languages.Language.Chat.Kick, (int)Core.Enum.ColorType.Yellow);
-                                goto Continue1;
-                            }
-
-                            NetworkSend.SendKick(command[1]);
-                            break;
+                            Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
                         }
+
+                        if (Information.UBound(command) < 1 || Information.IsNumeric(command[1]))
+                        {
+                            Text.AddText(Languages.Language.Chat.Kick, (int)Core.Enum.ColorType.Yellow);
+                            goto Continue1;
+                        }
+
+                        NetworkSend.SendKick(command[1]);
+                        break;
+                    }
 
                     // // Mapper Admin Commands //
                     // Location
                     case "/loc":
+                    {
+
+                        if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
                         {
-
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
-                            {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            GameState.BLoc = !GameState.BLoc;
-                            break;
+                            Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
                         }
+
+                        GameState.BLoc = !GameState.BLoc;
+                        break;
+                    }
 
                     // Warping to a player
                     case "/warpmeto":
+                    {
+
+                        if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
                         {
-
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
-                            {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            if (Information.UBound(command) < 1 || Information.IsNumeric(command[1]))
-                            {
-                                Text.AddText(Languages.Language.Chat.WarpMeTo, (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            NetworkSend.WarpMeTo(command[1]);
-                            break;
+                            Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
                         }
+
+                        if (Information.UBound(command) < 1 || Information.IsNumeric(command[1]))
+                        {
+                            Text.AddText(Languages.Language.Chat.WarpMeTo, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
+                        }
+
+                        NetworkSend.WarpMeTo(command[1]);
+                        break;
+                    }
 
                     // Warping a player to you
                     case "/warptome":
+                    {
+
+                        if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
                         {
-
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
-                            {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            if (Information.UBound(command) < 1 || Information.IsNumeric(command[1]))
-                            {
-                                Text.AddText(Languages.Language.Chat.WarpToMe, (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            NetworkSend.WarpToMe(command[1]);
-                            break;
+                            Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
                         }
+
+                        if (Information.UBound(command) < 1 || Information.IsNumeric(command[1]))
+                        {
+                            Text.AddText(Languages.Language.Chat.WarpToMe, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
+                        }
+
+                        NetworkSend.WarpToMe(command[1]);
+                        break;
+                    }
 
                     // Warping to a map
                     case "/warpto":
+                    {
+
+                        if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
                         {
-
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
-                            {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            if (Information.UBound(command) < 1 || !Information.IsNumeric(command[1]))
-                            {
-                                Text.AddText(Languages.Language.Chat.WarpTo, (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            n = Conversions.ToInteger(command[1]);
-
-                            // Check to make sure its a valid map #
-                            if (n > 0 & n < Constant.MAX_MAPS)
-                            {
-                                NetworkSend.WarpTo(n);
-                            }
-                            else
-                            {
-                                Text.AddText(Languages.Language.Chat.InvalidMap, (int)Core.Enum.ColorType.BrightRed);
-                            }
-
-                            break;
+                            Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
                         }
+
+                        if (Information.UBound(command) < 1 || !Information.IsNumeric(command[1]))
+                        {
+                            Text.AddText(Languages.Language.Chat.WarpTo, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
+                        }
+
+                        n = Conversions.ToInteger(command[1]);
+
+                        // Check to make sure its a valid map #
+                        if (n > 0 & n < Constant.MAX_MAPS)
+                        {
+                            NetworkSend.WarpTo(n);
+                        }
+                        else
+                        {
+                            Text.AddText(Languages.Language.Chat.InvalidMap, (int)Core.Enum.ColorType.BrightRed);
+                        }
+
+                        break;
+                    }
 
                     // Setting sprite
                     case "/sprite":
+                    {
+
+                        if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
                         {
-
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
-                            {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            if (Information.UBound(command) < 1 || !Information.IsNumeric(command[1]))
-                            {
-                                Text.AddText(Languages.Language.Chat.Sprite, (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            NetworkSend.SendSetSprite(Conversions.ToInteger(command[1]));
-                            break;
+                            Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
                         }
+
+                        if (Information.UBound(command) < 1 || !Information.IsNumeric(command[1]))
+                        {
+                            Text.AddText(Languages.Language.Chat.Sprite, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
+                        }
+
+                        NetworkSend.SendSetSprite(Conversions.ToInteger(command[1]));
+                        break;
+                    }
 
                     // Map report
                     case "/mapreport":
+                    {
+
+                        if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
                         {
-
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
-                            {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            NetworkSend.SendRequestMapReport();
-                            break;
+                            Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
                         }
+
+                        NetworkSend.SendRequestMapReport();
+                        break;
+                    }
 
                     // Respawn request
                     case "/respawn":
+                    {
+
+                        if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
                         {
-
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
-                            {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            Map.SendMapRespawn();
-                            break;
+                            Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
                         }
+
+                        Map.SendMapRespawn();
+                        break;
+                    }
 
                     case "/editmap":
+                    {
+
+                        if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
                         {
-
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
-                            {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            Map.SendRequestEditMap();
-                            break;
+                            Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
                         }
+
+                        Map.SendRequestEditMap();
+                        break;
+                    }
 
                     // // Moderator Commands //
                     // Welcome change
                     case "/welcome":
+                    {
+
+                        if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Moderator)
                         {
-
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Moderator)
-                            {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            if (Information.UBound(command) < 1)
-                            {
-                                Text.AddText(Languages.Language.Chat.Welcome, (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            NetworkSend.SendMotdChange(Strings.Right(chatText, Strings.Len(chatText) - 5));
-                            break;
+                            Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
                         }
+
+                        if (Information.UBound(command) < 1)
+                        {
+                            Text.AddText(Languages.Language.Chat.Welcome, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
+                        }
+
+                        NetworkSend.SendMotdChange(Strings.Right(chatText, Strings.Len(chatText) - 5));
+                        break;
+                    }
 
                     // Check the ban list
                     case "/banlist":
+                    {
+
+                        if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Moderator)
                         {
-
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Moderator)
-                            {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            NetworkSend.SendBanList();
-                            break;
+                            Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
                         }
+
+                        NetworkSend.SendBanList();
+                        break;
+                    }
 
                     // Banning a player
                     case "/ban":
+                    {
+
+                        if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Moderator)
                         {
-
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Moderator)
-                            {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            if (Information.UBound(command) < 1)
-                            {
-                                Text.AddText(Languages.Language.Chat.Ban, (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            NetworkSend.SendBan(command[1]);
-                            break;
+                            Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
                         }
+
+                        if (Information.UBound(command) < 1)
+                        {
+                            Text.AddText(Languages.Language.Chat.Ban, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
+                        }
+
+                        NetworkSend.SendBan(command[1]);
+                        break;
+                    }
 
                     // // Owner Admin Commands //
                     // Giving another player access
                     case "/bandestroy":
+                    {
+
+                        if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Owner)
                         {
-
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Owner)
-                            {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            NetworkSend.SendBanDestroy();
-                            break;
+                            Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
                         }
+
+                        NetworkSend.SendBanDestroy();
+                        break;
+                    }
 
                     case "/access":
+                    {
+
+                        if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Owner)
                         {
-
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Owner)
-                            {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            if ((Information.UBound(command) < 2 || Information.IsNumeric(command[1])) | !Information.IsNumeric(command[2]))
-                            {
-                                Text.AddText(Languages.Language.Chat.Access, (int)Core.Enum.ColorType.Yellow);
-                                goto Continue1;
-                            }
-
-                            NetworkSend.SendSetAccess(command[1], (byte)Conversions.ToLong(command[2]));
-                            break;
+                            Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
                         }
+
+                        if ((Information.UBound(command) < 2 || Information.IsNumeric(command[1])) | !Information.IsNumeric(command[2]))
+                        {
+                            Text.AddText(Languages.Language.Chat.Access, (int)Core.Enum.ColorType.Yellow);
+                            goto Continue1;
+                        }
+
+                        NetworkSend.SendSetAccess(command[1], (byte)Conversions.ToLong(command[2]));
+                        break;
+                    }
 
                     // // Developer Admin Commands //
                     case "/editresource":
+                    {
+
+                        if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
                         {
-
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
-                            {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            NetworkSend.SendRequestEditResource();
-                            break;
+                            Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
                         }
+
+                        NetworkSend.SendRequestEditResource();
+                        break;
+                    }
 
                     case "/editanimation":
+                    {
+
+                        if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
                         {
-
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
-                            {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            NetworkSend.SendRequestEditAnimation();
-                            break;
+                            Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
                         }
+
+                        NetworkSend.SendRequestEditAnimation();
+                        break;
+                    }
 
                     case "/editpet":
+                    {
+
+                        if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
                         {
-
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
-                            {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            Pet.SendRequestEditPet();
-                            break;
+                            Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
                         }
+
+                        Pet.SendRequestEditPet();
+                        break;
+                    }
 
                     case "/edititem":
+                    {
+
+                        if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
                         {
-
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
-                            {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            NetworkSend.SendRequestEditItem();
-                            break;
+                            Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
                         }
+
+                        NetworkSend.SendRequestEditItem();
+                        break;
+                    }
 
                     case "/editprojectile":
+                    {
+
+                        if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
                         {
-
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
-                            {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            Projectile.SendRequestEditProjectiles();
-                            break;
+                            Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
                         }
+
+                        Projectile.SendRequestEditProjectiles();
+                        break;
+                    }
 
                     case "/editnpc":
+                    {
+
+                        if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
                         {
-
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
-                            {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            NetworkSend.SendRequestEditNPC();
-                            break;
+                            Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
                         }
+
+                        NetworkSend.SendRequestEditNPC();
+                        break;
+                    }
 
                     case "/editjob":
+                    {
+
+                        if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
                         {
-
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
-                            {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            NetworkSend.SendRequestEditJob();
-                            break;
+                            Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
                         }
+
+                        NetworkSend.SendRequestEditJob();
+                        break;
+                    }
 
                     case "/editskill":
+                    {
+
+                        if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
                         {
-
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
-                            {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            NetworkSend.SendRequestEditSkill();
-                            break;
+                            Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
                         }
+
+                        NetworkSend.SendRequestEditSkill();
+                        break;
+                    }
 
                     case "/editshop":
+                    {
+                        if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
                         {
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
-                            {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            NetworkSend.SendRequestEditShop();
-                            break;
+                            Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
                         }
+
+                        NetworkSend.SendRequestEditShop();
+                        break;
+                    }
 
                     case "/editmoral":
+                    {
+                        if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
                         {
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
-                            {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            NetworkSend.SendRequestEditMoral();
-                            break;
+                            Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                            goto Continue1;
                         }
+
+                        NetworkSend.SendRequestEditMoral();
+                        break;
+                    }
 
                     case var @case when @case == "":
-                        {
-                            break;
-                        }
+                    {
+                        break;
+                    }
 
                     default:
-                        {
-                            Text.AddText(Languages.Language.Chat.InvalidCmd, (int)Core.Enum.ColorType.BrightRed);
-                            break;
-                        }
+                    {
+                        Text.AddText(Languages.Language.Chat.InvalidCmd, (int)Core.Enum.ColorType.BrightRed);
+                        break;
+                    }
                 }
             }
 
@@ -970,147 +971,147 @@ namespace Client
             switch (Index)
             {
                 case (byte)Core.Enum.DialogueMsg.Connection:
-                    {
-                        header = "Invalid Connection";
-                        body = "You lost connection to the game server.";
-                        body2 = "Please try again later.";
-                        GameState.InGame = false;
-                        break;
-                    }
+                {
+                    header = "Invalid Connection";
+                    body = "You lost connection to the game server.";
+                    body2 = "Please try again later.";
+                    GameState.InGame = false;
+                    break;
+                }
 
                 case (byte)Core.Enum.DialogueMsg.Banned:
-                    {
-                        header = "Banned";
-                        body = "You have been banned, have a nice day!";
-                        body2 = "Please send all ban appeals to an administrator.";
-                        GameState.InGame = false;
-                        break;
-                    }
+                {
+                    header = "Banned";
+                    body = "You have been banned, have a nice day!";
+                    body2 = "Please send all ban appeals to an administrator.";
+                    GameState.InGame = false;
+                    break;
+                }
 
                 case (byte)Core.Enum.DialogueMsg.Kicked:
-                    {
-                        header = "Kicked";
-                        body = "You have been kicked.";
-                        body2 = "Please try and behave.";
-                        GameState.InGame = false;
-                        break;
-                    }
+                {
+                    header = "Kicked";
+                    body = "You have been kicked.";
+                    body2 = "Please try and behave.";
+                    GameState.InGame = false;
+                    break;
+                }
 
                 case (byte)Core.Enum.DialogueMsg.Outdated:
-                    {
-                        header = "Wrong Version";
-                        body = "Your game client is the wrong version.";
-                        body2 = "Please try updating.";
-                        break;
-                    }
+                {
+                    header = "Wrong Version";
+                    body = "Your game client is the wrong version.";
+                    body2 = "Please try updating.";
+                    break;
+                }
 
                 case (byte)Core.Enum.DialogueMsg.Maintenance:
-                    {
-                        header = "Connection Refused";
-                        body = "The server is currently going under maintenance.";
-                        body2 = "Please try again soon.";
-                        break;
-                    }
+                {
+                    header = "Connection Refused";
+                    body = "The server is currently going under maintenance.";
+                    body2 = "Please try again soon.";
+                    break;
+                }
 
                 case (byte)Core.Enum.DialogueMsg.NameTaken:
-                    {
-                        header = "Invalid Name";
-                        body = "This name is already in use.";
-                        body2 = "Please try another name.";
-                        break;
-                    }
+                {
+                    header = "Invalid Name";
+                    body = "This name is already in use.";
+                    body2 = "Please try another name.";
+                    break;
+                }
 
                 case (byte)Core.Enum.DialogueMsg.NameLength:
-                    {
-                        header = "Invalid Name";
-                        body = "This name is too short or too long.";
-                        body2 = "Please try another name.";
-                        break;
-                    }
+                {
+                    header = "Invalid Name";
+                    body = "This name is too short or too long.";
+                    body2 = "Please try another name.";
+                    break;
+                }
 
                 case (byte)Core.Enum.DialogueMsg.NameIllegal:
-                    {
-                        header = "Invalid Name";
-                        body = "This name contains illegal characters.";
-                        body2 = "Please try another name.";
-                        break;
-                    }
+                {
+                    header = "Invalid Name";
+                    body = "This name contains illegal characters.";
+                    body2 = "Please try another name.";
+                    break;
+                }
 
                 case (byte)Core.Enum.DialogueMsg.Database:
-                    {
-                        header = "Invalid Connection";
-                        body = "Cannot connect to database.";
-                        body2 = "Please try again later.";
-                        break;
-                    }
+                {
+                    header = "Invalid Connection";
+                    body = "Cannot connect to database.";
+                    body2 = "Please try again later.";
+                    break;
+                }
 
                 case (byte)Core.Enum.DialogueMsg.WrongPass:
-                    {
-                        header = "Invalid Login";
-                        body = "Invalid username or password.";
-                        body2 = "Please try again.";
-                        Gui.ClearPasswordTexts();
-                        break;
-                    }
+                {
+                    header = "Invalid Login";
+                    body = "Invalid username or password.";
+                    body2 = "Please try again.";
+                    Gui.ClearPasswordTexts();
+                    break;
+                }
 
                 case (byte)Core.Enum.DialogueMsg.Activate:
-                    {
-                        header = "Inactive Account";
-                        body = "Your account is not activated.";
-                        body2 = "Please activate your account then try again.";
-                        break;
-                    }
+                {
+                    header = "Inactive Account";
+                    body = "Your account is not activated.";
+                    body2 = "Please activate your account then try again.";
+                    break;
+                }
 
                 case (byte)Core.Enum.DialogueMsg.MaxChar:
-                    {
-                        header = "Cannot Merge";
-                        body = "You cannot merge a full account.";
-                        body2 = "Please clear a character slot.";
-                        break;
-                    }
+                {
+                    header = "Cannot Merge";
+                    body = "You cannot merge a full account.";
+                    body2 = "Please clear a character slot.";
+                    break;
+                }
 
                 case (byte)Core.Enum.DialogueMsg.DelChar:
-                    {
-                        header = "Deleted Character";
-                        body = "Your character was successfully deleted.";
-                        body2 = "Please log on to continue playing.";
-                        break;
-                    }
+                {
+                    header = "Deleted Character";
+                    body = "Your character was successfully deleted.";
+                    body2 = "Please log on to continue playing.";
+                    break;
+                }
 
                 case (byte)Core.Enum.DialogueMsg.CreateAccount:
-                    {
-                        header = "Account Created";
-                        body = "Your account was successfully created.";
-                        body2 = "Now, you can play!";
-                        break;
-                    }
+                {
+                    header = "Account Created";
+                    body = "Your account was successfully created.";
+                    body2 = "Now, you can play!";
+                    break;
+                }
 
                 case (byte)Core.Enum.DialogueMsg.MultiAccount:
-                    {
-                        header = "Multiple Accounts";
-                        body = "Multiple accounts are not authorized.";
-                        body2 = "Please logout and try again!";
-                        break;
-                    }
+                {
+                    header = "Multiple Accounts";
+                    body = "Multiple accounts are not authorized.";
+                    body2 = "Please logout and try again!";
+                    break;
+                }
 
                 case (byte)Core.Enum.DialogueMsg.Login:
-                    {
-                        header = "Cannot Login";
-                        body = "This account does not exist.";
-                        body2 = "Please try registering the account.";
-                        break;
-                    }
+                {
+                    header = "Cannot Login";
+                    body = "This account does not exist.";
+                    body2 = "Please try registering the account.";
+                    break;
+                }
 
                 case (byte)Core.Enum.DialogueMsg.Crash:
-                    {
-                        header = "Error";
-                        body = "There was a network error.";
-                        body2 = "Check logs folder for details.";
+                {
+                    header = "Error";
+                    body = "There was a network error.";
+                    body2 = "Check logs folder for details.";
 
-                        Gui.HideWindows();
-                        Gui.ShowWindow(Gui.GetWindowIndex("winLogin"));
-                        break;
-                    }
+                    Gui.HideWindows();
+                    Gui.ShowWindow(Gui.GetWindowIndex("winLogin"));
+                    break;
+                }
             }
 
             // set the dialogue up!
@@ -1191,32 +1192,32 @@ namespace Client
                 switch (GameState.diaIndex)
                 {
                     case (long)Core.Enum.DialogueType.TradeAmount:
-                        {
-                            value = (long)Math.Round(Conversion.Val(diaInput));
-                            Trade.TradeItem((int)GameState.diaData1, (int)value);
-                            break;
-                        }
+                    {
+                        value = (long)Math.Round(Conversion.Val(diaInput));
+                        Trade.TradeItem((int)GameState.diaData1, (int)value);
+                        break;
+                    }
 
                     case (long)Core.Enum.DialogueType.DepositItem:
-                        {
-                            value = (long)Math.Round(Conversion.Val(diaInput));
-                            Bank.DepositItem((int)GameState.diaData1, (int)value);
-                            break;
-                        }
+                    {
+                        value = (long)Math.Round(Conversion.Val(diaInput));
+                        Bank.DepositItem((int)GameState.diaData1, (int)value);
+                        break;
+                    }
 
                     case (long)Core.Enum.DialogueType.WithdrawItem:
-                        {
-                            value = (long)Math.Round(Conversion.Val(diaInput));
-                            Bank.WithdrawItem((byte)(int)GameState.diaData1, (int)value);
-                            break;
-                        }
+                    {
+                        value = (long)Math.Round(Conversion.Val(diaInput));
+                        Bank.WithdrawItem((byte)(int)GameState.diaData1, (int)value);
+                        break;
+                    }
 
                     case (long)Core.Enum.DialogueType.DropItem:
-                        {
-                            value = (long)Math.Round(Conversion.Val(diaInput));
-                            NetworkSend.SendDropItem((int)GameState.diaData1, (int)value);
-                            break;
-                        }
+                    {
+                        value = (long)Math.Round(Conversion.Val(diaInput));
+                        NetworkSend.SendDropItem((int)GameState.diaData1, (int)value);
+                        break;
+                    }
                 }
             }
 
@@ -1226,113 +1227,113 @@ namespace Client
                 switch (GameState.diaIndex)
                 {
                     case (long)Core.Enum.DialogueType.Trade:
-                        {
-                            Trade.SendHandleTradeInvite(1);
-                            break;
-                        }
+                    {
+                        Trade.SendHandleTradeInvite(1);
+                        break;
+                    }
 
                     case (long)Core.Enum.DialogueType.Forget:
-                        {
-                            NetworkSend.ForgetSkill((int)GameState.diaData1);
-                            break;
-                        }
+                    {
+                        NetworkSend.ForgetSkill((int)GameState.diaData1);
+                        break;
+                    }
 
                     case (long)Core.Enum.DialogueType.Party:
-                        {
-                            Party.SendAcceptParty();
-                            break;
-                        }
+                    {
+                        Party.SendAcceptParty();
+                        break;
+                    }
 
                     case (long)Core.Enum.DialogueType.LootItem:
-                        {
-                            CheckMapGetItem();
-                            break;
-                        }
+                    {
+                        CheckMapGetItem();
+                        break;
+                    }
 
                     case (long)Core.Enum.DialogueType.DelChar:
-                        {
-                            NetworkSend.SendDelChar((byte)GameState.diaData1);
-                            break;
-                        }
+                    {
+                        NetworkSend.SendDelChar((byte)GameState.diaData1);
+                        break;
+                    }
 
                     case (long)Core.Enum.DialogueType.FillLayer:
+                    {
+                        if (GameState.diaData2 > 0L)
                         {
-                            if (GameState.diaData2 > 0L)
+                            var loopTo = (int)Core.Type.MyMap.MaxX;
+                            for (x = 0; x < loopTo; x++)
                             {
-                                var loopTo = (int)Core.Type.MyMap.MaxX;
-                                for (x = 0; x < loopTo; x++)
+                                var loopTo1 = (int)Core.Type.MyMap.MaxY;
+                                for (y = 0; y < loopTo1; y++)
                                 {
-                                    var loopTo1 = (int)Core.Type.MyMap.MaxY;
-                                    for (y = 0; y < loopTo1; y++)
-                                    {
-                                        Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].X = (int)GameState.diaData3;
-                                        Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].Y = (int)GameState.diaData4;
-                                        Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].Tileset = (int)GameState.diaData5;
-                                        Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].AutoTile = (byte)GameState.diaData2;
-                                        Autotile.CacheRenderState(x, y, (int)GameState.diaData1);
-                                    }
-                                }
-
-                                // do a re-init so we can see our changes
-                                Autotile.InitAutotiles();
-                            }
-                            else
-                            {
-                                var loopTo2 = (int)Core.Type.MyMap.MaxX;
-                                for (x = 0; x < loopTo2; x++)
-                                {
-                                    var loopTo3 = (int)Core.Type.MyMap.MaxY;
-                                    for (y = 0; y < loopTo3; y++)
-                                    {
-                                        Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].X = (int)GameState.diaData3;
-                                        Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].Y = (int)GameState.diaData4;
-                                        Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].Tileset = (int)GameState.diaData5;
-                                        Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].AutoTile = 0;
-                                        Autotile.CacheRenderState(x, y, (int)GameState.diaData1);
-                                    }
+                                    Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].X = (int)GameState.diaData3;
+                                    Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].Y = (int)GameState.diaData4;
+                                    Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].Tileset = (int)GameState.diaData5;
+                                    Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].AutoTile = (byte)GameState.diaData2;
+                                    Autotile.CacheRenderState(x, y, (int)GameState.diaData1);
                                 }
                             }
 
-                            break;
+                            // do a re-init so we can see our changes
+                            Autotile.InitAutotiles();
                         }
+                        else
+                        {
+                            var loopTo2 = (int)Core.Type.MyMap.MaxX;
+                            for (x = 0; x < loopTo2; x++)
+                            {
+                                var loopTo3 = (int)Core.Type.MyMap.MaxY;
+                                for (y = 0; y < loopTo3; y++)
+                                {
+                                    Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].X = (int)GameState.diaData3;
+                                    Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].Y = (int)GameState.diaData4;
+                                    Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].Tileset = (int)GameState.diaData5;
+                                    Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].AutoTile = 0;
+                                    Autotile.CacheRenderState(x, y, (int)GameState.diaData1);
+                                }
+                            }
+                        }
+
+                        break;
+                    }
 
                     case (long)Core.Enum.DialogueType.ClearLayer:
+                    {
+                        var loopTo4 = (int)Core.Type.MyMap.MaxX;
+                        for (x = 0; x < loopTo4; x++)
                         {
-                            var loopTo4 = (int)Core.Type.MyMap.MaxX;
-                            for (x = 0; x < loopTo4; x++)
+                            var loopTo5 = (int)Core.Type.MyMap.MaxY;
+                            for (y = 0; y < loopTo5; y++)
                             {
-                                var loopTo5 = (int)Core.Type.MyMap.MaxY;
-                                for (y = 0; y < loopTo5; y++)
                                 {
-                                    {
-                                        ref var withBlock = ref Core.Type.MyMap.Tile[x, y];
-                                        withBlock.Layer[(int)GameState.diaData1].X = 0;
-                                        withBlock.Layer[(int)GameState.diaData1].Y = 0;
-                                        withBlock.Layer[(int)GameState.diaData1].Tileset = 0;
-                                        withBlock.Layer[(int)GameState.diaData1].AutoTile = 0;
-                                        Autotile.CacheRenderState(x, y, (int)GameState.diaData1);
-                                    }
+                                    ref var withBlock = ref Core.Type.MyMap.Tile[x, y];
+                                    withBlock.Layer[(int)GameState.diaData1].X = 0;
+                                    withBlock.Layer[(int)GameState.diaData1].Y = 0;
+                                    withBlock.Layer[(int)GameState.diaData1].Tileset = 0;
+                                    withBlock.Layer[(int)GameState.diaData1].AutoTile = 0;
+                                    Autotile.CacheRenderState(x, y, (int)GameState.diaData1);
                                 }
                             }
-
-                            break;
                         }
+
+                        break;
+                    }
 
                     case (long)Core.Enum.DialogueType.ClearAttributes:
+                    {
+                        var loopTo6 = (int)Core.Type.MyMap.MaxX;
+                        for (x = 0; x < loopTo6; x++)
                         {
-                            var loopTo6 = (int)Core.Type.MyMap.MaxX;
-                            for (x = 0; x < loopTo6; x++)
+                            var loopTo7 = (int)Core.Type.MyMap.MaxY;
+                            for (y = 0; y < loopTo7; y++)
                             {
-                                var loopTo7 = (int)Core.Type.MyMap.MaxY;
-                                for (y = 0; y < loopTo7; y++)
-                                {
-                                    Core.Type.MyMap.Tile[x, y].Type = 0;
-                                    Core.Type.MyMap.Tile[x, y].Type2 = 0;
-                                }
+                                Core.Type.MyMap.Tile[x, y].Type = 0;
+                                Core.Type.MyMap.Tile[x, y].Type2 = 0;
                             }
-
-                            break;
                         }
+
+                        break;
+                    }
                 }
             }
 
@@ -1342,16 +1343,16 @@ namespace Client
                 switch (GameState.diaIndex)
                 {
                     case (long)Core.Enum.DialogueType.Trade:
-                        {
-                            Trade.SendHandleTradeInvite(0);
-                            break;
-                        }
+                    {
+                        Trade.SendHandleTradeInvite(0);
+                        break;
+                    }
 
                     case (long)Core.Enum.DialogueType.Party:
-                        {
-                            Party.SendDeclineParty();
-                            break;
-                        }
+                    {
+                        Party.SendDeclineParty();
+                        break;
+                    }
                 }
             }
 
@@ -1413,7 +1414,7 @@ namespace Client
         public static long IsHotbar(long StartX, long StartY)
         {
             long IsHotbarRet = -1;
-            
+
             long i;
 
             for (i = 0L; i < Constant.MAX_HOTBAR; i++)
@@ -1497,35 +1498,35 @@ namespace Client
                 switch (Core.Type.Item[(int)itemNum].Rarity)
                 {
                     case 0: // white
-                        {
-                            Color = Microsoft.Xna.Framework.Color.White;
-                            break;
-                        }
+                    {
+                        Color = Microsoft.Xna.Framework.Color.White;
+                        break;
+                    }
                     case 1: // green
-                        {
-                            Color = Microsoft.Xna.Framework.Color.Green;
-                            break;
-                        }
+                    {
+                        Color = Microsoft.Xna.Framework.Color.Green;
+                        break;
+                    }
                     case 2: // blue
-                        {
-                            Color = Microsoft.Xna.Framework.Color.Blue;
-                            break;
-                        }
+                    {
+                        Color = Microsoft.Xna.Framework.Color.Blue;
+                        break;
+                    }
                     case 3: // maroon
-                        {
-                            Color = Microsoft.Xna.Framework.Color.Red;
-                            break;
-                        }
+                    {
+                        Color = Microsoft.Xna.Framework.Color.Red;
+                        break;
+                    }
                     case 4: // purple
-                        {
-                            Color = Microsoft.Xna.Framework.Color.Magenta;
-                            break;
-                        }
+                    {
+                        Color = Microsoft.Xna.Framework.Color.Magenta;
+                        break;
+                    }
                     case 5: // cyan
-                        {
-                            Color = Microsoft.Xna.Framework.Color.Cyan;
-                            break;
-                        }
+                    {
+                        Color = Microsoft.Xna.Framework.Color.Cyan;
+                        break;
+                    }
                 }
                 withBlock.Controls[(int)Gui.GetControlIndex("winDescription", "lblName")].Color = Color;
 
@@ -1582,204 +1583,204 @@ namespace Client
             switch (Core.Type.Item[(int)itemNum].Type)
             {
                 case (byte)Core.Enum.ItemType.Equipment:
+                {
+                    switch (Core.Type.Item[(int)itemNum].SubType)
                     {
-                        switch (Core.Type.Item[(int)itemNum].SubType)
+                        case (byte)Core.Enum.ItemSubType.Weapon:
                         {
-                            case (byte)Core.Enum.ItemSubType.Weapon:
-                                {
-                                    AddDescInfo("Weapon", Microsoft.Xna.Framework.Color.White);
-                                    break;
-                                }
-                            case (byte)Core.Enum.ItemSubType.Armor:
-                                {
-                                    AddDescInfo("Armor", Microsoft.Xna.Framework.Color.White);
-                                    break;
-                                }
-                            case (byte)Core.Enum.ItemSubType.Helmet:
-                                {
-                                    AddDescInfo("Helmet", Microsoft.Xna.Framework.Color.White);
-                                    break;
-                                }
-                            case (byte)Core.Enum.ItemSubType.Shield:
-                                {
-                                    AddDescInfo("Shield", Microsoft.Xna.Framework.Color.White);
-                                    break;
-                                }
-                            case (byte)Core.Enum.ItemSubType.Shoes:
-                                {
-                                    AddDescInfo("Shoes", Microsoft.Xna.Framework.Color.White);
-                                    break;
-                                }
-                            case (byte)Core.Enum.ItemSubType.Gloves:
-                                {
-                                    AddDescInfo("Gloves", Microsoft.Xna.Framework.Color.White);
-                                    break;
-                                }
+                            AddDescInfo("Weapon", Microsoft.Xna.Framework.Color.White);
+                            break;
                         }
+                        case (byte)Core.Enum.ItemSubType.Armor:
+                        {
+                            AddDescInfo("Armor", Microsoft.Xna.Framework.Color.White);
+                            break;
+                        }
+                        case (byte)Core.Enum.ItemSubType.Helmet:
+                        {
+                            AddDescInfo("Helmet", Microsoft.Xna.Framework.Color.White);
+                            break;
+                        }
+                        case (byte)Core.Enum.ItemSubType.Shield:
+                        {
+                            AddDescInfo("Shield", Microsoft.Xna.Framework.Color.White);
+                            break;
+                        }
+                        case (byte)Core.Enum.ItemSubType.Shoes:
+                        {
+                            AddDescInfo("Shoes", Microsoft.Xna.Framework.Color.White);
+                            break;
+                        }
+                        case (byte)Core.Enum.ItemSubType.Gloves:
+                        {
+                            AddDescInfo("Gloves", Microsoft.Xna.Framework.Color.White);
+                            break;
+                        }
+                    }
 
-                        break;
-                    }
+                    break;
+                }
                 case (byte)Core.Enum.ItemType.Consumable:
-                    {
-                        AddDescInfo("Consumable", Microsoft.Xna.Framework.Color.White);
-                        break;
-                    }
+                {
+                    AddDescInfo("Consumable", Microsoft.Xna.Framework.Color.White);
+                    break;
+                }
                 case (byte)Core.Enum.ItemType.Currency:
-                    {
-                        AddDescInfo("Currency", Microsoft.Xna.Framework.Color.White);
-                        break;
-                    }
+                {
+                    AddDescInfo("Currency", Microsoft.Xna.Framework.Color.White);
+                    break;
+                }
                 case (byte)Core.Enum.ItemType.Skill:
-                    {
-                        AddDescInfo("Skill", Microsoft.Xna.Framework.Color.White);
-                        break;
-                    }
+                {
+                    AddDescInfo("Skill", Microsoft.Xna.Framework.Color.White);
+                    break;
+                }
                 case (byte)Core.Enum.ItemType.Projectile:
-                    {
-                        AddDescInfo("Projectile", Microsoft.Xna.Framework.Color.White);
-                        break;
-                    }
+                {
+                    AddDescInfo("Projectile", Microsoft.Xna.Framework.Color.White);
+                    break;
+                }
                 case (byte)Core.Enum.ItemType.Pet:
-                    {
-                        AddDescInfo("Pet", Microsoft.Xna.Framework.Color.White);
-                        break;
-                    }
+                {
+                    AddDescInfo("Pet", Microsoft.Xna.Framework.Color.White);
+                    break;
+                }
             }
 
             // more info
             switch (Core.Type.Item[(int)itemNum].Type)
             {
                 case (byte)Core.Enum.ItemType.Currency:
+                {
+                    // binding
+                    if (Core.Type.Item[(int)itemNum].BindType == 1)
                     {
-                        // binding
-                        if (Core.Type.Item[(int)itemNum].BindType == 1)
-                        {
-                            AddDescInfo("Bind on Pickup", Microsoft.Xna.Framework.Color.White);
-                        }
-                        else if (Core.Type.Item[(int)itemNum].BindType == 2)
-                        {
-                            AddDescInfo("Bind on Equip", Microsoft.Xna.Framework.Color.White);
-                        }
-
-                        AddDescInfo("Value: " + Core.Type.Item[(int)itemNum].Price + " g", Microsoft.Xna.Framework.Color.Yellow);
-                        break;
+                        AddDescInfo("Bind on Pickup", Microsoft.Xna.Framework.Color.White);
                     }
+                    else if (Core.Type.Item[(int)itemNum].BindType == 2)
+                    {
+                        AddDescInfo("Bind on Equip", Microsoft.Xna.Framework.Color.White);
+                    }
+
+                    AddDescInfo("Value: " + Core.Type.Item[(int)itemNum].Price + " g", Microsoft.Xna.Framework.Color.Yellow);
+                    break;
+                }
                 case (byte)Core.Enum.ItemType.Equipment:
+                {
+                    // Damage/defense
+                    if (Core.Type.Item[(int)itemNum].SubType == (byte)Core.Enum.EquipmentType.Weapon)
                     {
-                        // Damage/defense
-                        if (Core.Type.Item[(int)itemNum].SubType == (byte)Core.Enum.EquipmentType.Weapon)
-                        {
-                            AddDescInfo("Damage: " + Core.Type.Item[(int)itemNum].Data2, Microsoft.Xna.Framework.Color.White);
-                            AddDescInfo("Speed: " + Core.Type.Item[(int)itemNum].Speed / 1000d + "s", Microsoft.Xna.Framework.Color.White);
-                        }
-                        else if (Core.Type.Item[(int)itemNum].Data2 > 0)
-                        {
-                            AddDescInfo("Defense: " + Core.Type.Item[(int)itemNum].Data2, Microsoft.Xna.Framework.Color.White);
-                        }
-
-                        // binding
-                        if (Core.Type.Item[(int)itemNum].BindType == 1)
-                        {
-                            AddDescInfo("Bind on Pickup", Microsoft.Xna.Framework.Color.White);
-                        }
-                        else if (Core.Type.Item[(int)itemNum].BindType == 2)
-                        {
-                            AddDescInfo("Bind on Equip", Microsoft.Xna.Framework.Color.White);
-                        }
-
-                        AddDescInfo("Value: " + Core.Type.Item[(int)itemNum].Price + " G", Microsoft.Xna.Framework.Color.Yellow);
-
-                        // stat bonuses
-                        if (Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Strength] > 0)
-                        {
-                            AddDescInfo("+" + Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Strength] + " Str", Microsoft.Xna.Framework.Color.White);
-                        }
-
-                        if (Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Luck] > 0)
-                        {
-                            AddDescInfo("+" + Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Luck] + " End", Microsoft.Xna.Framework.Color.White);
-                        }
-
-                        if (Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Spirit] > 0)
-                        {
-                            AddDescInfo("+" + Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Spirit] + " Spi", Microsoft.Xna.Framework.Color.White);
-                        }
-
-                        if (Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Luck] > 0)
-                        {
-                            AddDescInfo("+" + Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Luck] + " Luc", Microsoft.Xna.Framework.Color.White);
-                        }
-
-                        if (Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Intelligence] > 0)
-                        {
-                            AddDescInfo("+" + Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Intelligence] + " Int", Microsoft.Xna.Framework.Color.White);
-                        }
-
-                        break;
+                        AddDescInfo("Damage: " + Core.Type.Item[(int)itemNum].Data2, Microsoft.Xna.Framework.Color.White);
+                        AddDescInfo("Speed: " + Core.Type.Item[(int)itemNum].Speed / 1000d + "s", Microsoft.Xna.Framework.Color.White);
                     }
+                    else if (Core.Type.Item[(int)itemNum].Data2 > 0)
+                    {
+                        AddDescInfo("Defense: " + Core.Type.Item[(int)itemNum].Data2, Microsoft.Xna.Framework.Color.White);
+                    }
+
+                    // binding
+                    if (Core.Type.Item[(int)itemNum].BindType == 1)
+                    {
+                        AddDescInfo("Bind on Pickup", Microsoft.Xna.Framework.Color.White);
+                    }
+                    else if (Core.Type.Item[(int)itemNum].BindType == 2)
+                    {
+                        AddDescInfo("Bind on Equip", Microsoft.Xna.Framework.Color.White);
+                    }
+
+                    AddDescInfo("Value: " + Core.Type.Item[(int)itemNum].Price + " G", Microsoft.Xna.Framework.Color.Yellow);
+
+                    // stat bonuses
+                    if (Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Strength] > 0)
+                    {
+                        AddDescInfo("+" + Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Strength] + " Str", Microsoft.Xna.Framework.Color.White);
+                    }
+
+                    if (Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Luck] > 0)
+                    {
+                        AddDescInfo("+" + Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Luck] + " End", Microsoft.Xna.Framework.Color.White);
+                    }
+
+                    if (Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Spirit] > 0)
+                    {
+                        AddDescInfo("+" + Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Spirit] + " Spi", Microsoft.Xna.Framework.Color.White);
+                    }
+
+                    if (Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Luck] > 0)
+                    {
+                        AddDescInfo("+" + Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Luck] + " Luc", Microsoft.Xna.Framework.Color.White);
+                    }
+
+                    if (Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Intelligence] > 0)
+                    {
+                        AddDescInfo("+" + Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Intelligence] + " Int", Microsoft.Xna.Framework.Color.White);
+                    }
+
+                    break;
+                }
                 case (byte)Core.Enum.ItemType.Consumable:
+                {
+                    if (Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Strength] > 0)
                     {
-                        if (Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Strength] > 0)
-                        {
-                            AddDescInfo("+" + Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Strength] + " Str", Microsoft.Xna.Framework.Color.White);
-                        }
+                        AddDescInfo("+" + Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Strength] + " Str", Microsoft.Xna.Framework.Color.White);
+                    }
 
-                        if (Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Luck] > 0)
-                        {
-                            AddDescInfo("+" + Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Luck] + " End", Microsoft.Xna.Framework.Color.White);
-                        }
+                    if (Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Luck] > 0)
+                    {
+                        AddDescInfo("+" + Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Luck] + " End", Microsoft.Xna.Framework.Color.White);
+                    }
 
-                        if (Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Spirit] > 0)
-                        {
-                            AddDescInfo("+" + Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Spirit] + " Spi", Microsoft.Xna.Framework.Color.White);
-                        }
+                    if (Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Spirit] > 0)
+                    {
+                        AddDescInfo("+" + Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Spirit] + " Spi", Microsoft.Xna.Framework.Color.White);
+                    }
 
-                        if (Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Luck] > 0)
-                        {
-                            AddDescInfo("+" + Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Luck] + " Luc", Microsoft.Xna.Framework.Color.White);
-                        }
+                    if (Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Luck] > 0)
+                    {
+                        AddDescInfo("+" + Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Luck] + " Luc", Microsoft.Xna.Framework.Color.White);
+                    }
 
-                        if (Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Intelligence] > 0)
-                        {
-                            AddDescInfo("+" + Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Intelligence] + " Int", Microsoft.Xna.Framework.Color.White);
-                        }
+                    if (Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Intelligence] > 0)
+                    {
+                        AddDescInfo("+" + Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Intelligence] + " Int", Microsoft.Xna.Framework.Color.White);
+                    }
 
-                        if (Core.Type.Item[(int)itemNum].Data1 > 0)
+                    if (Core.Type.Item[(int)itemNum].Data1 > 0)
+                    {
+                        switch (Core.Type.Item[(int)itemNum].SubType)
                         {
-                            switch (Core.Type.Item[(int)itemNum].SubType)
+                            case (byte)Core.Enum.ItemSubType.AddHP:
                             {
-                                case (byte)Core.Enum.ItemSubType.AddHP:
-                                    {
-                                        AddDescInfo("+" + Core.Type.Item[(int)itemNum].Data1 + " HP", Microsoft.Xna.Framework.Color.White);
-                                        break;
-                                    }
-                                case (byte)Core.Enum.ItemSubType.AddMP:
-                                    {
-                                        AddDescInfo("+" + Core.Type.Item[(int)itemNum].Data1 + " MP", Microsoft.Xna.Framework.Color.White);
-                                        break;
-                                    }
-                                case (byte)Core.Enum.ItemSubType.AddSP:
-                                    {
-                                        AddDescInfo("+" + Core.Type.Item[(int)itemNum].Data1 + " SP", Microsoft.Xna.Framework.Color.White);
-                                        break;
-                                    }
-                                case (byte)Core.Enum.ItemSubType.Exp:
-                                    {
-                                        AddDescInfo("+" + Core.Type.Item[(int)itemNum].Data1 + " EXP", Microsoft.Xna.Framework.Color.White);
-                                        break;
-                                    }
+                                AddDescInfo("+" + Core.Type.Item[(int)itemNum].Data1 + " HP", Microsoft.Xna.Framework.Color.White);
+                                break;
                             }
-
+                            case (byte)Core.Enum.ItemSubType.AddMP:
+                            {
+                                AddDescInfo("+" + Core.Type.Item[(int)itemNum].Data1 + " MP", Microsoft.Xna.Framework.Color.White);
+                                break;
+                            }
+                            case (byte)Core.Enum.ItemSubType.AddSP:
+                            {
+                                AddDescInfo("+" + Core.Type.Item[(int)itemNum].Data1 + " SP", Microsoft.Xna.Framework.Color.White);
+                                break;
+                            }
+                            case (byte)Core.Enum.ItemSubType.Exp:
+                            {
+                                AddDescInfo("+" + Core.Type.Item[(int)itemNum].Data1 + " EXP", Microsoft.Xna.Framework.Color.White);
+                                break;
+                            }
                         }
 
-                        AddDescInfo("Value: " + Core.Type.Item[(int)itemNum].Price + " G", Microsoft.Xna.Framework.Color.Yellow);
-                        break;
                     }
+
+                    AddDescInfo("Value: " + Core.Type.Item[(int)itemNum].Price + " G", Microsoft.Xna.Framework.Color.Yellow);
+                    break;
+                }
                 case (byte)Core.Enum.ItemType.Skill:
-                    {
-                        AddDescInfo("Value: " + Core.Type.Item[(int)itemNum].Price + " G", Microsoft.Xna.Framework.Color.Yellow);
-                        break;
-                    }
+                {
+                    AddDescInfo("Value: " + Core.Type.Item[(int)itemNum].Price + " G", Microsoft.Xna.Framework.Color.Yellow);
+                    break;
+                }
             }
         }
 
@@ -1867,30 +1868,30 @@ namespace Client
             switch (Core.Type.Skill[(int)skillNum].Type)
             {
                 case (byte)Core.Enum.SkillType.DamageHp:
-                    {
-                        AddDescInfo("Damage HP", Microsoft.Xna.Framework.Color.White);
-                        break;
-                    }
+                {
+                    AddDescInfo("Damage HP", Microsoft.Xna.Framework.Color.White);
+                    break;
+                }
                 case (byte)Core.Enum.SkillType.DamageMp:
-                    {
-                        AddDescInfo("Damage SP", Microsoft.Xna.Framework.Color.White);
-                        break;
-                    }
+                {
+                    AddDescInfo("Damage SP", Microsoft.Xna.Framework.Color.White);
+                    break;
+                }
                 case (byte)Core.Enum.SkillType.HealHp:
-                    {
-                        AddDescInfo("Heal HP", Microsoft.Xna.Framework.Color.White);
-                        break;
-                    }
+                {
+                    AddDescInfo("Heal HP", Microsoft.Xna.Framework.Color.White);
+                    break;
+                }
                 case (byte)Core.Enum.SkillType.HealMp:
-                    {
-                        AddDescInfo("Heal SP", Microsoft.Xna.Framework.Color.White);
-                        break;
-                    }
+                {
+                    AddDescInfo("Heal SP", Microsoft.Xna.Framework.Color.White);
+                    break;
+                }
                 case (byte)Core.Enum.SkillType.Warp:
-                    {
-                        AddDescInfo("Warp", Microsoft.Xna.Framework.Color.White);
-                        break;
-                    }
+                {
+                    AddDescInfo("Warp", Microsoft.Xna.Framework.Color.White);
+                    break;
+                }
             }
 
             // more info
@@ -1900,39 +1901,39 @@ namespace Client
                 case (byte)Core.Enum.SkillType.DamageMp:
                 case (byte)Core.Enum.SkillType.HealHp:
                 case (byte)Core.Enum.SkillType.HealMp:
+                {
+                    // damage
+                    AddDescInfo("Vital: " + Core.Type.Skill[(int)skillNum].Vital, Microsoft.Xna.Framework.Color.White);
+
+                    // mp cost
+                    AddDescInfo("Cost: " + Core.Type.Skill[(int)skillNum].MpCost + " SP", Microsoft.Xna.Framework.Color.White);
+
+                    // cast time
+                    AddDescInfo("Cast Time: " + Core.Type.Skill[(int)skillNum].CastTime + "s", Microsoft.Xna.Framework.Color.White);
+
+                    // cd time
+                    AddDescInfo("Cooldown: " + Core.Type.Skill[(int)skillNum].CdTime + "s", Microsoft.Xna.Framework.Color.White);
+
+                    // aoe
+                    if (Core.Type.Skill[(int)skillNum].AoE > 0)
                     {
-                        // damage
-                        AddDescInfo("Vital: " + Core.Type.Skill[(int)skillNum].Vital, Microsoft.Xna.Framework.Color.White);
-
-                        // mp cost
-                        AddDescInfo("Cost: " + Core.Type.Skill[(int)skillNum].MpCost + " SP", Microsoft.Xna.Framework.Color.White);
-
-                        // cast time
-                        AddDescInfo("Cast Time: " + Core.Type.Skill[(int)skillNum].CastTime + "s", Microsoft.Xna.Framework.Color.White);
-
-                        // cd time
-                        AddDescInfo("Cooldown: " + Core.Type.Skill[(int)skillNum].CdTime + "s", Microsoft.Xna.Framework.Color.White);
-
-                        // aoe
-                        if (Core.Type.Skill[(int)skillNum].AoE > 0)
-                        {
-                            AddDescInfo("AoE: " + Core.Type.Skill[(int)skillNum].AoE, Microsoft.Xna.Framework.Color.White);
-                        }
-
-                        // stun
-                        if (Core.Type.Skill[(int)skillNum].StunDuration > 0)
-                        {
-                            AddDescInfo("Stun: " + Core.Type.Skill[(int)skillNum].StunDuration + "s", Microsoft.Xna.Framework.Color.White);
-                        }
-
-                        // dot
-                        if (Core.Type.Skill[(int)skillNum].Duration > 0 & Core.Type.Skill[(int)skillNum].Interval > 0)
-                        {
-                            AddDescInfo("DoT: " + Core.Type.Skill[(int)skillNum].Duration / (double)Core.Type.Skill[(int)skillNum].Interval + " tick", Microsoft.Xna.Framework.Color.White);
-                        }
-
-                        break;
+                        AddDescInfo("AoE: " + Core.Type.Skill[(int)skillNum].AoE, Microsoft.Xna.Framework.Color.White);
                     }
+
+                    // stun
+                    if (Core.Type.Skill[(int)skillNum].StunDuration > 0)
+                    {
+                        AddDescInfo("Stun: " + Core.Type.Skill[(int)skillNum].StunDuration + "s", Microsoft.Xna.Framework.Color.White);
+                    }
+
+                    // dot
+                    if (Core.Type.Skill[(int)skillNum].Duration > 0 & Core.Type.Skill[(int)skillNum].Interval > 0)
+                    {
+                        AddDescInfo("DoT: " + Core.Type.Skill[(int)skillNum].Duration / (double)Core.Type.Skill[(int)skillNum].Interval + " tick", Microsoft.Xna.Framework.Color.White);
+                    }
+
+                    break;
+                }
             }
         }
 
@@ -1981,143 +1982,143 @@ namespace Client
             switch (GameState.MyEditorType)
             {
                 case (int)Core.Enum.EditorType.Item:
+                {
+                    if (frmEditor_Item.Instance != null)
                     {
-                        if (frmEditor_Item.Instance != null)
+                        frmEditor_Item.Instance.Invoke((MethodInvoker)delegate
                         {
-                            frmEditor_Item.Instance.Invoke((MethodInvoker)delegate
-                            {
-                                frmEditor_Item.Instance.Dispose();
-                            });
-                        }
-                        break;
+                            frmEditor_Item.Instance.Dispose();
+                        });
                     }
+                    break;
+                }
                 case (int)Core.Enum.EditorType.Job:
+                {
+                    if (frmEditor_Job.Instance != null)
                     {
-                        if (frmEditor_Job.Instance != null)
+                        frmEditor_Job.Instance.Invoke((MethodInvoker)delegate
                         {
-                            frmEditor_Job.Instance.Invoke((MethodInvoker)delegate
-                            {
-                                frmEditor_Job.Instance.Dispose();
-                            });
-                        }
-                        break;
+                            frmEditor_Job.Instance.Dispose();
+                        });
                     }
+                    break;
+                }
                 case (int)Core.Enum.EditorType.Map:
+                {
+                    if (frmEditor_Map.Instance != null)
                     {
-                        if (frmEditor_Map.Instance != null)
+                        frmEditor_Map.Instance.Invoke((MethodInvoker)delegate
                         {
-                            frmEditor_Map.Instance.Invoke((MethodInvoker)delegate
-                            {
-                                frmEditor_Map.Instance.Dispose();
-                            });
-                        }
-                        if (frmEditor_Event.Instance != null)
-                        {
-                            frmEditor_Event.Instance.Invoke((MethodInvoker)delegate
-                            {
-                                frmEditor_Event.Instance.Dispose();
-                            });
-                        }
-                        break;
+                            frmEditor_Map.Instance.Dispose();
+                        });
                     }
+                    if (frmEditor_Event.Instance != null)
+                    {
+                        frmEditor_Event.Instance.Invoke((MethodInvoker)delegate
+                        {
+                            frmEditor_Event.Instance.Dispose();
+                        });
+                    }
+                    break;
+                }
                 case (int)Core.Enum.EditorType.NPC:
+                {
+                    if (frmEditor_NPC.Instance != null)
                     {
-                        if (frmEditor_NPC.Instance != null)
+                        frmEditor_NPC.Instance.Invoke((MethodInvoker)delegate
                         {
-                            frmEditor_NPC.Instance.Invoke((MethodInvoker)delegate
-                            {
-                                frmEditor_NPC.Instance.Dispose();
-                            });
-                        }
-                        break;
+                            frmEditor_NPC.Instance.Dispose();
+                        });
                     }
+                    break;
+                }
                 case (int)Core.Enum.EditorType.Pet:
+                {
+                    if (frmEditor_Pet.Instance != null)
                     {
-                        if (frmEditor_Pet.Instance != null)
+                        frmEditor_Pet.Instance.Invoke((MethodInvoker)delegate
                         {
-                            frmEditor_Pet.Instance.Invoke((MethodInvoker)delegate
-                            {
-                                frmEditor_Pet.Instance.Dispose();
-                            });
-                        }
-                        break;
+                            frmEditor_Pet.Instance.Dispose();
+                        });
                     }
+                    break;
+                }
                 case (int)Core.Enum.EditorType.Projectile:
+                {
+                    if (frmEditor_Projectile.Instance != null)
                     {
-                        if (frmEditor_Projectile.Instance != null)
+                        frmEditor_Projectile.Instance.Invoke((MethodInvoker)delegate
                         {
-                            frmEditor_Projectile.Instance.Invoke((MethodInvoker)delegate
-                            {
-                                frmEditor_Projectile.Instance.Dispose();
-                            });
-                        }
-                        break;
+                            frmEditor_Projectile.Instance.Dispose();
+                        });
                     }
+                    break;
+                }
                 case (int)Core.Enum.EditorType.Resource:
+                {
+                    if (frmEditor_Resource.Instance != null)
                     {
-                        if (frmEditor_Resource.Instance != null)
+                        frmEditor_Resource.Instance.Invoke((MethodInvoker)delegate
                         {
-                            frmEditor_Resource.Instance.Invoke((MethodInvoker)delegate
-                            {
-                                frmEditor_Resource.Instance.Dispose();
-                            });
-                        }
-                        break;
+                            frmEditor_Resource.Instance.Dispose();
+                        });
                     }
+                    break;
+                }
                 case (int)Core.Enum.EditorType.Shop:
+                {
+                    if (frmEditor_Shop.Instance != null)
                     {
-                        if (frmEditor_Shop.Instance != null)
+                        frmEditor_Shop.Instance.Invoke((MethodInvoker)delegate
                         {
-                            frmEditor_Shop.Instance.Invoke((MethodInvoker)delegate
-                            {
-                                frmEditor_Shop.Instance.Dispose();
-                            });
-                        }
-                        break;
+                            frmEditor_Shop.Instance.Dispose();
+                        });
                     }
+                    break;
+                }
                 case (int)Core.Enum.EditorType.Skill:
+                {
+                    if (frmEditor_Skill.Instance != null)
                     {
-                        if (frmEditor_Skill.Instance != null)
+                        frmEditor_Skill.Instance.Invoke((MethodInvoker)delegate
                         {
-                            frmEditor_Skill.Instance.Invoke((MethodInvoker)delegate
-                            {
-                                frmEditor_Skill.Instance.Dispose();
-                            });
-                        }
-                        break;
+                            frmEditor_Skill.Instance.Dispose();
+                        });
                     }
+                    break;
+                }
                 case (int)Core.Enum.EditorType.Animation:
+                {
+                    if (frmEditor_Animation.Instance != null)
                     {
-                        if (frmEditor_Animation.Instance != null)
+                        frmEditor_Animation.Instance.Invoke((MethodInvoker)delegate
                         {
-                            frmEditor_Animation.Instance.Invoke((MethodInvoker)delegate
-                            {
-                                frmEditor_Animation.Instance.Dispose();
-                            });
-                        }
-                        break;
+                            frmEditor_Animation.Instance.Dispose();
+                        });
                     }
+                    break;
+                }
                 case (int)Core.Enum.EditorType.Moral:
+                {
+                    if (frmEditor_Moral.Instance != null)
                     {
-                        if (frmEditor_Moral.Instance != null)
+                        frmEditor_Moral.Instance.Invoke((MethodInvoker)delegate
                         {
-                            frmEditor_Moral.Instance.Invoke((MethodInvoker)delegate
-                            {
-                                frmEditor_Moral.Instance.Dispose();
-                            });
-                        }
-                        break;
+                            frmEditor_Moral.Instance.Dispose();
+                        });
                     }
+                    break;
+                }
             }
 
             if (GameState.AdminPanel)
             {
                 if (FrmAdmin.Instance != null)
-                    {
-                        FrmAdmin.Instance.Invoke((MethodInvoker)delegate
-                    {
-                        FrmAdmin.Instance.Dispose();
-                    });
+                {
+                    FrmAdmin.Instance.Invoke((MethodInvoker)delegate
+                {
+                    FrmAdmin.Instance.Dispose();
+                });
                 }
             }
 
@@ -2311,14 +2312,14 @@ namespace Client
         public static int ConvertMapX(int x)
         {
             int ConvertMapXRet = default;
-            ConvertMapXRet = (int)Math.Round(x - GameState.TileView.Left * GameState.PicX - GameState.Camera.Left);
+            ConvertMapXRet = x - GameState.TileView.Left * GameState.PicX - GameState.Camera.Left;
             return ConvertMapXRet;
         }
 
         public static int ConvertMapY(int y)
         {
             int ConvertMapYRet = default;
-            ConvertMapYRet = (int)Math.Round(y - GameState.TileView.Top * GameState.PicY - GameState.Camera.Top);
+            ConvertMapYRet = y - GameState.TileView.Top * GameState.PicY - GameState.Camera.Top;
             return ConvertMapYRet;
         }
 
@@ -2427,29 +2428,29 @@ namespace Client
             switch (quadrant)
             {
                 case Core.Enum.QuadrantType.NE:
-                    {
-                        y1 = y + 1;
-                        x2 = x - 1;
-                        break;
-                    }
+                {
+                    y1 = y + 1;
+                    x2 = x - 1;
+                    break;
+                }
                 case Core.Enum.QuadrantType.SE:
-                    {
-                        y1 = y - 1;
-                        x2 = x - 1;
-                        break;
-                    }
+                {
+                    y1 = y - 1;
+                    x2 = x - 1;
+                    break;
+                }
                 case Core.Enum.QuadrantType.SW:
-                    {
-                        y1 = y - 1;
-                        x2 = x + 1;
-                        break;
-                    }
+                {
+                    y1 = y - 1;
+                    x2 = x + 1;
+                    break;
+                }
                 case Core.Enum.QuadrantType.NW:
-                    {
-                        y1 = y + 1;
-                        x2 = x + 1;
-                        break;
-                    }
+                {
+                    y1 = y + 1;
+                    x2 = x + 1;
+                    break;
+                }
             }
 
             // Check if the position is already in the field of view and is not transparent
@@ -2661,18 +2662,9 @@ namespace Client
                 offsetY = 0L;
             }
 
-            ref var withBlock = ref GameState.TileView;
-            withBlock.Top = StartY;
-            withBlock.Bottom = EndY;
-            withBlock.Left = StartX;
-            withBlock.Right = EndX;
+            GameState.TileView = new Rectangle((int)StartX, (int)StartY, (int)(EndX - StartX), (int)(EndY - StartY));
+            GameState.Camera = new Rectangle((int)offsetX, (int)offsetY, (int)ScreenX, (int)ScreenY);
 
-            ref var withBlock1 = ref GameState.Camera;
-            withBlock1.Top = offsetY;
-            withBlock1.Bottom = withBlock1.Top + ScreenY;
-            withBlock1.Left = offsetX;
-            withBlock1.Right = withBlock1.Left + ScreenX;
-            
             // Optional: Update the map name display
             UpdateDrawMapName();
         }

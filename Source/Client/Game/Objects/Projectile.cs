@@ -119,7 +119,7 @@ namespace Client
         {
             int i;
 
-            for (i = 0; i < Constant.MAX_PROJECTILES;  i++)
+            for (i = 0; i < Constant.MAX_PROJECTILES; i++)
                 ClearProjectile(i);
 
         }
@@ -162,7 +162,7 @@ namespace Client
         #region Drawing
         internal static void DrawProjectile(int projectileNum)
         {
-            Core.Type.RectStruct rec;
+            Rectangle rec;
             var canClearProjectile = default(bool);
             var collisionindex = default(int);
             var collisionType = default(byte);
@@ -182,25 +182,25 @@ namespace Client
                 switch (Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].Dir)
                 {
                     case (byte)Core.Enum.DirectionType.Up:
-                        {
-                            Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].Y = Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].Y - 1;
-                            break;
-                        }
+                    {
+                        Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].Y = Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].Y - 1;
+                        break;
+                    }
                     case (byte)Core.Enum.DirectionType.Down:
-                        {
-                            Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].Y = Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].Y + 1;
-                            break;
-                        }
+                    {
+                        Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].Y = Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].Y + 1;
+                        break;
+                    }
                     case (byte)Core.Enum.DirectionType.Left:
-                        {
-                            Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].X = Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].X - 1;
-                            break;
-                        }
+                    {
+                        Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].X = Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].X - 1;
+                        break;
+                    }
                     case (byte)Core.Enum.DirectionType.Right:
-                        {
-                            Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].X = Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].X + 1;
-                            break;
-                        }
+                    {
+                        Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].X = Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].X + 1;
+                        break;
+                    }
                 }
                 Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].TravelTime = General.GetTickCount() + Core.Type.Projectile[Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].ProjectileNum].Speed;
                 Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].Range = Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].Range + 1;
@@ -284,34 +284,31 @@ namespace Client
                 return;
 
             // src rect
-            rec.Top = 0d;
-            rec.Bottom = GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Projectiles, sprite.ToString())).Height;
-            rec.Left = Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].Dir * GameState.PicX;
-            rec.Right = rec.Left + GameState.PicX;
+            rec = new(Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].Dir * GameState.PicX, 0, GameState.PicX, GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Projectiles, sprite.ToString())).Height);
 
             // Find the offset
             switch (Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].Dir)
             {
                 case (byte)Core.Enum.DirectionType.Up:
-                    {
-                        yOffset = (int)Math.Round((Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].TravelTime - General.GetTickCount()) / (double)Core.Type.Projectile[Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].ProjectileNum].Speed * GameState.PicY);
-                        break;
-                    }
+                {
+                    yOffset = (int)Math.Round((Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].TravelTime - General.GetTickCount()) / (double)Core.Type.Projectile[Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].ProjectileNum].Speed * GameState.PicY);
+                    break;
+                }
                 case (byte)Core.Enum.DirectionType.Down:
-                    {
-                        yOffset = (int)Math.Round(-((Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].TravelTime - General.GetTickCount()) / (double)Core.Type.Projectile[Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].ProjectileNum].Speed) * GameState.PicY);
-                        break;
-                    }
+                {
+                    yOffset = (int)Math.Round(-((Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].TravelTime - General.GetTickCount()) / (double)Core.Type.Projectile[Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].ProjectileNum].Speed) * GameState.PicY);
+                    break;
+                }
                 case (byte)Core.Enum.DirectionType.Left:
-                    {
-                        xOffset = (int)Math.Round((Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].TravelTime - General.GetTickCount()) / (double)Core.Type.Projectile[Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].ProjectileNum].Speed * GameState.PicX);
-                        break;
-                    }
+                {
+                    xOffset = (int)Math.Round((Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].TravelTime - General.GetTickCount()) / (double)Core.Type.Projectile[Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].ProjectileNum].Speed * GameState.PicX);
+                    break;
+                }
                 case (byte)Core.Enum.DirectionType.Right:
-                    {
-                        xOffset = (int)Math.Round(-((Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].TravelTime - General.GetTickCount()) / (double)Core.Type.Projectile[Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].ProjectileNum].Speed) * GameState.PicX);
-                        break;
-                    }
+                {
+                    xOffset = (int)Math.Round(-((Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].TravelTime - General.GetTickCount()) / (double)Core.Type.Projectile[Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].ProjectileNum].Speed) * GameState.PicX);
+                    break;
+                }
             }
 
             // Convert coordinates
@@ -320,7 +317,7 @@ namespace Client
 
             // Render texture
             string argpath = System.IO.Path.Combine(Core.Path.Projectiles, sprite.ToString());
-            GameClient.RenderTexture(ref argpath, x, y, (int)Math.Round(rec.Left), (int)Math.Round(rec.Top), 32, 32);
+            GameClient.RenderTexture(ref argpath, x, y, rec.Left, rec.Top, 32, 32);
 
         }
 

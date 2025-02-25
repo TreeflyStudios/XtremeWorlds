@@ -224,8 +224,8 @@ namespace Client
 
         public void DrawGraphic()
         {
-            Core.Type.RectStruct sRect;
-            Core.Type.RectStruct dRect;
+            Rectangle sRect;
+            Rectangle dRect;
             Bitmap targetBitmap; // Bitmap we draw to
             Bitmap sourceBitmap; // This is our sprite or tileset that we are drawing from
             Graphics g; // This is our graphics Job that helps us draw to the targetBitmap
@@ -235,117 +235,106 @@ namespace Client
                 switch (cmbGraphic.SelectedIndex)
                 {
                     case 0:
-                        {
-                            // None
-                            picGraphicSel.BackgroundImage = null;
-                            break;
-                        }
+                    {
+                        // None
+                        picGraphicSel.BackgroundImage = null;
+                        break;
+                    }
                     case 1:
+                    {
+                        if (nudGraphic.Value > 0m & nudGraphic.Value <= GameState.NumCharacters)
                         {
-                            if (nudGraphic.Value > 0m & nudGraphic.Value <= GameState.NumCharacters)
-                            {
-                                // Load character from Contents into our sourceBitmap
-                                sourceBitmap = new Bitmap(System.IO.Path.Combine(Core.Path.Characters, nudGraphic.Value + GameState.GfxExt));
-                                targetBitmap = new Bitmap(sourceBitmap.Width, sourceBitmap.Height); // Create our target Bitmap
+                            // Load character from Contents into our sourceBitmap
+                            sourceBitmap = new Bitmap(System.IO.Path.Combine(Core.Path.Characters, nudGraphic.Value + GameState.GfxExt));
+                            targetBitmap = new Bitmap(sourceBitmap.Width, sourceBitmap.Height); // Create our target Bitmap
 
-                                // Create the Graphics object
-                                g = Graphics.FromImage(targetBitmap);
+                            // Create the Graphics object
+                            g = Graphics.FromImage(targetBitmap);
 
-                                // This is the section we are pulling from the source graphic (using RectangleF)
-                                var sourceRect = new RectangleF(0f, 0f, sourceBitmap.Width / 4.0f, sourceBitmap.Height / 4.0f);
+                            // This is the section we are pulling from the source graphic (using RectangleF)
+                            var sourceRect = new RectangleF(0f, 0f, sourceBitmap.Width / 4.0f, sourceBitmap.Height / 4.0f);
 
-                                // This is the rectangle in the target graphic we want to render to (using RectangleF)
-                                var destRect = new RectangleF(0f, 0f, targetBitmap.Width / 4.0f, targetBitmap.Height / 4.0f);
+                            // This is the rectangle in the target graphic we want to render to (using RectangleF)
+                            var destRect = new RectangleF(0f, 0f, targetBitmap.Width / 4.0f, targetBitmap.Height / 4.0f);
 
-                                // Draw the image using RectangleF for source and destination rectangles
-                                g.DrawImage(sourceBitmap, destRect, sourceRect, GraphicsUnit.Pixel);
+                            // Draw the image using RectangleF for source and destination rectangles
+                            g.DrawImage(sourceBitmap, destRect, sourceRect, GraphicsUnit.Pixel);
 
-                                // Draw a rectangle (using RectangleF)
-                                var graphicRectF = new RectangleF(Event.GraphicSelX * GameState.PicX, Event.GraphicSelY * GameState.PicY, Event.GraphicSelX2 * GameState.PicX, Event.GraphicSelY2 * GameState.PicY);
-                                g.DrawRectangle(Pens.Red, graphicRectF);
+                            // Draw a rectangle (using RectangleF)
+                            var graphicRectF = new RectangleF(Event.GraphicSelX * GameState.PicX, Event.GraphicSelY * GameState.PicY, Event.GraphicSelX2 * GameState.PicX, Event.GraphicSelY2 * GameState.PicY);
+                            g.DrawRectangle(Pens.Red, graphicRectF);
 
-                                // Set the BackgroundImage properties of the forms
-                                picGraphic.BackgroundImage = targetBitmap;
-                                picGraphicSel.BackgroundImage = null;
+                            // Set the BackgroundImage properties of the forms
+                            picGraphic.BackgroundImage = targetBitmap;
+                            picGraphicSel.BackgroundImage = null;
 
-                                // Dispose of the Graphics object
-                                g.Dispose();
-                            }
-
-                            else
-                            {
-                                picGraphic.BackgroundImage = null;
-                                picGraphicSel.BackgroundImage = null;
-                                return;
-                            }
-
-                            break;
+                            // Dispose of the Graphics object
+                            g.Dispose();
                         }
+
+                        else
+                        {
+                            picGraphic.BackgroundImage = null;
+                            picGraphicSel.BackgroundImage = null;
+                            return;
+                        }
+
+                        break;
+                    }
                     case 2:
+                    {
+                        if (nudGraphic.Value > 0m & nudGraphic.Value <= GameState.NumTileSets)
                         {
-                            if (nudGraphic.Value > 0m & nudGraphic.Value <= GameState.NumTileSets)
+                            // Load tilesheet from Contents into our sourceBitmap
+                            sourceBitmap = new Bitmap(System.IO.Path.Combine(Core.Path.Tilesets, nudGraphic.Value + GameState.GfxExt));
+                            targetBitmap = new Bitmap(sourceBitmap.Width, sourceBitmap.Height); // Create our target Bitmap
+
+                            if (Event.TmpEvent.Pages[Event.CurPageNum].GraphicX2 == 0 & Event.TmpEvent.Pages[Event.CurPageNum].GraphicY2 == 0)
                             {
-                                // Load tilesheet from Contents into our sourceBitmap
-                                sourceBitmap = new Bitmap(System.IO.Path.Combine(Core.Path.Tilesets, nudGraphic.Value + GameState.GfxExt));
-                                targetBitmap = new Bitmap(sourceBitmap.Width, sourceBitmap.Height); // Create our target Bitmap
-
-                                if (Event.TmpEvent.Pages[Event.CurPageNum].GraphicX2 == 0 & Event.TmpEvent.Pages[Event.CurPageNum].GraphicY2 == 0)
-                                {
-                                    sRect.Top = Event.TmpEvent.Pages[Event.CurPageNum].GraphicY * 32;
-                                    sRect.Left = Event.TmpEvent.Pages[Event.CurPageNum].GraphicX * 32;
-                                    sRect.Bottom = sRect.Top + 32d;
-                                    sRect.Right = sRect.Left + 32d;
-
-                                    dRect.Top = 193d / 2d - (sRect.Bottom - sRect.Top) / 2d;
-                                    dRect.Bottom = dRect.Top + (sRect.Bottom - sRect.Top);
-                                    dRect.Left = 120d / 2d - (sRect.Right - sRect.Left) / 2d;
-                                    dRect.Right = dRect.Left + (sRect.Right - sRect.Left);
-                                }
-                                else
-                                {
-                                    sRect.Top = Event.TmpEvent.Pages[Event.CurPageNum].GraphicY * 32;
-                                    sRect.Left = Event.TmpEvent.Pages[Event.CurPageNum].GraphicX * 32;
-                                    sRect.Bottom = sRect.Top + (Event.TmpEvent.Pages[Event.CurPageNum].GraphicY2 - Event.TmpEvent.Pages[Event.CurPageNum].GraphicY) * 32;
-                                    sRect.Right = sRect.Left + (Event.TmpEvent.Pages[Event.CurPageNum].GraphicX2 - Event.TmpEvent.Pages[Event.CurPageNum].GraphicX) * 32;
-
-                                    dRect.Top = 193d / 2d - (sRect.Bottom - sRect.Top) / 2d;
-                                    dRect.Bottom = dRect.Top + (sRect.Bottom - sRect.Top);
-                                    dRect.Left = 120d / 2d - (sRect.Right - sRect.Left) / 2d;
-                                    dRect.Right = dRect.Left + (sRect.Right - sRect.Left);
-
-                                }
-
-                                g = Graphics.FromImage(targetBitmap);
-
-                                var sourceRect = new Rectangle(0, 0, sourceBitmap.Width, sourceBitmap.Height);  // This is the section we are pulling from the source graphic
-                                var destRect = new Rectangle(0, 0, targetBitmap.Width, targetBitmap.Height);     // This is the rectangle in the target graphic we want to render to
-
-                                // Ensure destRect and sourceRect are RectangleF
-                                var destRectF = new RectangleF(destRect.X, destRect.Y, destRect.Width, destRect.Height);
-                                var sourceRectF = new RectangleF(sourceRect.X, sourceRect.Y, sourceRect.Width, sourceRect.Height);
-
-                                // Call DrawImage with RectangleF
-                                g.DrawImage(sourceBitmap, destRectF, sourceRectF, GraphicsUnit.Pixel);
-
-                                // For DrawRectangle, ensure the rectangle is of type Rectangle
-                                var rectF = new RectangleF(Event.GraphicSelX * GameState.PicX, Event.GraphicSelY * GameState.PicY, Event.GraphicSelX2 * GameState.PicX, Event.GraphicSelY2 * GameState.PicY);
-                                g.DrawRectangle(Pens.Red, rectF);
-
-                                g.Dispose();
-
-
-                                picGraphicSel.BackgroundImage = targetBitmap;
-                                picGraphic.BackgroundImage = null;
+                                sRect = new Rectangle(Event.TmpEvent.Pages[Event.CurPageNum].GraphicX * 32, Event.TmpEvent.Pages[Event.CurPageNum].GraphicY * 32, 32, 32);
                             }
                             else
                             {
-                                picGraphicSel.BackgroundImage = null;
-                                picGraphic.BackgroundImage = null;
-                                return;
+                                sRect = new Rectangle(
+                                    Event.TmpEvent.Pages[Event.CurPageNum].GraphicX * 32,
+                                    Event.TmpEvent.Pages[Event.CurPageNum].GraphicY * 32,
+                                    (Event.TmpEvent.Pages[Event.CurPageNum].GraphicX2 - Event.TmpEvent.Pages[Event.CurPageNum].GraphicX) * 32,
+                                    (Event.TmpEvent.Pages[Event.CurPageNum].GraphicY2 - Event.TmpEvent.Pages[Event.CurPageNum].GraphicY) * 32);
                             }
 
-                            break;
+                            dRect = new Rectangle(120 / 2 - sRect.Width / 2, 193 / 2 - sRect.Height / 2, sRect.Width, sRect.Height);
+
+                            g = Graphics.FromImage(targetBitmap);
+
+                            var sourceRect = new Rectangle(0, 0, sourceBitmap.Width, sourceBitmap.Height);  // This is the section we are pulling from the source graphic
+                            var destRect = new Rectangle(0, 0, targetBitmap.Width, targetBitmap.Height);     // This is the rectangle in the target graphic we want to render to
+
+                            // Ensure destRect and sourceRect are RectangleF
+                            var destRectF = new RectangleF(destRect.X, destRect.Y, destRect.Width, destRect.Height);
+                            var sourceRectF = new RectangleF(sourceRect.X, sourceRect.Y, sourceRect.Width, sourceRect.Height);
+
+                            // Call DrawImage with RectangleF
+                            g.DrawImage(sourceBitmap, destRectF, sourceRectF, GraphicsUnit.Pixel);
+
+                            // For DrawRectangle, ensure the rectangle is of type Rectangle
+                            var rectF = new RectangleF(Event.GraphicSelX * GameState.PicX, Event.GraphicSelY * GameState.PicY, Event.GraphicSelX2 * GameState.PicX, Event.GraphicSelY2 * GameState.PicY);
+                            g.DrawRectangle(Pens.Red, rectF);
+
+                            g.Dispose();
+
+
+                            picGraphicSel.BackgroundImage = targetBitmap;
+                            picGraphic.BackgroundImage = null;
                         }
+                        else
+                        {
+                            picGraphicSel.BackgroundImage = null;
+                            picGraphic.BackgroundImage = null;
+                            return;
+                        }
+
+                        break;
+                    }
                 }
             }
             else if (Event.TmpEvent.PageCount > 0)
@@ -353,83 +342,67 @@ namespace Client
                 switch (Event.TmpEvent.Pages[Event.CurPageNum].GraphicType)
                 {
                     case 0:
-                        {
-                            picGraphicSel.BackgroundImage = null;
-                            break;
-                        }
+                    {
+                        picGraphicSel.BackgroundImage = null;
+                        break;
+                    }
                     case 1:
+                    {
+                        if (Event.TmpEvent.Pages[Event.CurPageNum].Graphic > 0 & Event.TmpEvent.Pages[Event.CurPageNum].Graphic <= GameState.NumCharacters)
                         {
-                            if (Event.TmpEvent.Pages[Event.CurPageNum].Graphic > 0 & Event.TmpEvent.Pages[Event.CurPageNum].Graphic <= GameState.NumCharacters)
+                            // Load character from Contents into our sourceBitmap
+                            sourceBitmap = new Bitmap(System.IO.Path.Combine(Core.Path.Characters, Event.TmpEvent.Pages[Event.CurPageNum].Graphic + GameState.GfxExt));
+                            targetBitmap = new Bitmap(sourceBitmap.Width, sourceBitmap.Height); // Create our target Bitmap
+
+                            g = Graphics.FromImage(targetBitmap);
+
+                            var sourceRect = new Rectangle(0, 0, (int)Math.Round(sourceBitmap.Width / 4d), (int)Math.Round(sourceBitmap.Height / 4d));  // This is the section we are pulling from the source graphic
+                            var destRect = new Rectangle(0, 0, (int)Math.Round(targetBitmap.Width / 4d), (int)Math.Round(targetBitmap.Height / 4d));     // This is the rectangle in the target graphic we want to render to
+
+                            g.DrawImage(sourceBitmap, destRect, sourceRect, GraphicsUnit.Pixel);
+                            g.Dispose();
+
+                            picGraphic.BackgroundImage = targetBitmap;
+                        }
+                        else
+                        {
+                            picGraphic.BackgroundImage = null;
+                            return;
+                        }
+
+                        break;
+                    }
+                    case 2:
+                    {
+                        if (Event.TmpEvent.Pages[Event.CurPageNum].Graphic > 0 & Event.TmpEvent.Pages[Event.CurPageNum].Graphic <= GameState.NumTileSets)
+                        {
+                            // Load tilesheet from Contents into our sourceBitmap
+                            sourceBitmap = new Bitmap(Core.Path.Graphics + @"tilesets\" + Event.TmpEvent.Pages[Event.CurPageNum].Graphic + ".png");
+                            targetBitmap = new Bitmap(sourceBitmap.Width, sourceBitmap.Height); // Create our target Bitmap
+
+                            if (Event.TmpEvent.Pages[Event.CurPageNum].GraphicX2 == 0 & Event.TmpEvent.Pages[Event.CurPageNum].GraphicY2 == 0)
                             {
-                                // Load character from Contents into our sourceBitmap
-                                sourceBitmap = new Bitmap(System.IO.Path.Combine(Core.Path.Characters, Event.TmpEvent.Pages[Event.CurPageNum].Graphic + GameState.GfxExt));
-                                targetBitmap = new Bitmap(sourceBitmap.Width, sourceBitmap.Height); // Create our target Bitmap
-
-                                g = Graphics.FromImage(targetBitmap);
-
-                                var sourceRect = new Rectangle(0, 0, (int)Math.Round(sourceBitmap.Width / 4d), (int)Math.Round(sourceBitmap.Height / 4d));  // This is the section we are pulling from the source graphic
-                                var destRect = new Rectangle(0, 0, (int)Math.Round(targetBitmap.Width / 4d), (int)Math.Round(targetBitmap.Height / 4d));     // This is the rectangle in the target graphic we want to render to
-
-                                g.DrawImage(sourceBitmap, destRect, sourceRect, GraphicsUnit.Pixel);
-                                g.Dispose();
-
-                                picGraphic.BackgroundImage = targetBitmap;
+                                sRect = new Rectangle(Event.TmpEvent.Pages[Event.CurPageNum].GraphicX * 32, Event.TmpEvent.Pages[Event.CurPageNum].GraphicY * 32, 32 ,32);
+                                dRect = new Rectangle(0, 0, GameState.PicX, GameState.PicY);
                             }
                             else
                             {
-                                picGraphic.BackgroundImage = null;
-                                return;
+                                sRect = new Rectangle(Event.TmpEvent.Pages[Event.CurPageNum].GraphicX * 32, Event.TmpEvent.Pages[Event.CurPageNum].GraphicY * 32,
+                                    (Event.TmpEvent.Pages[Event.CurPageNum].GraphicX2 - Event.TmpEvent.Pages[Event.CurPageNum].GraphicX) * 32,
+                                    (Event.TmpEvent.Pages[Event.CurPageNum].GraphicY2 - Event.TmpEvent.Pages[Event.CurPageNum].GraphicY) * 32);
+                                dRect = new Rectangle(0, 0, sRect.Width, sRect.Height);
                             }
 
-                            break;
+                            g = Graphics.FromImage(targetBitmap);
+
+                            g.DrawImage(sourceBitmap, dRect, sRect, GraphicsUnit.Pixel);
+                            g.Dispose();
+
+                            picGraphic.BackgroundImage = targetBitmap;
                         }
-                    case 2:
-                        {
-                            if (Event.TmpEvent.Pages[Event.CurPageNum].Graphic > 0 & Event.TmpEvent.Pages[Event.CurPageNum].Graphic <= GameState.NumTileSets)
-                            {
-                                // Load tilesheet from Contents into our sourceBitmap
-                                sourceBitmap = new Bitmap(Core.Path.Graphics + @"tilesets\" + Event.TmpEvent.Pages[Event.CurPageNum].Graphic + ".png");
-                                targetBitmap = new Bitmap(sourceBitmap.Width, sourceBitmap.Height); // Create our target Bitmap
 
-                                if (Event.TmpEvent.Pages[Event.CurPageNum].GraphicX2 == 0 & Event.TmpEvent.Pages[Event.CurPageNum].GraphicY2 == 0)
-                                {
-                                    sRect.Top = Event.TmpEvent.Pages[Event.CurPageNum].GraphicY * 32;
-                                    sRect.Left = Event.TmpEvent.Pages[Event.CurPageNum].GraphicX * 32;
-                                    sRect.Bottom = sRect.Top + 32d;
-                                    sRect.Right = sRect.Left + 32d;
-
-                                    dRect.Top = 0d;
-                                    dRect.Bottom = GameState.PicY;
-                                    dRect.Left = 0d;
-                                    dRect.Right = GameState.PicX;
-                                }
-                                else
-                                {
-                                    sRect.Top = Event.TmpEvent.Pages[Event.CurPageNum].GraphicY * 32;
-                                    sRect.Left = Event.TmpEvent.Pages[Event.CurPageNum].GraphicX * 32;
-                                    sRect.Bottom = Event.TmpEvent.Pages[Event.CurPageNum].GraphicY2 * 32;
-                                    sRect.Right = Event.TmpEvent.Pages[Event.CurPageNum].GraphicX2 * 32;
-
-                                    dRect.Top = 0d;
-                                    dRect.Bottom = sRect.Bottom;
-                                    dRect.Left = 0d;
-                                    dRect.Right = sRect.Right;
-
-                                }
-
-                                g = Graphics.FromImage(targetBitmap);
-
-                                var sourceRect = new Rectangle((int)Math.Round(sRect.Left), (int)Math.Round(sRect.Top), (int)Math.Round(sRect.Right), (int)Math.Round(sRect.Bottom));  // This is the section we are pulling from the source graphic
-                                var destRect = new Rectangle((int)Math.Round(dRect.Left), (int)Math.Round(dRect.Top), (int)Math.Round(dRect.Right), (int)Math.Round(dRect.Bottom));     // This is the rectangle in the target graphic we want to render to
-
-                                g.DrawImage(sourceBitmap, destRect, sourceRect, GraphicsUnit.Pixel);
-                                g.Dispose();
-
-                                picGraphic.BackgroundImage = targetBitmap;
-                            }
-
-                            break;
-                        }
+                        break;
+                    }
                 }
             }
 
@@ -496,519 +469,519 @@ namespace Client
 
                 // show text
                 case "Show Text":
-                    {
-                        txtShowText.Text = "";
-                        fraDialogue.Visible = true;
-                        fraShowText.Visible = true;
-                        fraCommands.Visible = false;
-                        break;
-                    }
+                {
+                    txtShowText.Text = "";
+                    fraDialogue.Visible = true;
+                    fraShowText.Visible = true;
+                    fraCommands.Visible = false;
+                    break;
+                }
                 // show choices
                 case "Show Choices":
-                    {
-                        txtChoicePrompt.Text = "";
-                        txtChoices1.Text = "";
-                        txtChoices2.Text = "";
-                        txtChoices3.Text = "";
-                        txtChoices4.Text = "";
+                {
+                    txtChoicePrompt.Text = "";
+                    txtChoices1.Text = "";
+                    txtChoices2.Text = "";
+                    txtChoices3.Text = "";
+                    txtChoices4.Text = "";
 
-                        fraDialogue.Visible = true;
-                        fraShowChoices.Visible = true;
-                        fraCommands.Visible = false;
-                        break;
-                    }
+                    fraDialogue.Visible = true;
+                    fraShowChoices.Visible = true;
+                    fraCommands.Visible = false;
+                    break;
+                }
                 // chatbox text
                 case "Add Chatbox Text":
-                    {
-                        txtAddText_Text.Text = "";
-                        optAddText_Player.Checked = true;
-                        fraDialogue.Visible = true;
-                        fraAddText.Visible = true;
-                        fraCommands.Visible = false;
-                        break;
-                    }
+                {
+                    txtAddText_Text.Text = "";
+                    optAddText_Player.Checked = true;
+                    fraDialogue.Visible = true;
+                    fraAddText.Visible = true;
+                    fraCommands.Visible = false;
+                    break;
+                }
                 // chat bubble
                 case "Show ChatBubble":
-                    {
-                        txtChatbubbleText.Text = "";
-                        cmbChatBubbleTargetType.SelectedIndex = 0;
-                        cmbChatBubbleTarget.Visible = false;
-                        fraDialogue.Visible = true;
-                        fraShowChatBubble.Visible = true;
-                        fraCommands.Visible = false;
-                        break;
-                    }
+                {
+                    txtChatbubbleText.Text = "";
+                    cmbChatBubbleTargetType.SelectedIndex = 0;
+                    cmbChatBubbleTarget.Visible = false;
+                    fraDialogue.Visible = true;
+                    fraShowChatBubble.Visible = true;
+                    fraCommands.Visible = false;
+                    break;
+                }
                 // event progression
                 // player variable
                 case "Set Player Variable":
-                    {
-                        nudVariableData0.Value = 0m;
-                        nudVariableData1.Value = 0m;
-                        nudVariableData2.Value = 0m;
-                        nudVariableData3.Value = 0m;
-                        nudVariableData4.Value = 0m;
+                {
+                    nudVariableData0.Value = 0m;
+                    nudVariableData1.Value = 0m;
+                    nudVariableData2.Value = 0m;
+                    nudVariableData3.Value = 0m;
+                    nudVariableData4.Value = 0m;
 
-                        cmbVariable.SelectedIndex = 0;
-                        optVariableAction0.Checked = true;
-                        fraDialogue.Visible = true;
-                        fraPlayerVariable.Visible = true;
-                        fraCommands.Visible = false;
-                        break;
-                    }
+                    cmbVariable.SelectedIndex = 0;
+                    optVariableAction0.Checked = true;
+                    fraDialogue.Visible = true;
+                    fraPlayerVariable.Visible = true;
+                    fraCommands.Visible = false;
+                    break;
+                }
                 // player switch
                 case "Set Player Switch":
-                    {
-                        cmbPlayerSwitchSet.SelectedIndex = 0;
-                        cmbSwitch.SelectedIndex = 0;
-                        fraDialogue.Visible = true;
-                        fraPlayerSwitch.Visible = true;
-                        fraCommands.Visible = false;
-                        break;
-                    }
+                {
+                    cmbPlayerSwitchSet.SelectedIndex = 0;
+                    cmbSwitch.SelectedIndex = 0;
+                    fraDialogue.Visible = true;
+                    fraPlayerSwitch.Visible = true;
+                    fraCommands.Visible = false;
+                    break;
+                }
                 // self switch
                 case "Set Self Switch":
-                    {
-                        cmbSetSelfSwitchTo.SelectedIndex = 0;
-                        fraDialogue.Visible = true;
-                        fraSetSelfSwitch.Visible = true;
-                        fraCommands.Visible = false;
-                        break;
-                    }
+                {
+                    cmbSetSelfSwitchTo.SelectedIndex = 0;
+                    fraDialogue.Visible = true;
+                    fraSetSelfSwitch.Visible = true;
+                    fraCommands.Visible = false;
+                    break;
+                }
                 // flow control
 
                 // conditional branch
                 case "Conditional Branch":
-                    {
-                        fraDialogue.Visible = true;
-                        fraConditionalBranch.Visible = true;
-                        optCondition0.Checked = true;
-                        ClearConditionFrame();
-                        cmbCondition_PlayerVarIndex.Enabled = true;
-                        cmbCondition_PlayerVarCompare.Enabled = true;
-                        nudCondition_PlayerVarCondition.Enabled = true;
-                        fraCommands.Visible = false;
-                        break;
-                    }
+                {
+                    fraDialogue.Visible = true;
+                    fraConditionalBranch.Visible = true;
+                    optCondition0.Checked = true;
+                    ClearConditionFrame();
+                    cmbCondition_PlayerVarIndex.Enabled = true;
+                    cmbCondition_PlayerVarCompare.Enabled = true;
+                    nudCondition_PlayerVarCondition.Enabled = true;
+                    fraCommands.Visible = false;
+                    break;
+                }
                 // Exit Event Process
                 case "Stop Event Processing":
-                    {
-                        Event.AddCommand((int)Core.Enum.EventType.ExitProcess);
-                        fraCommands.Visible = false;
-                        fraDialogue.Visible = false;
-                        break;
-                    }
+                {
+                    Event.AddCommand((int)Core.Enum.EventType.ExitProcess);
+                    fraCommands.Visible = false;
+                    fraDialogue.Visible = false;
+                    break;
+                }
                 // Label
                 case "Label":
-                    {
-                        txtLabelName.Text = "";
-                        fraCreateLabel.Visible = true;
-                        fraCommands.Visible = false;
-                        fraDialogue.Visible = true;
-                        break;
-                    }
+                {
+                    txtLabelName.Text = "";
+                    fraCreateLabel.Visible = true;
+                    fraCommands.Visible = false;
+                    fraDialogue.Visible = true;
+                    break;
+                }
                 // GoTo Label
                 case "GoTo Label":
-                    {
-                        txtGoToLabel.Text = "";
-                        fraGoToLabel.Visible = true;
-                        fraCommands.Visible = false;
-                        fraDialogue.Visible = true;
-                        break;
-                    }
+                {
+                    txtGoToLabel.Text = "";
+                    fraGoToLabel.Visible = true;
+                    fraCommands.Visible = false;
+                    fraDialogue.Visible = true;
+                    break;
+                }
                 // Player Control
 
                 // Change Items
                 case "Change Items":
-                    {
-                        cmbChangeItemIndex.SelectedIndex = 0;
-                        optChangeItemSet.Checked = true;
-                        nudChangeItemsAmount.Value = 0m;
-                        fraDialogue.Visible = true;
-                        fraChangeItems.Visible = true;
-                        fraCommands.Visible = false;
-                        break;
-                    }
+                {
+                    cmbChangeItemIndex.SelectedIndex = 0;
+                    optChangeItemSet.Checked = true;
+                    nudChangeItemsAmount.Value = 0m;
+                    fraDialogue.Visible = true;
+                    fraChangeItems.Visible = true;
+                    fraCommands.Visible = false;
+                    break;
+                }
                 // Restore HP
                 case "Restore HP":
-                    {
-                        Event.AddCommand((int)Core.Enum.EventType.RestoreHP);
-                        fraCommands.Visible = false;
-                        fraDialogue.Visible = false;
-                        break;
-                    }
+                {
+                    Event.AddCommand((int)Core.Enum.EventType.RestoreHP);
+                    fraCommands.Visible = false;
+                    fraDialogue.Visible = false;
+                    break;
+                }
                 // Restore MP
                 case "Restore MP":
-                    {
-                        Event.AddCommand((int)Core.Enum.EventType.RestoreSP);
-                        fraCommands.Visible = false;
-                        fraDialogue.Visible = false;
-                        break;
-                    }
+                {
+                    Event.AddCommand((int)Core.Enum.EventType.RestoreSP);
+                    fraCommands.Visible = false;
+                    fraDialogue.Visible = false;
+                    break;
+                }
                 // Level Up
                 case "Level Up":
-                    {
-                        Event.AddCommand((int)Core.Enum.EventType.LevelUp);
-                        fraCommands.Visible = false;
-                        fraDialogue.Visible = false;
-                        break;
-                    }
+                {
+                    Event.AddCommand((int)Core.Enum.EventType.LevelUp);
+                    fraCommands.Visible = false;
+                    fraDialogue.Visible = false;
+                    break;
+                }
                 // Change Level
                 case "Change Level":
-                    {
-                        nudChangeLevel.Value = 1m;
-                        fraDialogue.Visible = true;
-                        fraChangeLevel.Visible = true;
-                        fraCommands.Visible = false;
-                        break;
-                    }
+                {
+                    nudChangeLevel.Value = 1m;
+                    fraDialogue.Visible = true;
+                    fraChangeLevel.Visible = true;
+                    fraCommands.Visible = false;
+                    break;
+                }
                 // Change Skills
                 case "Change Skills":
-                    {
-                        cmbChangeSkills.SelectedIndex = 0;
-                        fraDialogue.Visible = true;
-                        fraChangeSkills.Visible = true;
-                        fraCommands.Visible = false;
-                        break;
-                    }
+                {
+                    cmbChangeSkills.SelectedIndex = 0;
+                    fraDialogue.Visible = true;
+                    fraChangeSkills.Visible = true;
+                    fraCommands.Visible = false;
+                    break;
+                }
                 // Change Job
                 case "Change Job":
+                {
+                    if (Constant.MAX_JOBS > 0)
                     {
-                        if (Constant.MAX_JOBS > 0)
+                        if (cmbChangeJob.Items.Count == 0)
                         {
-                            if (cmbChangeJob.Items.Count == 0)
-                            {
-                                cmbChangeJob.Items.Clear();
+                            cmbChangeJob.Items.Clear();
 
-                                for (int i = 0; i < Constant.MAX_JOBS; i++)
-                                    cmbChangeJob.Items.Add(Strings.Trim(Core.Type.Job[i].Name));
-                                cmbChangeJob.SelectedIndex = 0;
-                            }
+                            for (int i = 0; i < Constant.MAX_JOBS; i++)
+                                cmbChangeJob.Items.Add(Strings.Trim(Core.Type.Job[i].Name));
+                            cmbChangeJob.SelectedIndex = 0;
                         }
-                        fraDialogue.Visible = true;
-                        fraChangeJob.Visible = true;
-                        fraCommands.Visible = false;
-                        break;
                     }
+                    fraDialogue.Visible = true;
+                    fraChangeJob.Visible = true;
+                    fraCommands.Visible = false;
+                    break;
+                }
                 // Change Sprite
                 case "Change Sprite":
-                    {
-                        nudChangeSprite.Value = 1m;
-                        fraDialogue.Visible = true;
-                        fraChangeSprite.Visible = true;
-                        fraCommands.Visible = false;
-                        break;
-                    }
+                {
+                    nudChangeSprite.Value = 1m;
+                    fraDialogue.Visible = true;
+                    fraChangeSprite.Visible = true;
+                    fraCommands.Visible = false;
+                    break;
+                }
                 // Change Gender
                 case "Change Gender":
-                    {
-                        optChangeSexMale.Checked = true;
-                        fraDialogue.Visible = true;
-                        fraChangeGender.Visible = true;
-                        fraCommands.Visible = false;
-                        break;
-                    }
+                {
+                    optChangeSexMale.Checked = true;
+                    fraDialogue.Visible = true;
+                    fraChangeGender.Visible = true;
+                    fraCommands.Visible = false;
+                    break;
+                }
                 // Change PK
                 case "Change PK":
-                    {
-                        cmbSetPK.SelectedIndex = 0;
-                        fraDialogue.Visible = true;
-                        fraChangePK.Visible = true;
-                        fraCommands.Visible = false;
-                        break;
-                    }
+                {
+                    cmbSetPK.SelectedIndex = 0;
+                    fraDialogue.Visible = true;
+                    fraChangePK.Visible = true;
+                    fraCommands.Visible = false;
+                    break;
+                }
                 // Give Exp
                 case "Give Experience":
-                    {
-                        nudGiveExp.Value = 0m;
-                        fraDialogue.Visible = true;
-                        fraGiveExp.Visible = true;
-                        fraCommands.Visible = false;
-                        break;
-                    }
+                {
+                    nudGiveExp.Value = 0m;
+                    fraDialogue.Visible = true;
+                    fraGiveExp.Visible = true;
+                    fraCommands.Visible = false;
+                    break;
+                }
                 // Movement
 
                 // Warp Player
                 case "Warp Player":
-                    {
-                        nudWPMap.Value = 0m;
-                        nudWPX.Value = 0m;
-                        nudWPY.Value = 0m;
-                        cmbWarpPlayerDir.SelectedIndex = 0;
-                        fraDialogue.Visible = true;
-                        fraPlayerWarp.Visible = true;
-                        fraCommands.Visible = false;
-                        break;
-                    }
+                {
+                    nudWPMap.Value = 0m;
+                    nudWPX.Value = 0m;
+                    nudWPY.Value = 0m;
+                    cmbWarpPlayerDir.SelectedIndex = 0;
+                    fraDialogue.Visible = true;
+                    fraPlayerWarp.Visible = true;
+                    fraCommands.Visible = false;
+                    break;
+                }
                 // Set Move Route
                 case "Set Move Route":
+                {
+                    fraMoveRoute.Visible = true;
+                    lstMoveRoute.Items.Clear();
+                    Event.ListOfEvents = new int[Core.Type.MyMap.EventCount];
+                    Event.ListOfEvents[0] = Event.EditorEvent;
+                    for (int i = 0, loopTo = Core.Type.MyMap.EventCount; i < loopTo; i++)
                     {
-                        fraMoveRoute.Visible = true;
-                        lstMoveRoute.Items.Clear();
-                        Event.ListOfEvents = new int[Core.Type.MyMap.EventCount];
-                        Event.ListOfEvents[0] = Event.EditorEvent;
-                        for (int i = 0, loopTo = Core.Type.MyMap.EventCount; i < loopTo; i++)
+                        if (i != Event.EditorEvent)
                         {
-                            if (i != Event.EditorEvent)
-                            {
-                                cmbEvent.Items.Add(Core.Type.MyMap.Event[i].Name);
-                                x = x + 1;
-                                Event.ListOfEvents[x] = i;
-                            }
+                            cmbEvent.Items.Add(Core.Type.MyMap.Event[i].Name);
+                            x = x + 1;
+                            Event.ListOfEvents[x] = i;
                         }
-                        Event.IsMoveRouteCommand = true;
-                        chkIgnoreMove.Checked = Conversions.ToBoolean(0);
-                        chkRepeatRoute.Checked = Conversions.ToBoolean(0);
-                        Event.TempMoveRouteCount = 0;
-                        Event.TempMoveRoute = new Core.Type.MoveRouteStruct[1];
-                        fraMoveRoute.Visible = true;
-                        fraMoveRoute.BringToFront();
-                        fraCommands.Visible = false;
-                        break;
                     }
+                    Event.IsMoveRouteCommand = true;
+                    chkIgnoreMove.Checked = Conversions.ToBoolean(0);
+                    chkRepeatRoute.Checked = Conversions.ToBoolean(0);
+                    Event.TempMoveRouteCount = 0;
+                    Event.TempMoveRoute = new Core.Type.MoveRouteStruct[1];
+                    fraMoveRoute.Visible = true;
+                    fraMoveRoute.BringToFront();
+                    fraCommands.Visible = false;
+                    break;
+                }
                 // Wait for Route Completion
                 case "Wait for Route Completion":
+                {
+                    cmbMoveWait.Items.Clear();
+                    Event.ListOfEvents = new int[Core.Type.MyMap.EventCount];
+                    Event.ListOfEvents[0] = Event.EditorEvent;
+                    cmbMoveWait.Items.Add("This Event");
+                    cmbMoveWait.SelectedIndex = 0;
+                    cmbMoveWait.Enabled = true;
+                    for (int i = 0, loopTo1 = Core.Type.MyMap.EventCount; i < loopTo1; i++)
                     {
-                        cmbMoveWait.Items.Clear();
-                        Event.ListOfEvents = new int[Core.Type.MyMap.EventCount];
-                        Event.ListOfEvents[0] = Event.EditorEvent;
-                        cmbMoveWait.Items.Add("This Event");
-                        cmbMoveWait.SelectedIndex = 0;
-                        cmbMoveWait.Enabled = true;
-                        for (int i = 0, loopTo1 = Core.Type.MyMap.EventCount; i < loopTo1; i++)
+                        if (i != Event.EditorEvent)
                         {
-                            if (i != Event.EditorEvent)
-                            {
-                                cmbMoveWait.Items.Add(Core.Type.MyMap.Event[i].Name);
-                                x = x + 1;
-                                Event.ListOfEvents[x] = i;
-                            }
+                            cmbMoveWait.Items.Add(Core.Type.MyMap.Event[i].Name);
+                            x = x + 1;
+                            Event.ListOfEvents[x] = i;
                         }
-                        fraDialogue.Visible = true;
-                        fraMoveRouteWait.Visible = true;
-                        fraCommands.Visible = false;
-                        break;
                     }
+                    fraDialogue.Visible = true;
+                    fraMoveRouteWait.Visible = true;
+                    fraCommands.Visible = false;
+                    break;
+                }
                 // Force Spawn NPC
                 case "Force Spawn NPC":
-                    {
-                        // lets populate the combobox
-                        cmbSpawnNPC.Items.Clear();
-                        for (int i = 0; i < Constant.MAX_NPCS; i++)
-                            cmbSpawnNPC.Items.Add(Strings.Trim(Core.Type.NPC[i].Name));
-                        cmbSpawnNPC.SelectedIndex = 0;
-                        fraDialogue.Visible = true;
-                        fraSpawnNPC.Visible = true;
-                        fraCommands.Visible = false;
-                        break;
-                    }
+                {
+                    // lets populate the combobox
+                    cmbSpawnNPC.Items.Clear();
+                    for (int i = 0; i < Constant.MAX_NPCS; i++)
+                        cmbSpawnNPC.Items.Add(Strings.Trim(Core.Type.NPC[i].Name));
+                    cmbSpawnNPC.SelectedIndex = 0;
+                    fraDialogue.Visible = true;
+                    fraSpawnNPC.Visible = true;
+                    fraCommands.Visible = false;
+                    break;
+                }
                 // Hold Player
                 case "Hold Player":
-                    {
-                        Event.AddCommand((int)Core.Enum.EventType.HoldPlayer);
-                        fraCommands.Visible = false;
-                        fraDialogue.Visible = false;
-                        break;
-                    }
+                {
+                    Event.AddCommand((int)Core.Enum.EventType.HoldPlayer);
+                    fraCommands.Visible = false;
+                    fraDialogue.Visible = false;
+                    break;
+                }
                 // Release Player
                 case "Release Player":
-                    {
-                        Event.AddCommand((int)Core.Enum.EventType.ReleasePlayer);
-                        fraCommands.Visible = false;
-                        fraDialogue.Visible = false;
-                        break;
-                    }
+                {
+                    Event.AddCommand((int)Core.Enum.EventType.ReleasePlayer);
+                    fraCommands.Visible = false;
+                    fraDialogue.Visible = false;
+                    break;
+                }
                 // Animation
 
                 // Play Animation
                 case "Play Animation":
-                    {
-                        cmbPlayAnimEvent.Items.Clear();
+                {
+                    cmbPlayAnimEvent.Items.Clear();
 
-                        for (int i = 0, loopTo2 = Core.Type.MyMap.EventCount; i < loopTo2; i++)
-                            cmbPlayAnimEvent.Items.Add(i + 1 + ". " + Core.Type.MyMap.Event[i].Name);
-                        cmbPlayAnimEvent.SelectedIndex = 0;
-                        cmbAnimTargetType.SelectedIndex = 0;
-                        cmbPlayAnim.SelectedIndex = 0;
-                        nudPlayAnimTileX.Value = 0m;
-                        nudPlayAnimTileY.Value = 0m;
-                        nudPlayAnimTileX.Maximum = Core.Type.MyMap.MaxX;
-                        nudPlayAnimTileY.Maximum = Core.Type.MyMap.MaxY;
-                        fraDialogue.Visible = true;
-                        fraPlayAnimation.Visible = true;
-                        fraCommands.Visible = false;
-                        lblPlayAnimX.Visible = false;
-                        lblPlayAnimY.Visible = false;
-                        nudPlayAnimTileX.Visible = false;
-                        nudPlayAnimTileY.Visible = false;
-                        cmbPlayAnimEvent.Visible = false;
-                        break;
-                    }
+                    for (int i = 0, loopTo2 = Core.Type.MyMap.EventCount; i < loopTo2; i++)
+                        cmbPlayAnimEvent.Items.Add(i + 1 + ". " + Core.Type.MyMap.Event[i].Name);
+                    cmbPlayAnimEvent.SelectedIndex = 0;
+                    cmbAnimTargetType.SelectedIndex = 0;
+                    cmbPlayAnim.SelectedIndex = 0;
+                    nudPlayAnimTileX.Value = 0m;
+                    nudPlayAnimTileY.Value = 0m;
+                    nudPlayAnimTileX.Maximum = Core.Type.MyMap.MaxX;
+                    nudPlayAnimTileY.Maximum = Core.Type.MyMap.MaxY;
+                    fraDialogue.Visible = true;
+                    fraPlayAnimation.Visible = true;
+                    fraCommands.Visible = false;
+                    lblPlayAnimX.Visible = false;
+                    lblPlayAnimY.Visible = false;
+                    nudPlayAnimTileX.Visible = false;
+                    nudPlayAnimTileY.Visible = false;
+                    cmbPlayAnimEvent.Visible = false;
+                    break;
+                }
                 // Map Functions
 
                 // Set Fog
                 case "Set Fog":
-                    {
-                        nudFogData0.Value = 0m;
-                        nudFogData1.Value = 0m;
-                        nudFogData2.Value = 0m;
-                        fraDialogue.Visible = true;
-                        fraSetFog.Visible = true;
-                        fraCommands.Visible = false;
-                        break;
-                    }
+                {
+                    nudFogData0.Value = 0m;
+                    nudFogData1.Value = 0m;
+                    nudFogData2.Value = 0m;
+                    fraDialogue.Visible = true;
+                    fraSetFog.Visible = true;
+                    fraCommands.Visible = false;
+                    break;
+                }
                 // Set Weather
                 case "Set Weather":
-                    {
-                        CmbWeather.SelectedIndex = 0;
-                        nudWeatherIntensity.Value = 0m;
-                        fraDialogue.Visible = true;
-                        fraSetWeather.Visible = true;
-                        fraCommands.Visible = false;
-                        break;
-                    }
+                {
+                    CmbWeather.SelectedIndex = 0;
+                    nudWeatherIntensity.Value = 0m;
+                    fraDialogue.Visible = true;
+                    fraSetWeather.Visible = true;
+                    fraCommands.Visible = false;
+                    break;
+                }
                 // Set Map Tinting
                 case "Set Map Tinting":
-                    {
-                        nudMapTintData0.Value = 0m;
-                        nudMapTintData1.Value = 0m;
-                        nudMapTintData2.Value = 0m;
-                        nudMapTintData3.Value = 0m;
-                        fraDialogue.Visible = true;
-                        fraMapTint.Visible = true;
-                        fraCommands.Visible = false;
-                        break;
-                    }
+                {
+                    nudMapTintData0.Value = 0m;
+                    nudMapTintData1.Value = 0m;
+                    nudMapTintData2.Value = 0m;
+                    nudMapTintData3.Value = 0m;
+                    fraDialogue.Visible = true;
+                    fraMapTint.Visible = true;
+                    fraCommands.Visible = false;
+                    break;
+                }
                 // Music and Sound
 
                 // PlayBGM
                 case "Play BGM":
-                    {
-                        cmbPlayBGM.SelectedIndex = 0;
-                        fraDialogue.Visible = true;
-                        fraPlayBGM.Visible = true;
-                        fraCommands.Visible = false;
-                        break;
-                    }
+                {
+                    cmbPlayBGM.SelectedIndex = 0;
+                    fraDialogue.Visible = true;
+                    fraPlayBGM.Visible = true;
+                    fraCommands.Visible = false;
+                    break;
+                }
                 // Stop BGM
                 case "Stop BGM":
-                    {
-                        Event.AddCommand((int)Core.Enum.EventType.FadeoutBgm);
-                        fraCommands.Visible = false;
-                        fraDialogue.Visible = false;
-                        break;
-                    }
+                {
+                    Event.AddCommand((int)Core.Enum.EventType.FadeoutBgm);
+                    fraCommands.Visible = false;
+                    fraDialogue.Visible = false;
+                    break;
+                }
                 // Play Sound
                 case "Play Sound":
-                    {
-                        cmbPlaySound.SelectedIndex = 0;
-                        fraDialogue.Visible = true;
-                        fraPlaySound.Visible = true;
-                        fraCommands.Visible = false;
-                        break;
-                    }
+                {
+                    cmbPlaySound.SelectedIndex = 0;
+                    fraDialogue.Visible = true;
+                    fraPlaySound.Visible = true;
+                    fraCommands.Visible = false;
+                    break;
+                }
                 // Stop Sounds
                 case "Stop Sounds":
-                    {
-                        Event.AddCommand((int)Core.Enum.EventType.StopSound);
-                        fraCommands.Visible = false;
-                        fraDialogue.Visible = false;
-                        break;
-                    }
+                {
+                    Event.AddCommand((int)Core.Enum.EventType.StopSound);
+                    fraCommands.Visible = false;
+                    fraDialogue.Visible = false;
+                    break;
+                }
                 // Etc...
 
                 // Wait...
                 case "Wait...":
-                    {
-                        nudWaitAmount.Value = 1m;
-                        fraDialogue.Visible = true;
-                        fraSetWait.Visible = true;
-                        fraCommands.Visible = false;
-                        break;
-                    }
+                {
+                    nudWaitAmount.Value = 1m;
+                    fraDialogue.Visible = true;
+                    fraSetWait.Visible = true;
+                    fraCommands.Visible = false;
+                    break;
+                }
                 // Set Access
                 case "Set Access":
-                    {
-                        cmbSetAccess.SelectedIndex = 0;
-                        fraDialogue.Visible = true;
-                        fraSetAccess.Visible = true;
-                        fraCommands.Visible = false;
-                        break;
-                    }
+                {
+                    cmbSetAccess.SelectedIndex = 0;
+                    fraDialogue.Visible = true;
+                    fraSetAccess.Visible = true;
+                    fraCommands.Visible = false;
+                    break;
+                }
                 // Custom Script
                 case "Custom Script":
-                    {
-                        nudCustomScript.Value = 0m;
-                        fraDialogue.Visible = true;
-                        fraCustomScript.Visible = true;
-                        fraCommands.Visible = false;
-                        break;
-                    }
+                {
+                    nudCustomScript.Value = 0m;
+                    fraDialogue.Visible = true;
+                    fraCustomScript.Visible = true;
+                    fraCommands.Visible = false;
+                    break;
+                }
 
                 // Shop, bank etc
 
                 // Open bank
                 case "Open Bank":
-                    {
-                        Event.AddCommand((int)Core.Enum.EventType.OpenBank);
-                        fraCommands.Visible = false;
-                        fraDialogue.Visible = false;
-                        break;
-                    }
+                {
+                    Event.AddCommand((int)Core.Enum.EventType.OpenBank);
+                    fraCommands.Visible = false;
+                    fraDialogue.Visible = false;
+                    break;
+                }
                 // Open shop
                 case "Open Shop":
-                    {
-                        fraDialogue.Visible = true;
-                        fraOpenShop.Visible = true;
-                        cmbOpenShop.SelectedIndex = 0;
-                        fraCommands.Visible = false;
-                        break;
-                    }
+                {
+                    fraDialogue.Visible = true;
+                    fraOpenShop.Visible = true;
+                    cmbOpenShop.SelectedIndex = 0;
+                    fraCommands.Visible = false;
+                    break;
+                }
                 // cutscene options
 
                 // Fade in
                 case "Fade In":
-                    {
-                        Event.AddCommand((int)Core.Enum.EventType.FadeIn);
-                        fraCommands.Visible = false;
-                        fraDialogue.Visible = false;
-                        break;
-                    }
+                {
+                    Event.AddCommand((int)Core.Enum.EventType.FadeIn);
+                    fraCommands.Visible = false;
+                    fraDialogue.Visible = false;
+                    break;
+                }
                 // Fade out
                 case "Fade Out":
-                    {
-                        Event.AddCommand((int)Core.Enum.EventType.FadeOut);
-                        fraCommands.Visible = false;
-                        fraDialogue.Visible = false;
-                        break;
-                    }
+                {
+                    Event.AddCommand((int)Core.Enum.EventType.FadeOut);
+                    fraCommands.Visible = false;
+                    fraDialogue.Visible = false;
+                    break;
+                }
                 // Flash white
                 case "Flash White":
-                    {
-                        Event.AddCommand((int)Core.Enum.EventType.FlashWhite);
-                        fraCommands.Visible = false;
-                        fraDialogue.Visible = false;
-                        break;
-                    }
+                {
+                    Event.AddCommand((int)Core.Enum.EventType.FlashWhite);
+                    fraCommands.Visible = false;
+                    fraDialogue.Visible = false;
+                    break;
+                }
                 // Show pic
                 case "Show Picture":
-                    {
-                        nudShowPicture.Value = 0m;
-                        cmbPicLoc.SelectedIndex = 0;
-                        nudPicOffsetX.Value = 0m;
-                        nudPicOffsetY.Value = 0m;
-                        fraDialogue.Visible = true;
-                        fraShowPic.Visible = true;
-                        fraCommands.Visible = false;
-                        break;
-                    }
+                {
+                    nudShowPicture.Value = 0m;
+                    cmbPicLoc.SelectedIndex = 0;
+                    nudPicOffsetX.Value = 0m;
+                    nudPicOffsetY.Value = 0m;
+                    fraDialogue.Visible = true;
+                    fraShowPic.Visible = true;
+                    fraCommands.Visible = false;
+                    break;
+                }
                 // Hide pic
                 case "Hide Picture":
-                    {
-                        Event.AddCommand((int)Core.Enum.EventType.HidePicture);
-                        fraCommands.Visible = false;
-                        fraDialogue.Visible = false;
-                        break;
-                    }
+                {
+                    Event.AddCommand((int)Core.Enum.EventType.HidePicture);
+                    fraCommands.Visible = false;
+                    fraDialogue.Visible = false;
+                    break;
+                }
             }
         }
 
@@ -1262,22 +1235,22 @@ namespace Client
             switch (cmbGraphic.SelectedIndex)
             {
                 case 0: // None
-                    {
-                        nudGraphic.Enabled = false;
-                        break;
-                    }
+                {
+                    nudGraphic.Enabled = false;
+                    break;
+                }
                 case 1: // character
-                    {
-                        nudGraphic.Maximum = GameState.NumCharacters;
-                        nudGraphic.Enabled = true;
-                        break;
-                    }
+                {
+                    nudGraphic.Maximum = GameState.NumCharacters;
+                    nudGraphic.Enabled = true;
+                    break;
+                }
                 case 2: // Tileset
-                    {
-                        nudGraphic.Maximum = GameState.NumTileSets;
-                        nudGraphic.Enabled = true;
-                        break;
-                    }
+                {
+                    nudGraphic.Maximum = GameState.NumTileSets;
+                    nudGraphic.Enabled = true;
+                    break;
+                }
             }
 
             if (Event.TmpEvent.Pages[Event.CurPageNum].GraphicType == 1)
@@ -1395,220 +1368,220 @@ namespace Client
                 switch (Event.TempMoveRoute[i].Index)
                 {
                     case 1:
-                        {
-                            lstMoveRoute.Items.Add("Move Up");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Move Up");
+                        break;
+                    }
                     case 2:
-                        {
-                            lstMoveRoute.Items.Add("Move Down");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Move Down");
+                        break;
+                    }
                     case 3:
-                        {
-                            lstMoveRoute.Items.Add("Move Left");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Move Left");
+                        break;
+                    }
                     case 4:
-                        {
-                            lstMoveRoute.Items.Add("Move Right");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Move Right");
+                        break;
+                    }
                     case 5:
-                        {
-                            lstMoveRoute.Items.Add("Move Randomly");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Move Randomly");
+                        break;
+                    }
                     case 6:
-                        {
-                            lstMoveRoute.Items.Add("Move Towards Player");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Move Towards Player");
+                        break;
+                    }
                     case 7:
-                        {
-                            lstMoveRoute.Items.Add("Move Away From Player");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Move Away From Player");
+                        break;
+                    }
                     case 8:
-                        {
-                            lstMoveRoute.Items.Add("Step Forward");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Step Forward");
+                        break;
+                    }
                     case 9:
-                        {
-                            lstMoveRoute.Items.Add("Step Back");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Step Back");
+                        break;
+                    }
                     case 10:
-                        {
-                            lstMoveRoute.Items.Add("Wait 100ms");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Wait 100ms");
+                        break;
+                    }
                     case 11:
-                        {
-                            lstMoveRoute.Items.Add("Wait 500ms");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Wait 500ms");
+                        break;
+                    }
                     case 12:
-                        {
-                            lstMoveRoute.Items.Add("Wait 1000ms");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Wait 1000ms");
+                        break;
+                    }
                     case 13:
-                        {
-                            lstMoveRoute.Items.Add("Turn Up");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn Up");
+                        break;
+                    }
                     case 14:
-                        {
-                            lstMoveRoute.Items.Add("Turn Down");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn Down");
+                        break;
+                    }
                     case 15:
-                        {
-                            lstMoveRoute.Items.Add("Turn Left");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn Left");
+                        break;
+                    }
                     case 16:
-                        {
-                            lstMoveRoute.Items.Add("Turn Right");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn Right");
+                        break;
+                    }
                     case 17:
-                        {
-                            lstMoveRoute.Items.Add("Turn 90 Degrees To the Right");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn 90 Degrees To the Right");
+                        break;
+                    }
                     case 18:
-                        {
-                            lstMoveRoute.Items.Add("Turn 90 Degrees To the Left");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn 90 Degrees To the Left");
+                        break;
+                    }
                     case 19:
-                        {
-                            lstMoveRoute.Items.Add("Turn Around 180 Degrees");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn Around 180 Degrees");
+                        break;
+                    }
                     case 20:
-                        {
-                            lstMoveRoute.Items.Add("Turn Randomly");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn Randomly");
+                        break;
+                    }
                     case 21:
-                        {
-                            lstMoveRoute.Items.Add("Turn Towards Player");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn Towards Player");
+                        break;
+                    }
                     case 22:
-                        {
-                            lstMoveRoute.Items.Add("Turn Away from Player");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn Away from Player");
+                        break;
+                    }
                     case 23:
-                        {
-                            lstMoveRoute.Items.Add("Set Speed 8x Slower");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Set Speed 8x Slower");
+                        break;
+                    }
                     case 24:
-                        {
-                            lstMoveRoute.Items.Add("Set Speed 4x Slower");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Set Speed 4x Slower");
+                        break;
+                    }
                     case 25:
-                        {
-                            lstMoveRoute.Items.Add("Set Speed 2x Slower");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Set Speed 2x Slower");
+                        break;
+                    }
                     case 26:
-                        {
-                            lstMoveRoute.Items.Add("Set Speed to Normal");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Set Speed to Normal");
+                        break;
+                    }
                     case 27:
-                        {
-                            lstMoveRoute.Items.Add("Set Speed 2x Faster");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Set Speed 2x Faster");
+                        break;
+                    }
                     case 28:
-                        {
-                            lstMoveRoute.Items.Add("Set Speed 4x Faster");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Set Speed 4x Faster");
+                        break;
+                    }
                     case 29:
-                        {
-                            lstMoveRoute.Items.Add("Set Frequency Lowest");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Set Frequency Lowest");
+                        break;
+                    }
                     case 30:
-                        {
-                            lstMoveRoute.Items.Add("Set Frequency Lower");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Set Frequency Lower");
+                        break;
+                    }
                     case 31:
-                        {
-                            lstMoveRoute.Items.Add("Set Frequency Normal");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Set Frequency Normal");
+                        break;
+                    }
                     case 32:
-                        {
-                            lstMoveRoute.Items.Add("Set Frequency Higher");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Set Frequency Higher");
+                        break;
+                    }
                     case 33:
-                        {
-                            lstMoveRoute.Items.Add("Set Frequency Highest");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Set Frequency Highest");
+                        break;
+                    }
                     case 34:
-                        {
-                            lstMoveRoute.Items.Add("Turn On Walking Animation");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn On Walking Animation");
+                        break;
+                    }
                     case 35:
-                        {
-                            lstMoveRoute.Items.Add("Turn Off Walking Animation");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn Off Walking Animation");
+                        break;
+                    }
                     case 36:
-                        {
-                            lstMoveRoute.Items.Add("Turn On Fixed Direction");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn On Fixed Direction");
+                        break;
+                    }
                     case 37:
-                        {
-                            lstMoveRoute.Items.Add("Turn Off Fixed Direction");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn Off Fixed Direction");
+                        break;
+                    }
                     case 38:
-                        {
-                            lstMoveRoute.Items.Add("Turn On Walk Through");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn On Walk Through");
+                        break;
+                    }
                     case 39:
-                        {
-                            lstMoveRoute.Items.Add("Turn Off Walk Through");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn Off Walk Through");
+                        break;
+                    }
                     case 40:
-                        {
-                            lstMoveRoute.Items.Add("Set Position Below Player");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Set Position Below Player");
+                        break;
+                    }
                     case 41:
-                        {
-                            lstMoveRoute.Items.Add("Set Position at Player Level");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Set Position at Player Level");
+                        break;
+                    }
                     case 42:
-                        {
-                            lstMoveRoute.Items.Add("Set Position Above Player");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Set Position Above Player");
+                        break;
+                    }
                     case 43:
-                        {
-                            lstMoveRoute.Items.Add("Set Graphic");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Set Graphic");
+                        break;
+                    }
                 }
             }
 
@@ -1804,33 +1777,33 @@ namespace Client
             switch (Event.RenameType)
             {
                 case 1:
+                {
+                    // Variable
+                    if (Event.RenameIndex > 0 & Event.RenameIndex < Constant.NAX_VARIABLES + 1)
                     {
-                        // Variable
-                        if (Event.RenameIndex > 0 & Event.RenameIndex < Constant.NAX_VARIABLES + 1)
-                        {
-                            Event.Variables[Event.RenameIndex] = txtRename.Text;
-                            FraRenaming.Visible = false;
-                            fraLabeling.Visible = true;
-                            Event.RenameType = 0;
-                            Event.RenameIndex = 0;
-                        }
-
-                        break;
+                        Event.Variables[Event.RenameIndex] = txtRename.Text;
+                        FraRenaming.Visible = false;
+                        fraLabeling.Visible = true;
+                        Event.RenameType = 0;
+                        Event.RenameIndex = 0;
                     }
+
+                    break;
+                }
                 case 2:
+                {
+                    // Switch
+                    if (Event.RenameIndex > 0 & Event.RenameIndex < Constant.MAX_SWITCHES + 1)
                     {
-                        // Switch
-                        if (Event.RenameIndex > 0 & Event.RenameIndex < Constant.MAX_SWITCHES + 1)
-                        {
-                            Event.Switches[Event.RenameIndex] = txtRename.Text;
-                            FraRenaming.Visible = false;
-                            fraLabeling.Visible = true;
-                            Event.RenameType = 0;
-                            Event.RenameIndex = 0;
-                        }
-
-                        break;
+                        Event.Switches[Event.RenameIndex] = txtRename.Text;
+                        FraRenaming.Visible = false;
+                        fraLabeling.Visible = true;
+                        Event.RenameType = 0;
+                        Event.RenameIndex = 0;
                     }
+
+                    break;
+                }
             }
             lstSwitches.Items.Clear();
             for (int i = 0; i < Constant.MAX_SWITCHES; i++)
@@ -1956,17 +1929,17 @@ namespace Client
             {
                 // Set Graphic
                 case 43:
-                    {
-                        fraGraphic.BringToFront();
-                        Event.GraphicSelType = 1;
-                        break;
-                    }
+                {
+                    fraGraphic.BringToFront();
+                    Event.GraphicSelType = 1;
+                    break;
+                }
 
                 default:
-                    {
-                        AddMoveRouteCommand(lstvwMoveRoute.SelectedItems[0].Index);
-                        break;
-                    }
+                {
+                    AddMoveRouteCommand(lstvwMoveRoute.SelectedItems[0].Index);
+                    break;
+                }
             }
         }
 
@@ -2065,220 +2038,220 @@ namespace Client
                 switch (Event.TempMoveRoute[i].Index)
                 {
                     case 1:
-                        {
-                            lstMoveRoute.Items.Add("Move Up");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Move Up");
+                        break;
+                    }
                     case 2:
-                        {
-                            lstMoveRoute.Items.Add("Move Down");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Move Down");
+                        break;
+                    }
                     case 3:
-                        {
-                            lstMoveRoute.Items.Add("Move Left");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Move Left");
+                        break;
+                    }
                     case 4:
-                        {
-                            lstMoveRoute.Items.Add("Move Right");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Move Right");
+                        break;
+                    }
                     case 5:
-                        {
-                            lstMoveRoute.Items.Add("Move Randomly");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Move Randomly");
+                        break;
+                    }
                     case 6:
-                        {
-                            lstMoveRoute.Items.Add("Move Towards Player");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Move Towards Player");
+                        break;
+                    }
                     case 7:
-                        {
-                            lstMoveRoute.Items.Add("Move Away From Player");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Move Away From Player");
+                        break;
+                    }
                     case 8:
-                        {
-                            lstMoveRoute.Items.Add("Step Forward");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Step Forward");
+                        break;
+                    }
                     case 9:
-                        {
-                            lstMoveRoute.Items.Add("Step Back");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Step Back");
+                        break;
+                    }
                     case 10:
-                        {
-                            lstMoveRoute.Items.Add("Wait 100ms");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Wait 100ms");
+                        break;
+                    }
                     case 11:
-                        {
-                            lstMoveRoute.Items.Add("Wait 500ms");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Wait 500ms");
+                        break;
+                    }
                     case 12:
-                        {
-                            lstMoveRoute.Items.Add("Wait 1000ms");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Wait 1000ms");
+                        break;
+                    }
                     case 13:
-                        {
-                            lstMoveRoute.Items.Add("Turn Up");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn Up");
+                        break;
+                    }
                     case 14:
-                        {
-                            lstMoveRoute.Items.Add("Turn Down");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn Down");
+                        break;
+                    }
                     case 15:
-                        {
-                            lstMoveRoute.Items.Add("Turn Left");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn Left");
+                        break;
+                    }
                     case 16:
-                        {
-                            lstMoveRoute.Items.Add("Turn Right");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn Right");
+                        break;
+                    }
                     case 17:
-                        {
-                            lstMoveRoute.Items.Add("Turn 90 Degrees To the Right");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn 90 Degrees To the Right");
+                        break;
+                    }
                     case 18:
-                        {
-                            lstMoveRoute.Items.Add("Turn 90 Degrees To the Left");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn 90 Degrees To the Left");
+                        break;
+                    }
                     case 19:
-                        {
-                            lstMoveRoute.Items.Add("Turn Around 180 Degrees");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn Around 180 Degrees");
+                        break;
+                    }
                     case 20:
-                        {
-                            lstMoveRoute.Items.Add("Turn Randomly");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn Randomly");
+                        break;
+                    }
                     case 21:
-                        {
-                            lstMoveRoute.Items.Add("Turn Towards Player");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn Towards Player");
+                        break;
+                    }
                     case 22:
-                        {
-                            lstMoveRoute.Items.Add("Turn Away from Player");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn Away from Player");
+                        break;
+                    }
                     case 23:
-                        {
-                            lstMoveRoute.Items.Add("Set Speed 8x Slower");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Set Speed 8x Slower");
+                        break;
+                    }
                     case 24:
-                        {
-                            lstMoveRoute.Items.Add("Set Speed 4x Slower");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Set Speed 4x Slower");
+                        break;
+                    }
                     case 25:
-                        {
-                            lstMoveRoute.Items.Add("Set Speed 2x Slower");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Set Speed 2x Slower");
+                        break;
+                    }
                     case 26:
-                        {
-                            lstMoveRoute.Items.Add("Set Speed to Normal");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Set Speed to Normal");
+                        break;
+                    }
                     case 27:
-                        {
-                            lstMoveRoute.Items.Add("Set Speed 2x Faster");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Set Speed 2x Faster");
+                        break;
+                    }
                     case 28:
-                        {
-                            lstMoveRoute.Items.Add("Set Speed 4x Faster");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Set Speed 4x Faster");
+                        break;
+                    }
                     case 29:
-                        {
-                            lstMoveRoute.Items.Add("Set Frequency Lowest");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Set Frequency Lowest");
+                        break;
+                    }
                     case 30:
-                        {
-                            lstMoveRoute.Items.Add("Set Frequency Lower");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Set Frequency Lower");
+                        break;
+                    }
                     case 31:
-                        {
-                            lstMoveRoute.Items.Add("Set Frequency Normal");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Set Frequency Normal");
+                        break;
+                    }
                     case 32:
-                        {
-                            lstMoveRoute.Items.Add("Set Frequency Higher");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Set Frequency Higher");
+                        break;
+                    }
                     case 33:
-                        {
-                            lstMoveRoute.Items.Add("Set Frequency Highest");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Set Frequency Highest");
+                        break;
+                    }
                     case 34:
-                        {
-                            lstMoveRoute.Items.Add("Turn On Walking Animation");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn On Walking Animation");
+                        break;
+                    }
                     case 35:
-                        {
-                            lstMoveRoute.Items.Add("Turn Off Walking Animation");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn Off Walking Animation");
+                        break;
+                    }
                     case 36:
-                        {
-                            lstMoveRoute.Items.Add("Turn On Fixed Direction");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn On Fixed Direction");
+                        break;
+                    }
                     case 37:
-                        {
-                            lstMoveRoute.Items.Add("Turn Off Fixed Direction");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn Off Fixed Direction");
+                        break;
+                    }
                     case 38:
-                        {
-                            lstMoveRoute.Items.Add("Turn On Walk Through");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn On Walk Through");
+                        break;
+                    }
                     case 39:
-                        {
-                            lstMoveRoute.Items.Add("Turn Off Walk Through");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Turn Off Walk Through");
+                        break;
+                    }
                     case 40:
-                        {
-                            lstMoveRoute.Items.Add("Set Position Below Player");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Set Position Below Player");
+                        break;
+                    }
                     case 41:
-                        {
-                            lstMoveRoute.Items.Add("Set Position at Player Level");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Set Position at Player Level");
+                        break;
+                    }
                     case 42:
-                        {
-                            lstMoveRoute.Items.Add("Set Position Above Player");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Set Position Above Player");
+                        break;
+                    }
                     case 43:
-                        {
-                            lstMoveRoute.Items.Add("Set Graphic");
-                            break;
-                        }
+                    {
+                        lstMoveRoute.Items.Add("Set Graphic");
+                        break;
+                    }
                 }
             }
 

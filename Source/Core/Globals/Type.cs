@@ -59,14 +59,6 @@ namespace Core
             public int[] LoopTime;
         }
 
-        public struct RectStruct
-        {
-            public double Top;
-            public double Left;
-            public double Right;
-            public double Bottom;
-        }
-
         public struct ResourceStruct
         {
             public string Name;

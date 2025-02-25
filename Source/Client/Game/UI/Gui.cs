@@ -495,12 +495,12 @@ namespace Client
             switch (Windows[curWindow].Controls[(int)curControl].Type)
             {
                 case Core.Enum.ControlType.TextBox:
-                    {
-                        Windows[curWindow].LastControl = Windows[curWindow].ActiveControl;
-                        Windows[curWindow].ActiveControl = (int)curControl;
-                        SetActiveControlRet = Conversions.ToBoolean(1);
-                        break;
-                    }
+                {
+                    Windows[curWindow].LastControl = Windows[curWindow].ActiveControl;
+                    Windows[curWindow].ActiveControl = (int)curControl;
+                    SetActiveControlRet = Conversions.ToBoolean(1);
+                    break;
+                }
             }
 
             return SetActiveControlRet;
@@ -1656,32 +1656,32 @@ namespace Client
                         switch (withBlock2.Type)
                         {
                             case Core.Enum.ControlType.Checkbox:
+                            {
+                                if (withBlock2.Group > 0L && withBlock2.Value == 0L)
                                 {
-                                    if (withBlock2.Group > 0L && withBlock2.Value == 0L)
+                                    var loopTo2 = (long)(Windows[curWindow].Controls.Count - 1);
+                                    for (i = 0L; i <= loopTo2; i++)
                                     {
-                                        var loopTo2 = (long)(Windows[curWindow].Controls.Count - 1);
-                                        for (i = 0L; i <= loopTo2; i++)
+                                        if (Windows[curWindow].Controls[(int)i].Type == Core.Enum.ControlType.Checkbox && Windows[curWindow].Controls[(int)i].Group == withBlock2.Group)
                                         {
-                                            if (Windows[curWindow].Controls[(int)i].Type == Core.Enum.ControlType.Checkbox && Windows[curWindow].Controls[(int)i].Group == withBlock2.Group)
-                                            {
-                                                Windows[curWindow].Controls[(int)i].Value = 0L;
-                                            }
+                                            Windows[curWindow].Controls[(int)i].Value = 0L;
                                         }
-                                        withBlock2.Value = 0L;
                                     }
-                                    else
-                                    {
-                                        withBlock2.Value = withBlock2.Value == 0L ? 1 : 0;
-                                    }
-
-                                    break;
+                                    withBlock2.Value = 0L;
                                 }
+                                else
+                                {
+                                    withBlock2.Value = withBlock2.Value == 0L ? 1 : 0;
+                                }
+
+                                break;
+                            }
 
                             case Core.Enum.ControlType.Combobox:
-                                {
-                                    ShowComboMenu(curWindow, curControl);
-                                    break;
-                                }
+                            {
+                                ShowComboMenu(curWindow, curControl);
+                                break;
+                            }
                         }
 
                         if (GameClient.IsMouseButtonDown(Core.Enum.MouseButton.Left))
@@ -1835,325 +1835,325 @@ namespace Client
                 switch (withBlock.Type)
                 {
                     case Core.Enum.ControlType.PictureBox:
+                    {
+                        if (withBlock.Design[(int)withBlock.State] > 0L)
                         {
-                            if (withBlock.Design[(int)withBlock.State] > 0L)
-                            {
-                                RenderDesign(withBlock.Design[(int)withBlock.State], withBlock.Left + xO, withBlock.Top + yO, withBlock.Width, withBlock.Height, withBlock.Alpha);
-                            }
-
-                            if (withBlock.Image[(int)withBlock.State] > 0L)
-                            {
-                                string argpath = System.IO.Path.Combine(withBlock.Texture[(int)withBlock.State], withBlock.Image[(int)withBlock.State].ToString());
-                                GameClient.RenderTexture(ref argpath, (int)(withBlock.Left + xO), (int)(withBlock.Top + yO), 0, 0, (int)withBlock.Width, (int)withBlock.Height, (int)withBlock.Width, (int)withBlock.Height, (byte)withBlock.Alpha);
-                            }
-
-                            break;
+                            RenderDesign(withBlock.Design[(int)withBlock.State], withBlock.Left + xO, withBlock.Top + yO, withBlock.Width, withBlock.Height, withBlock.Alpha);
                         }
+
+                        if (withBlock.Image[(int)withBlock.State] > 0L)
+                        {
+                            string argpath = System.IO.Path.Combine(withBlock.Texture[(int)withBlock.State], withBlock.Image[(int)withBlock.State].ToString());
+                            GameClient.RenderTexture(ref argpath, (int)(withBlock.Left + xO), (int)(withBlock.Top + yO), 0, 0, (int)withBlock.Width, (int)withBlock.Height, (int)withBlock.Width, (int)withBlock.Height, (byte)withBlock.Alpha);
+                        }
+
+                        break;
+                    }
 
                     case Core.Enum.ControlType.TextBox:
+                    {
+                        // Render the design if available
+                        if (withBlock.Design[(int)withBlock.State] > 0L)
                         {
-                            // Render the design if available
-                            if (withBlock.Design[(int)withBlock.State] > 0L)
-                            {
-                                RenderDesign(withBlock.Design[(int)withBlock.State], withBlock.Left + xO, withBlock.Top + yO, withBlock.Width, withBlock.Height, withBlock.Alpha);
-                            }
-
-                            // Render the image if present
-                            if (withBlock.Image[(int)withBlock.State] > 0L)
-                            {
-                                string argpath1 = System.IO.Path.Combine(withBlock.Texture[(int)withBlock.State], withBlock.Image[(int)withBlock.State].ToString());
-                                GameClient.RenderTexture(ref argpath1, (int)(withBlock.Left + xO), (int)(withBlock.Top + yO), 0, 0, (int)withBlock.Width, (int)withBlock.Height, (int)withBlock.Width, (int)withBlock.Height, (byte)withBlock.Alpha);
-                            }
-
-                            // Handle active window text input
-                            if (ActiveWindow == winNum & Windows[winNum].ActiveControl == entNum)
-                            {
-                                taddText = GameState.chatShowLine;
-                            }
-
-                            // Final text with potential censoring and additional input
-                            string finalText = (withBlock.Censor ? Text.CensorText(withBlock.Text) : withBlock.Text) + taddText;
-
-                            // Remove vbNullChar from the finalText
-                            finalText = finalText.Replace("\0", string.Empty);
-
-                            // Measure the text size
-                            var actualSize = Text.Fonts[withBlock.Font].MeasureString(FilterUnsupportedCharacters(finalText, withBlock.Font));
-                            float actualWidth = actualSize.X;
-                            float actualHeight = actualSize.Y;
-
-                            // Apply padding and calculate position
-                            left = withBlock.Left + xO + withBlock.xOffset;
-                            double top = withBlock.Top + yO + withBlock.yOffset + (double)(withBlock.Height - actualHeight) / 2.0d;
-
-                            // Render the final text
-                            Text.RenderText(finalText, (int)left, (int)Math.Round(top), withBlock.Color, Color.Black, withBlock.Font);
-                            break;
+                            RenderDesign(withBlock.Design[(int)withBlock.State], withBlock.Left + xO, withBlock.Top + yO, withBlock.Width, withBlock.Height, withBlock.Alpha);
                         }
+
+                        // Render the image if present
+                        if (withBlock.Image[(int)withBlock.State] > 0L)
+                        {
+                            string argpath1 = System.IO.Path.Combine(withBlock.Texture[(int)withBlock.State], withBlock.Image[(int)withBlock.State].ToString());
+                            GameClient.RenderTexture(ref argpath1, (int)(withBlock.Left + xO), (int)(withBlock.Top + yO), 0, 0, (int)withBlock.Width, (int)withBlock.Height, (int)withBlock.Width, (int)withBlock.Height, (byte)withBlock.Alpha);
+                        }
+
+                        // Handle active window text input
+                        if (ActiveWindow == winNum & Windows[winNum].ActiveControl == entNum)
+                        {
+                            taddText = GameState.chatShowLine;
+                        }
+
+                        // Final text with potential censoring and additional input
+                        string finalText = (withBlock.Censor ? Text.CensorText(withBlock.Text) : withBlock.Text) + taddText;
+
+                        // Remove vbNullChar from the finalText
+                        finalText = finalText.Replace("\0", string.Empty);
+
+                        // Measure the text size
+                        var actualSize = Text.Fonts[withBlock.Font].MeasureString(FilterUnsupportedCharacters(finalText, withBlock.Font));
+                        float actualWidth = actualSize.X;
+                        float actualHeight = actualSize.Y;
+
+                        // Apply padding and calculate position
+                        left = withBlock.Left + xO + withBlock.xOffset;
+                        double top = withBlock.Top + yO + withBlock.yOffset + (double)(withBlock.Height - actualHeight) / 2.0d;
+
+                        // Render the final text
+                        Text.RenderText(finalText, (int)left, (int)Math.Round(top), withBlock.Color, Color.Black, withBlock.Font);
+                        break;
+                    }
 
                     case Core.Enum.ControlType.Button:
+                    {
+                        // Render the button design if defined
+                        if (withBlock.Design[(int)withBlock.State] > 0L)
                         {
-                            // Render the button design if defined
-                            if (withBlock.Design[(int)withBlock.State] > 0L)
-                            {
-                                RenderDesign(withBlock.Design[(int)withBlock.State], withBlock.Left + xO, withBlock.Top + yO, withBlock.Width, withBlock.Height);
-                            }
-
-                            // Enqueue the button image if present
-                            if (withBlock.Image[(int)withBlock.State] > 0L)
-                            {
-                                string argpath2 = System.IO.Path.Combine(withBlock.Texture[(int)withBlock.State], withBlock.Image[(int)withBlock.State].ToString());
-                                GameClient.RenderTexture(ref argpath2, (int)(withBlock.Left + xO), (int)(withBlock.Top + yO), 0, 0, (int)withBlock.Width, (int)withBlock.Height, (int)withBlock.Width, (int)withBlock.Height);
-                            }
-
-                            // Render the icon if available
-                            if (withBlock.Icon > 0L)
-                            {
-                                var gfxInfo = GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Items, withBlock.Icon.ToString()));
-                                if (gfxInfo == null)
-                                    break;
-                                int iconWidth = gfxInfo.Width;
-                                int iconHeight = gfxInfo.Height;
-
-                                string argpath3 = System.IO.Path.Combine(Path.Items, withBlock.Icon.ToString());
-                                GameClient.RenderTexture(ref argpath3, (int)(withBlock.Left + xO + withBlock.xOffset), (int)(withBlock.Top + yO + withBlock.yOffset), 0, 0, iconWidth, iconHeight, iconWidth, iconHeight);
-                            }
-
-                            // Measure button text size and apply padding
-                            var textSize = Text.Fonts[withBlock.Font].MeasureString(FilterUnsupportedCharacters(withBlock.Text, withBlock.Font));
-                            float actualWidth = textSize.X;
-                            float actualHeight = textSize.Y;
-
-                            // Calculate horizontal and vertical centers with padding
-                            double padding = (double)actualWidth / 6.0d;
-                            double horCentre = withBlock.Left + xO + withBlock.xOffset + (double)(withBlock.Width - actualWidth) / 2.0d + padding - 4d;
-                            padding = (double)actualHeight / 6.0d;
-                            double verCentre = withBlock.Top + yO + withBlock.yOffset + (double)(withBlock.Height - actualHeight) / 2.0d + padding;
-
-                            // Render the button's text
-                            Text.RenderText(withBlock.Text, (int)Math.Round(horCentre), (int)Math.Round(verCentre), withBlock.Color, Color.Black, withBlock.Font);
-                            break;
+                            RenderDesign(withBlock.Design[(int)withBlock.State], withBlock.Left + xO, withBlock.Top + yO, withBlock.Width, withBlock.Height);
                         }
 
-                    case Core.Enum.ControlType.Label:
+                        // Enqueue the button image if present
+                        if (withBlock.Image[(int)withBlock.State] > 0L)
                         {
-                            if (Strings.Len(withBlock.Text) > 0 & withBlock.Font > 0)
+                            string argpath2 = System.IO.Path.Combine(withBlock.Texture[(int)withBlock.State], withBlock.Image[(int)withBlock.State].ToString());
+                            GameClient.RenderTexture(ref argpath2, (int)(withBlock.Left + xO), (int)(withBlock.Top + yO), 0, 0, (int)withBlock.Width, (int)withBlock.Height, (int)withBlock.Width, (int)withBlock.Height);
+                        }
+
+                        // Render the icon if available
+                        if (withBlock.Icon > 0L)
+                        {
+                            var gfxInfo = GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Items, withBlock.Icon.ToString()));
+                            if (gfxInfo == null)
+                                break;
+                            int iconWidth = gfxInfo.Width;
+                            int iconHeight = gfxInfo.Height;
+
+                            string argpath3 = System.IO.Path.Combine(Path.Items, withBlock.Icon.ToString());
+                            GameClient.RenderTexture(ref argpath3, (int)(withBlock.Left + xO + withBlock.xOffset), (int)(withBlock.Top + yO + withBlock.yOffset), 0, 0, iconWidth, iconHeight, iconWidth, iconHeight);
+                        }
+
+                        // Measure button text size and apply padding
+                        var textSize = Text.Fonts[withBlock.Font].MeasureString(FilterUnsupportedCharacters(withBlock.Text, withBlock.Font));
+                        float actualWidth = textSize.X;
+                        float actualHeight = textSize.Y;
+
+                        // Calculate horizontal and vertical centers with padding
+                        double padding = (double)actualWidth / 6.0d;
+                        double horCentre = withBlock.Left + xO + withBlock.xOffset + (double)(withBlock.Width - actualWidth) / 2.0d + padding - 4d;
+                        padding = (double)actualHeight / 6.0d;
+                        double verCentre = withBlock.Top + yO + withBlock.yOffset + (double)(withBlock.Height - actualHeight) / 2.0d + padding;
+
+                        // Render the button's text
+                        Text.RenderText(withBlock.Text, (int)Math.Round(horCentre), (int)Math.Round(verCentre), withBlock.Color, Color.Black, withBlock.Font);
+                        break;
+                    }
+
+                    case Core.Enum.ControlType.Label:
+                    {
+                        if (Strings.Len(withBlock.Text) > 0 & withBlock.Font > 0)
+                        {
+                            switch (withBlock.Align)
                             {
+                                case Core.Enum.AlignmentType.Left:
+                                {
+                                    if (Text.GetTextWidth(withBlock.Text, withBlock.Font) > withBlock.Width)
+                                    {
+                                        Text.WordWrap(withBlock.Text, withBlock.Font, withBlock.Width, ref textArray);
+                                        count = Information.UBound(textArray);
+                                        var loopTo = count;
+                                        for (i = 0L; i < loopTo; i++)
+                                        {
+                                            var actualSize = Text.Fonts[withBlock.Font].MeasureString(FilterUnsupportedCharacters(textArray[(int)i], withBlock.Font));
+                                            float actualWidth = actualSize.X;
+                                            double padding = (double)actualWidth / 6.0d;
+                                            left = (long)Math.Round(withBlock.Left + xO + withBlock.xOffset + padding);
+
+                                            Text.RenderText(textArray[(int)i], (int)left, (int)(withBlock.Top + yO + withBlock.yOffset + yOffset), withBlock.Color, Color.Black, withBlock.Font);
+                                            yOffset += 14L;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        var actualSize = Text.Fonts[withBlock.Font].MeasureString(withBlock.Text);
+                                        float actualWidth = actualSize.X;
+                                        left = withBlock.Left + xO + withBlock.xOffset;
+
+                                        Text.RenderText(withBlock.Text, (int)left, (int)(withBlock.Top + yO + withBlock.yOffset), withBlock.Color, Color.Black, withBlock.Font);
+                                    }
+
+                                    break;
+                                }
+
+                                case Core.Enum.AlignmentType.Right:
+                                {
+                                    if (Text.GetTextWidth(withBlock.Text, withBlock.Font) > withBlock.Width)
+                                    {
+                                        Text.WordWrap(withBlock.Text, withBlock.Font, withBlock.Width, ref textArray);
+                                        count = Information.UBound(textArray);
+                                        var loopTo1 = count;
+                                        for (i = 0L; i < loopTo1; i++)
+                                        {
+                                            var actualSize = Text.Fonts[withBlock.Font].MeasureString(textArray[(int)i]);
+                                            float actualWidth = actualSize.X;
+                                            double padding = (double)actualWidth / 6.0d;
+                                            left = (long)Math.Round((double)(withBlock.Left + withBlock.Width - actualWidth + xO + withBlock.xOffset) + padding);
+
+                                            Text.RenderText(textArray[(int)i], (int)left, (int)(withBlock.Top + yO + withBlock.yOffset + yOffset), withBlock.Color, Color.Black, withBlock.Font);
+                                            yOffset += 14L;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        var actualSize = Text.Fonts[withBlock.Font].MeasureString(FilterUnsupportedCharacters(withBlock.Text, withBlock.Font));
+                                        float actualWidth = actualSize.X;
+                                        left = (long)Math.Round(withBlock.Left + withBlock.Width - actualSize.X + xO + withBlock.xOffset);
+
+                                        Text.RenderText(withBlock.Text, (int)left, (int)(withBlock.Top + yO + withBlock.yOffset), withBlock.Color, Color.Black, withBlock.Font);
+                                    }
+
+                                    break;
+                                }
+
+                                case Core.Enum.AlignmentType.Center:
+                                {
+                                    if (Text.GetTextWidth(withBlock.Text, withBlock.Font) > withBlock.Width)
+                                    {
+                                        Text.WordWrap(withBlock.Text, withBlock.Font, withBlock.Width, ref textArray);
+                                        count = Information.UBound(textArray);
+
+                                        var loopTo2 = count;
+                                        for (i = 0L; i < loopTo2; i++)
+                                        {
+                                            var actualSize = Text.Fonts[withBlock.Font].MeasureString(FilterUnsupportedCharacters(textArray[(int)i], withBlock.Font));
+                                            float actualWidth = actualSize.X;
+                                            float actualHeight = actualSize.Y;
+                                            double padding = (double)actualWidth / 8.0d;
+                                            left = (long)Math.Round(withBlock.Left + (double)(withBlock.Width - actualWidth) / 2.0d + xO + withBlock.xOffset + padding - 4d);
+                                            double top = withBlock.Top + yO + withBlock.yOffset + yOffset + (double)(withBlock.Height - actualHeight) / 2.0d;
+
+                                            Text.RenderText(textArray[(int)i], (int)left, (int)Math.Round(top), withBlock.Color, Color.Black, withBlock.Font);
+                                            yOffset += 14L;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        var actualSize = Text.Fonts[withBlock.Font].MeasureString(FilterUnsupportedCharacters(withBlock.Text, withBlock.Font));
+                                        float actualWidth = actualSize.X;
+                                        float actualHeight = actualSize.Y;
+                                        double padding = (double)actualWidth / 8.0d;
+                                        left = (long)Math.Round(withBlock.Left + (double)(withBlock.Width - actualWidth) / 2.0d + xO + withBlock.xOffset + padding - 4d);
+                                        double top = withBlock.Top + yO + withBlock.yOffset + (double)(withBlock.Height - actualHeight) / 2.0d;
+
+                                        Text.RenderText(withBlock.Text, (int)left, (int)Math.Round(top), withBlock.Color, Color.Black, withBlock.Font);
+                                    }
+
+                                    break;
+                                }
+                            }
+                        }
+
+                        break;
+                    }
+                    // Checkboxes
+                    case Core.Enum.ControlType.Checkbox:
+                    {
+                        switch (withBlock.Design[0])
+                        {
+                            case (long)Core.Enum.DesignType.ChkNorm:
+                            {
+                                // empty?
+                                if (withBlock.Value == 0L)
+                                    sprite = 2L;
+                                else
+                                    sprite = 3L;
+
+                                // render box
+                                string argpath4 = System.IO.Path.Combine(withBlock.Texture[0], sprite.ToString());
+                                GameClient.RenderTexture(ref argpath4, (int)(withBlock.Left + xO), (int)(withBlock.Top + yO), 0, 0, 16, 16, 16, 16);
+
+                                // find text position
                                 switch (withBlock.Align)
                                 {
                                     case Core.Enum.AlignmentType.Left:
-                                        {
-                                            if (Text.GetTextWidth(withBlock.Text, withBlock.Font) > withBlock.Width)
-                                            {
-                                                Text.WordWrap(withBlock.Text, withBlock.Font, withBlock.Width, ref textArray);
-                                                count = Information.UBound(textArray);
-                                                var loopTo = count;
-                                                for (i = 0L; i < loopTo; i++)
-                                                {
-                                                    var actualSize = Text.Fonts[withBlock.Font].MeasureString(FilterUnsupportedCharacters(textArray[(int)i], withBlock.Font));
-                                                    float actualWidth = actualSize.X;
-                                                    double padding = (double)actualWidth / 6.0d;
-                                                    left = (long)Math.Round(withBlock.Left + xO + withBlock.xOffset + padding);
-
-                                                    Text.RenderText(textArray[(int)i], (int)left, (int)(withBlock.Top + yO + withBlock.yOffset + yOffset), withBlock.Color, Color.Black, withBlock.Font);
-                                                    yOffset += 14L;
-                                                }
-                                            }
-                                            else
-                                            {
-                                                var actualSize = Text.Fonts[withBlock.Font].MeasureString(withBlock.Text);
-                                                float actualWidth = actualSize.X;
-                                                left = withBlock.Left + xO + withBlock.xOffset;
-
-                                                Text.RenderText(withBlock.Text, (int)left, (int)(withBlock.Top + yO + withBlock.yOffset), withBlock.Color, Color.Black, withBlock.Font);
-                                            }
-
-                                            break;
-                                        }
-
+                                    {
+                                        left = withBlock.Left + 18L + xO;
+                                        break;
+                                    }
                                     case Core.Enum.AlignmentType.Right:
-                                        {
-                                            if (Text.GetTextWidth(withBlock.Text, withBlock.Font) > withBlock.Width)
-                                            {
-                                                Text.WordWrap(withBlock.Text, withBlock.Font, withBlock.Width, ref textArray);
-                                                count = Information.UBound(textArray);
-                                                var loopTo1 = count;
-                                                for (i = 0L; i < loopTo1; i++)
-                                                {
-                                                    var actualSize = Text.Fonts[withBlock.Font].MeasureString(textArray[(int)i]);
-                                                    float actualWidth = actualSize.X;
-                                                    double padding = (double)actualWidth / 6.0d;
-                                                    left = (long)Math.Round((double)(withBlock.Left + withBlock.Width - actualWidth + xO + withBlock.xOffset) + padding);
-
-                                                    Text.RenderText(textArray[(int)i], (int)left, (int)(withBlock.Top + yO + withBlock.yOffset + yOffset), withBlock.Color, Color.Black, withBlock.Font);
-                                                    yOffset += 14L;
-                                                }
-                                            }
-                                            else
-                                            {
-                                                var actualSize = Text.Fonts[withBlock.Font].MeasureString(FilterUnsupportedCharacters(withBlock.Text, withBlock.Font));
-                                                float actualWidth = actualSize.X;
-                                                left = (long)Math.Round(withBlock.Left + withBlock.Width - actualSize.X + xO + withBlock.xOffset);
-
-                                                Text.RenderText(withBlock.Text, (int)left, (int)(withBlock.Top + yO + withBlock.yOffset), withBlock.Color, Color.Black, withBlock.Font);
-                                            }
-
-                                            break;
-                                        }
-
+                                    {
+                                        left = withBlock.Left + 18L + (withBlock.Width - 18L) - Text.GetTextWidth(withBlock.Text, withBlock.Font) + xO;
+                                        break;
+                                    }
                                     case Core.Enum.AlignmentType.Center:
-                                        {
-                                            if (Text.GetTextWidth(withBlock.Text, withBlock.Font) > withBlock.Width)
-                                            {
-                                                Text.WordWrap(withBlock.Text, withBlock.Font, withBlock.Width, ref textArray);
-                                                count = Information.UBound(textArray);
-
-                                                var loopTo2 = count;
-                                                for (i = 0L; i < loopTo2; i++)
-                                                {
-                                                    var actualSize = Text.Fonts[withBlock.Font].MeasureString(FilterUnsupportedCharacters(textArray[(int)i], withBlock.Font));
-                                                    float actualWidth = actualSize.X;
-                                                    float actualHeight = actualSize.Y;
-                                                    double padding = (double)actualWidth / 8.0d;
-                                                    left = (long)Math.Round(withBlock.Left + (double)(withBlock.Width - actualWidth) / 2.0d + xO + withBlock.xOffset + padding - 4d);
-                                                    double top = withBlock.Top + yO + withBlock.yOffset + yOffset + (double)(withBlock.Height - actualHeight) / 2.0d;
-
-                                                    Text.RenderText(textArray[(int)i], (int)left, (int)Math.Round(top), withBlock.Color, Color.Black, withBlock.Font);
-                                                    yOffset += 14L;
-                                                }
-                                            }
-                                            else
-                                            {
-                                                var actualSize = Text.Fonts[withBlock.Font].MeasureString(FilterUnsupportedCharacters(withBlock.Text, withBlock.Font));
-                                                float actualWidth = actualSize.X;
-                                                float actualHeight = actualSize.Y;
-                                                double padding = (double)actualWidth / 8.0d;
-                                                left = (long)Math.Round(withBlock.Left + (double)(withBlock.Width - actualWidth) / 2.0d + xO + withBlock.xOffset + padding - 4d);
-                                                double top = withBlock.Top + yO + withBlock.yOffset + (double)(withBlock.Height - actualHeight) / 2.0d;
-
-                                                Text.RenderText(withBlock.Text, (int)left, (int)Math.Round(top), withBlock.Color, Color.Black, withBlock.Font);
-                                            }
-
-                                            break;
-                                        }
+                                    {
+                                        left = (long)Math.Round(withBlock.Left + 18L + (withBlock.Width - 18L) / 2d - Text.GetTextWidth(withBlock.Text, withBlock.Font) / 2d + xO);
+                                        break;
+                                    }
                                 }
+
+                                // render text
+                                Text.RenderText(withBlock.Text, (int)left, (int)(withBlock.Top + yO), withBlock.Color, Color.Black);
+                                break;
                             }
 
-                            break;
-                        }
-                    // Checkboxes
-                    case Core.Enum.ControlType.Checkbox:
-                        {
-                            switch (withBlock.Design[0])
+                            case (long)Core.Enum.DesignType.ChkChat:
                             {
-                                case (long)Core.Enum.DesignType.ChkNorm:
-                                    {
-                                        // empty?
-                                        if (withBlock.Value == 0L)
-                                            sprite = 2L;
-                                        else
-                                            sprite = 3L;
+                                if (withBlock.Value == 0L)
+                                    withBlock.Alpha = 150L;
+                                else
+                                    withBlock.Alpha = 255L;
 
-                                        // render box
-                                        string argpath4 = System.IO.Path.Combine(withBlock.Texture[0], sprite.ToString());
-                                        GameClient.RenderTexture(ref argpath4, (int)(withBlock.Left + xO), (int)(withBlock.Top + yO), 0, 0, 16, 16, 16, 16);
+                                // render box
+                                string argpath5 = System.IO.Path.Combine(Path.Gui, 51.ToString());
+                                GameClient.RenderTexture(ref argpath5, (int)(withBlock.Left + xO), (int)(withBlock.Top + yO), 0, 0, 49, 23, 49, 23);
 
-                                        // find text position
-                                        switch (withBlock.Align)
-                                        {
-                                            case Core.Enum.AlignmentType.Left:
-                                                {
-                                                    left = withBlock.Left + 18L + xO;
-                                                    break;
-                                                }
-                                            case Core.Enum.AlignmentType.Right:
-                                                {
-                                                    left = withBlock.Left + 18L + (withBlock.Width - 18L) - Text.GetTextWidth(withBlock.Text, withBlock.Font) + xO;
-                                                    break;
-                                                }
-                                            case Core.Enum.AlignmentType.Center:
-                                                {
-                                                    left = (long)Math.Round(withBlock.Left + 18L + (withBlock.Width - 18L) / 2d - Text.GetTextWidth(withBlock.Text, withBlock.Font) / 2d + xO);
-                                                    break;
-                                                }
-                                        }
-
-                                        // render text
-                                        Text.RenderText(withBlock.Text, (int)left, (int)(withBlock.Top + yO), withBlock.Color, Color.Black);
-                                        break;
-                                    }
-
-                                case (long)Core.Enum.DesignType.ChkChat:
-                                    {
-                                        if (withBlock.Value == 0L)
-                                            withBlock.Alpha = 150L;
-                                        else
-                                            withBlock.Alpha = 255L;
-
-                                        // render box
-                                        string argpath5 = System.IO.Path.Combine(Path.Gui, 51.ToString());
-                                        GameClient.RenderTexture(ref argpath5, (int)(withBlock.Left + xO), (int)(withBlock.Top + yO), 0, 0, 49, 23, 49, 23);
-
-                                        // render text
-                                        left = (long)Math.Round(withBlock.Left + 22L - Text.GetTextWidth(withBlock.Text, withBlock.Font) / 2d + xO);
-                                        Text.RenderText(withBlock.Text, (int)left + 8, (int)(withBlock.Top + yO + 4L), withBlock.Color, Color.Black);
-                                        break;
-                                    }
-
-                                case (long)Core.Enum.DesignType.ChkBuying:
-                                    {
-                                        if (withBlock.Value == 0L)
-                                            sprite = 58L;
-                                        else
-                                            sprite = 56L;
-                                        string argpath6 = System.IO.Path.Combine(withBlock.Texture[0], sprite.ToString());
-                                        GameClient.RenderTexture(ref argpath6, (int)(withBlock.Left + xO), (int)(withBlock.Top + yO), 0, 0, 49, 20, 49, 20);
-                                        break;
-                                    }
-
-                                case (long)Core.Enum.DesignType.ChkSelling:
-                                    {
-                                        if (withBlock.Value == 0L)
-                                            sprite = 59L;
-                                        else
-                                            sprite = 57L;
-                                        string argpath7 = System.IO.Path.Combine(withBlock.Texture[0], sprite.ToString());
-                                        GameClient.RenderTexture(ref argpath7, (int)(withBlock.Left + xO), (int)(withBlock.Top + yO), 0, 0, 49, 20, 49, 20);
-                                        break;
-                                    }
+                                // render text
+                                left = (long)Math.Round(withBlock.Left + 22L - Text.GetTextWidth(withBlock.Text, withBlock.Font) / 2d + xO);
+                                Text.RenderText(withBlock.Text, (int)left + 8, (int)(withBlock.Top + yO + 4L), withBlock.Color, Color.Black);
+                                break;
                             }
 
-                            break;
+                            case (long)Core.Enum.DesignType.ChkBuying:
+                            {
+                                if (withBlock.Value == 0L)
+                                    sprite = 58L;
+                                else
+                                    sprite = 56L;
+                                string argpath6 = System.IO.Path.Combine(withBlock.Texture[0], sprite.ToString());
+                                GameClient.RenderTexture(ref argpath6, (int)(withBlock.Left + xO), (int)(withBlock.Top + yO), 0, 0, 49, 20, 49, 20);
+                                break;
+                            }
+
+                            case (long)Core.Enum.DesignType.ChkSelling:
+                            {
+                                if (withBlock.Value == 0L)
+                                    sprite = 59L;
+                                else
+                                    sprite = 57L;
+                                string argpath7 = System.IO.Path.Combine(withBlock.Texture[0], sprite.ToString());
+                                GameClient.RenderTexture(ref argpath7, (int)(withBlock.Left + xO), (int)(withBlock.Top + yO), 0, 0, 49, 20, 49, 20);
+                                break;
+                            }
                         }
+
+                        break;
+                    }
 
                     // comboboxes
                     case Core.Enum.ControlType.Combobox:
+                    {
+                        switch (withBlock.Design[0])
                         {
-                            switch (withBlock.Design[0])
+                            case (long)Core.Enum.DesignType.ComboNorm:
                             {
-                                case (long)Core.Enum.DesignType.ComboNorm:
+                                // draw the background
+                                RenderDesign((long)Core.Enum.DesignType.TextBlack, withBlock.Left + xO, withBlock.Top + yO, withBlock.Width, withBlock.Height);
+
+                                // render the text
+                                if (withBlock.Value > 0L)
+                                {
+                                    if (withBlock.Value <= withBlock.List.Count - 1)
                                     {
-                                        // draw the background
-                                        RenderDesign((long)Core.Enum.DesignType.TextBlack, withBlock.Left + xO, withBlock.Top + yO, withBlock.Width, withBlock.Height);
-
-                                        // render the text
-                                        if (withBlock.Value > 0L)
-                                        {
-                                            if (withBlock.Value <= withBlock.List.Count - 1)
-                                            {
-                                                Text.RenderText(withBlock.List[(int)withBlock.Value], (int)(withBlock.Left + xO), (int)(withBlock.Top + yO), withBlock.Color, Color.Black);
-                                            }
-                                        }
-
-                                        // draw the little arrow
-                                        string argpath8 = System.IO.Path.Combine(withBlock.Texture[0], "66");
-                                        GameClient.RenderTexture(ref argpath8, (int)(withBlock.Left + xO + withBlock.Width), (int)(withBlock.Top + yO), 0, 0, 5, 4, 5, 4);
-                                        break;
+                                        Text.RenderText(withBlock.List[(int)withBlock.Value], (int)(withBlock.Left + xO), (int)(withBlock.Top + yO), withBlock.Color, Color.Black);
                                     }
-                            }
+                                }
 
-                            break;
+                                // draw the little arrow
+                                string argpath8 = System.IO.Path.Combine(withBlock.Texture[0], "66");
+                                GameClient.RenderTexture(ref argpath8, (int)(withBlock.Left + xO + withBlock.Width), (int)(withBlock.Top + yO), 0, 0, 5, 4, 5, 4);
+                                break;
+                            }
                         }
+
+                        break;
+                    }
                 }
 
                 if (withBlock.OnDraw is not null)
@@ -2186,90 +2186,90 @@ namespace Client
                 switch (withBlock.Design[0])
                 {
                     case (long)Core.Enum.DesignType.ComboMenuNorm:
+                    {
+                        string argpath = System.IO.Path.Combine(Path.Gui, "1");
+                        GameClient.RenderTexture(ref argpath, (int)withBlock.Left, (int)withBlock.Top, 0, 0, (int)withBlock.Width, (int)withBlock.Height, 157, 0, 0, 0);
+
+                        // Render text
+                        if (withBlock.List.Count > 0)
                         {
-                            string argpath = System.IO.Path.Combine(Path.Gui, "1");
-                            GameClient.RenderTexture(ref argpath, (int)withBlock.Left, (int)withBlock.Top, 0, 0, (int)withBlock.Width, (int)withBlock.Height, 157, 0, 0, 0);
+                            y = withBlock.Top + 2L;
+                            x = withBlock.Left;
 
-                            // Render text
-                            if (withBlock.List.Count > 0)
+                            var loopTo = (long)(withBlock.List.Count - 1);
+                            for (i = 0L; i < loopTo; i++)
                             {
-                                y = withBlock.Top + 2L;
-                                x = withBlock.Left;
-
-                                var loopTo = (long)(withBlock.List.Count - 1);
-                                for (i = 0L; i < loopTo; i++)
+                                // Render selection
+                                if (i == withBlock.Value || i == withBlock.Group)
                                 {
-                                    // Render selection
-                                    if (i == withBlock.Value || i == withBlock.Group)
-                                    {
-                                        string argpath1 = System.IO.Path.Combine(Path.Gui, "1");
-                                        GameClient.RenderTexture(ref argpath1, (int)x, (int)(y - 1L), 0, 0, (int)withBlock.Width, 15, 255, 0, 0, 0);
-                                    }
-
-                                    // Render the text, centered
-                                    left = x + withBlock.Width / 2L - Text.GetTextWidth(withBlock.List[(int)i], withBlock.Font) / 2;
-                                    Text.RenderText(withBlock.List[(int)i], (int)left, (int)y, Color.White, Color.Black);
-
-                                    y += 16L;
+                                    string argpath1 = System.IO.Path.Combine(Path.Gui, "1");
+                                    GameClient.RenderTexture(ref argpath1, (int)x, (int)(y - 1L), 0, 0, (int)withBlock.Width, 15, 255, 0, 0, 0);
                                 }
+
+                                // Render the text, centered
+                                left = x + withBlock.Width / 2L - Text.GetTextWidth(withBlock.List[(int)i], withBlock.Font) / 2;
+                                Text.RenderText(withBlock.List[(int)i], (int)left, (int)y, Color.White, Color.Black);
+
+                                y += 16L;
                             }
-                            return;
                         }
+                        return;
+                    }
                 }
 
                 // Handle different window designs
                 switch (withBlock.Design[(int)withBlock.State])
                 {
                     case (long)Core.Enum.DesignType.Win_Black:
-                        {
-                            string argpath2 = System.IO.Path.Combine(Path.Gui, "61");
-                            GameClient.RenderTexture(ref argpath2, (int)withBlock.Left, (int)withBlock.Top, 0, 0, (int)withBlock.Width, (int)withBlock.Height, 190, 255, 255, 255);
-                            break;
-                        }
+                    {
+                        string argpath2 = System.IO.Path.Combine(Path.Gui, "61");
+                        GameClient.RenderTexture(ref argpath2, (int)withBlock.Left, (int)withBlock.Top, 0, 0, (int)withBlock.Width, (int)withBlock.Height, 190, 255, 255, 255);
+                        break;
+                    }
 
                     case (long)Core.Enum.DesignType.Win_Norm:
-                        {
-                            RenderDesign((long)Core.Enum.DesignType.Wood, withBlock.Left, withBlock.Top, withBlock.Width, withBlock.Height);
-                            RenderDesign((long)Core.Enum.DesignType.Green, withBlock.Left, withBlock.Top, withBlock.Width, 23L);
-                            string argpath3 = System.IO.Path.Combine(Path.Items, withBlock.Icon.ToString());
-                            GameClient.RenderTexture(ref argpath3, (int)(withBlock.Left + withBlock.xOffset), (int)(withBlock.Top - 16L + withBlock.yOffset), 0, 0, (int)withBlock.Width, (int)withBlock.Height, (int)withBlock.Width, (int)withBlock.Height);
-                            Text.RenderText(withBlock.Text, (int)(withBlock.Left + 32L), (int)(withBlock.Top + 4L), Color.White, Color.Black);
-                            break;
-                        }
+                    {
+                        RenderDesign((long)Core.Enum.DesignType.Wood, withBlock.Left, withBlock.Top, withBlock.Width, withBlock.Height);
+                        RenderDesign((long)Core.Enum.DesignType.Green, withBlock.Left, withBlock.Top, withBlock.Width, 23L);
+                        string argpath3 = System.IO.Path.Combine(Path.Items, withBlock.Icon.ToString());
+                        GameClient.RenderTexture(ref argpath3, (int)(withBlock.Left + withBlock.xOffset), (int)(withBlock.Top - 16L + withBlock.yOffset), 0, 0, (int)withBlock.Width, (int)withBlock.Height, (int)withBlock.Width, (int)withBlock.Height);
+                        Text.RenderText(withBlock.Text, (int)(withBlock.Left + 32L), (int)(withBlock.Top + 4L), Color.White, Color.Black);
+                        break;
+                    }
 
                     case (long)Core.Enum.DesignType.Win_NoBar:
-                        {
-                            RenderDesign((long)Core.Enum.DesignType.Wood, withBlock.Left, withBlock.Top, withBlock.Width, withBlock.Height);
-                            break;
-                        }
+                    {
+                        RenderDesign((long)Core.Enum.DesignType.Wood, withBlock.Left, withBlock.Top, withBlock.Width, withBlock.Height);
+                        break;
+                    }
 
                     case (long)Core.Enum.DesignType.Win_Empty:
-                        {
-                            RenderDesign((long)Core.Enum.DesignType.Wood_Empty, withBlock.Left, withBlock.Top, withBlock.Width, withBlock.Height);
-                            RenderDesign((long)Core.Enum.DesignType.Green, withBlock.Left, withBlock.Top, withBlock.Width, 23L);
-                            string argpath4 = System.IO.Path.Combine(Path.Items, withBlock.Icon.ToString());
-                            GameClient.RenderTexture(ref argpath4, (int)(withBlock.Left + withBlock.xOffset), (int)(withBlock.Top - 16L + withBlock.yOffset), 0, 0, (int)withBlock.Width, (int)withBlock.Height, (int)withBlock.Width, (int)withBlock.Height);
-                            Text.RenderText(withBlock.Text, (int)(withBlock.Left + 32L), (int)(withBlock.Top + 4L), Color.White, Color.Black);
-                            break;
-                        }
+                    {
+                        RenderDesign((long)Core.Enum.DesignType.Wood_Empty, withBlock.Left, withBlock.Top, withBlock.Width, withBlock.Height);
+                        RenderDesign((long)Core.Enum.DesignType.Green, withBlock.Left, withBlock.Top, withBlock.Width, 23L);
+                        string argpath4 = System.IO.Path.Combine(Path.Items, withBlock.Icon.ToString());
+                        GameClient.RenderTexture(ref argpath4, (int)(withBlock.Left + withBlock.xOffset), (int)(withBlock.Top - 16L + withBlock.yOffset), 0, 0, (int)withBlock.Width, (int)withBlock.Height, (int)withBlock.Width, (int)withBlock.Height);
+                        Text.RenderText(withBlock.Text, (int)(withBlock.Left + 32L), (int)(withBlock.Top + 4L), Color.White, Color.Black);
+                        break;
+                    }
 
                     case (long)Core.Enum.DesignType.Win_Desc:
-                        {
-                            RenderDesign((long)Core.Enum.DesignType.Win_Desc, withBlock.Left, withBlock.Top, withBlock.Width, withBlock.Height);
-                            break;
-                        }
+                    {
+                        RenderDesign((long)Core.Enum.DesignType.Win_Desc, withBlock.Left, withBlock.Top, withBlock.Width, withBlock.Height);
+                        break;
+                    }
 
                     case (long)Core.Enum.DesignType.Win_Shadow:
-                        {
-                            RenderDesign((long)Core.Enum.DesignType.Win_Shadow, withBlock.Left, withBlock.Top, withBlock.Width, withBlock.Height);
-                            break;
-                        }
+                    {
+                        RenderDesign((long)Core.Enum.DesignType.Win_Shadow, withBlock.Left, withBlock.Top, withBlock.Width, withBlock.Height);
+                        break;
+                    }
 
                     case (long)Core.Enum.DesignType.Win_Party:
-                        {
-                            RenderDesign((long)Core.Enum.DesignType.Win_Party, withBlock.Left, withBlock.Top, withBlock.Width, withBlock.Height);
-                            break;
-                        }
+                    {
+                        RenderDesign((long)Core.Enum.DesignType.Win_Party, withBlock.Left, withBlock.Top, withBlock.Width, withBlock.Height);
+                        break;
+                    }
                 }
 
                 // Call the OnDraw action if it exists
@@ -2285,292 +2285,292 @@ namespace Client
             switch (design)
             {
                 case (long)Core.Enum.DesignType.MenuHeader:
-                    {
-                        // render the header
-                        string argpath = System.IO.Path.Combine(Path.Designs, "61");
-                        GameClient.RenderTexture(ref argpath, (int)left, (int)top, 0, 0, (int)width, (int)height, (int)width, (int)height, 200, 47, 77, 29);
-                        break;
-                    }
+                {
+                    // render the header
+                    string argpath = System.IO.Path.Combine(Path.Designs, "61");
+                    GameClient.RenderTexture(ref argpath, (int)left, (int)top, 0, 0, (int)width, (int)height, (int)width, (int)height, 200, 47, 77, 29);
+                    break;
+                }
 
                 case (long)Core.Enum.DesignType.MenuOption:
-                    {
-                        // render the option
-                        string argpath1 = System.IO.Path.Combine(Path.Designs, "61");
-                        GameClient.RenderTexture(ref argpath1, (int)left, (int)top, 0, 0, (int)width, (int)height, (int)width, (int)height, 200, 98, 98, 98);
-                        break;
-                    }
+                {
+                    // render the option
+                    string argpath1 = System.IO.Path.Combine(Path.Designs, "61");
+                    GameClient.RenderTexture(ref argpath1, (int)left, (int)top, 0, 0, (int)width, (int)height, (int)width, (int)height, 200, 98, 98, 98);
+                    break;
+                }
 
                 case (long)Core.Enum.DesignType.Wood:
-                    {
-                        bs = 4L;
-                        // render the wood box
-                        RenderControl_Square(1, left, top, width, height, bs, alpha);
+                {
+                    bs = 4L;
+                    // render the wood box
+                    RenderControl_Square(1, left, top, width, height, bs, alpha);
 
-                        // render wood texture
-                        string argpath2 = System.IO.Path.Combine(Path.Gui, "1");
-                        GameClient.RenderTexture(ref argpath2, (int)(left + bs), (int)(top + bs), 100, 100, (int)(width - bs * 2L), (int)(height - bs * 2L), (int)(width - bs * 2L), (int)(height - bs * 2L), (byte)alpha);
-                        break;
-                    }
+                    // render wood texture
+                    string argpath2 = System.IO.Path.Combine(Path.Gui, "1");
+                    GameClient.RenderTexture(ref argpath2, (int)(left + bs), (int)(top + bs), 100, 100, (int)(width - bs * 2L), (int)(height - bs * 2L), (int)(width - bs * 2L), (int)(height - bs * 2L), (byte)alpha);
+                    break;
+                }
 
                 case (long)Core.Enum.DesignType.Wood_Small:
-                    {
-                        bs = 2L;
-                        // render the wood box
-                        RenderControl_Square(8, left + bs, top + bs, width, height, bs, alpha);
+                {
+                    bs = 2L;
+                    // render the wood box
+                    RenderControl_Square(8, left + bs, top + bs, width, height, bs, alpha);
 
-                        // render wood texture
-                        string argpath3 = System.IO.Path.Combine(Path.Gui, "1");
-                        GameClient.RenderTexture(ref argpath3, (int)(left + bs), (int)(top + bs), 100, 100, (int)(width - bs * 2L), (int)(height - bs * 2L), (int)(width - bs * 2L), (int)(height - bs * 2L), (byte)alpha);
-                        break;
-                    }
+                    // render wood texture
+                    string argpath3 = System.IO.Path.Combine(Path.Gui, "1");
+                    GameClient.RenderTexture(ref argpath3, (int)(left + bs), (int)(top + bs), 100, 100, (int)(width - bs * 2L), (int)(height - bs * 2L), (int)(width - bs * 2L), (int)(height - bs * 2L), (byte)alpha);
+                    break;
+                }
 
                 case (long)Core.Enum.DesignType.Wood_Empty:
-                    {
-                        bs = 4L;
-                        // render the wood box
-                        RenderControl_Square(9, left, top, width, height, bs, alpha);
-                        break;
-                    }
+                {
+                    bs = 4L;
+                    // render the wood box
+                    RenderControl_Square(9, left, top, width, height, bs, alpha);
+                    break;
+                }
 
                 case (long)Core.Enum.DesignType.Green:
-                    {
-                        bs = 2L;
-                        // render the green box
-                        RenderControl_Square(2, left, top, width, height, bs, alpha);
+                {
+                    bs = 2L;
+                    // render the green box
+                    RenderControl_Square(2, left, top, width, height, bs, alpha);
 
-                        // render green gradient overlay
-                        string argpath4 = System.IO.Path.Combine(Path.Gradients, "1");
-                        GameClient.RenderTexture(ref argpath4, (int)(left + bs), (int)(top + bs), 0, 0, (int)(width - bs * 2L), (int)(height - bs * 2L), 128, 128, (byte)alpha);
-                        break;
-                    }
+                    // render green gradient overlay
+                    string argpath4 = System.IO.Path.Combine(Path.Gradients, "1");
+                    GameClient.RenderTexture(ref argpath4, (int)(left + bs), (int)(top + bs), 0, 0, (int)(width - bs * 2L), (int)(height - bs * 2L), 128, 128, (byte)alpha);
+                    break;
+                }
 
                 case (long)Core.Enum.DesignType.Green_Hover:
-                    {
-                        bs = 2L;
-                        // render the green box
-                        RenderControl_Square(2, left, top, width, height, bs, alpha);
+                {
+                    bs = 2L;
+                    // render the green box
+                    RenderControl_Square(2, left, top, width, height, bs, alpha);
 
-                        // render green gradient overlay
-                        string argpath5 = System.IO.Path.Combine(Path.Gradients, "2");
-                        GameClient.RenderTexture(ref argpath5, (int)(left + bs), (int)(top + bs), 0, 0, (int)(width - bs * 2L), (int)(height - bs * 2L), 128, 128, (byte)alpha);
-                        break;
-                    }
+                    // render green gradient overlay
+                    string argpath5 = System.IO.Path.Combine(Path.Gradients, "2");
+                    GameClient.RenderTexture(ref argpath5, (int)(left + bs), (int)(top + bs), 0, 0, (int)(width - bs * 2L), (int)(height - bs * 2L), 128, 128, (byte)alpha);
+                    break;
+                }
 
                 case (long)Core.Enum.DesignType.Green_Click:
-                    {
-                        bs = 2L;
-                        // render the green box
-                        RenderControl_Square(2, left, top, width, height, bs, alpha);
+                {
+                    bs = 2L;
+                    // render the green box
+                    RenderControl_Square(2, left, top, width, height, bs, alpha);
 
-                        // render green gradient overlay
-                        string argpath6 = System.IO.Path.Combine(Path.Gradients, "3");
-                        GameClient.RenderTexture(ref argpath6, (int)(left + bs), (int)(top + bs), 0, 0, (int)(width - bs * 2L), (int)(height - bs * 2L), 128, 128, (byte)alpha);
-                        break;
-                    }
+                    // render green gradient overlay
+                    string argpath6 = System.IO.Path.Combine(Path.Gradients, "3");
+                    GameClient.RenderTexture(ref argpath6, (int)(left + bs), (int)(top + bs), 0, 0, (int)(width - bs * 2L), (int)(height - bs * 2L), 128, 128, (byte)alpha);
+                    break;
+                }
 
                 case (long)Core.Enum.DesignType.Red:
-                    {
-                        bs = 2L;
-                        // render the red box
-                        RenderControl_Square(3, left, top, width, height, bs, alpha);
+                {
+                    bs = 2L;
+                    // render the red box
+                    RenderControl_Square(3, left, top, width, height, bs, alpha);
 
-                        // render red gradient overlay
-                        string argpath7 = System.IO.Path.Combine(Path.Gradients, "4");
-                        GameClient.RenderTexture(ref argpath7, (int)(left + bs), (int)(top + bs), 0, 0, (int)(width - bs * 2L), (int)(height - bs * 2L), 128, 128, (byte)alpha);
-                        break;
-                    }
+                    // render red gradient overlay
+                    string argpath7 = System.IO.Path.Combine(Path.Gradients, "4");
+                    GameClient.RenderTexture(ref argpath7, (int)(left + bs), (int)(top + bs), 0, 0, (int)(width - bs * 2L), (int)(height - bs * 2L), 128, 128, (byte)alpha);
+                    break;
+                }
 
                 case (long)Core.Enum.DesignType.Red_Hover:
-                    {
-                        bs = 2L;
-                        // render the red box
-                        RenderControl_Square(3, left, top, width, height, bs, alpha);
+                {
+                    bs = 2L;
+                    // render the red box
+                    RenderControl_Square(3, left, top, width, height, bs, alpha);
 
-                        // render red gradient overlay
-                        string argpath8 = System.IO.Path.Combine(Path.Gradients, "5");
-                        GameClient.RenderTexture(ref argpath8, (int)(left + bs), (int)(top + bs), 0, 0, (int)(width - bs * 2L), (int)(height - bs * 2L), 128, 128, (byte)alpha);
-                        break;
-                    }
+                    // render red gradient overlay
+                    string argpath8 = System.IO.Path.Combine(Path.Gradients, "5");
+                    GameClient.RenderTexture(ref argpath8, (int)(left + bs), (int)(top + bs), 0, 0, (int)(width - bs * 2L), (int)(height - bs * 2L), 128, 128, (byte)alpha);
+                    break;
+                }
 
                 case (long)Core.Enum.DesignType.Red_Click:
-                    {
-                        bs = 2L;
-                        // render the red box
-                        RenderControl_Square(3, left, top, width, height, bs, alpha);
+                {
+                    bs = 2L;
+                    // render the red box
+                    RenderControl_Square(3, left, top, width, height, bs, alpha);
 
-                        // render red gradient overlay
-                        string argpath9 = System.IO.Path.Combine(Path.Gradients, "6");
-                        GameClient.RenderTexture(ref argpath9, (int)(left + bs), (int)(top + bs), 0, 0, (int)(width - bs * 2L), (int)(height - bs * 2L), 128, 128, (byte)alpha);
-                        break;
-                    }
+                    // render red gradient overlay
+                    string argpath9 = System.IO.Path.Combine(Path.Gradients, "6");
+                    GameClient.RenderTexture(ref argpath9, (int)(left + bs), (int)(top + bs), 0, 0, (int)(width - bs * 2L), (int)(height - bs * 2L), 128, 128, (byte)alpha);
+                    break;
+                }
 
                 case (long)Core.Enum.DesignType.Blue:
-                    {
-                        bs = 2L;
-                        // render the Blue box
-                        RenderControl_Square(14, left, top, width, height, bs, alpha);
+                {
+                    bs = 2L;
+                    // render the Blue box
+                    RenderControl_Square(14, left, top, width, height, bs, alpha);
 
-                        // render Blue gradient overlay
-                        string argpath10 = System.IO.Path.Combine(Path.Gradients, "8");
-                        GameClient.RenderTexture(ref argpath10, (int)(left + bs), (int)(top + bs), 0, 0, (int)(width - bs * 2L), (int)(height - bs * 2L), 128, 128, (byte)alpha);
-                        break;
-                    }
+                    // render Blue gradient overlay
+                    string argpath10 = System.IO.Path.Combine(Path.Gradients, "8");
+                    GameClient.RenderTexture(ref argpath10, (int)(left + bs), (int)(top + bs), 0, 0, (int)(width - bs * 2L), (int)(height - bs * 2L), 128, 128, (byte)alpha);
+                    break;
+                }
 
                 case (long)Core.Enum.DesignType.Blue_Hover:
-                    {
-                        bs = 2L;
-                        // render the Blue box
-                        RenderControl_Square(14, left, top, width, height, bs, alpha);
+                {
+                    bs = 2L;
+                    // render the Blue box
+                    RenderControl_Square(14, left, top, width, height, bs, alpha);
 
-                        // render Blue gradient overlay
-                        string argpath11 = System.IO.Path.Combine(Path.Gradients, "9");
-                        GameClient.RenderTexture(ref argpath11, (int)(left + bs), (int)(top + bs), 0, 0, (int)(width - bs * 2L), (int)(height - bs * 2L), 128, 128, (byte)alpha);
-                        break;
-                    }
+                    // render Blue gradient overlay
+                    string argpath11 = System.IO.Path.Combine(Path.Gradients, "9");
+                    GameClient.RenderTexture(ref argpath11, (int)(left + bs), (int)(top + bs), 0, 0, (int)(width - bs * 2L), (int)(height - bs * 2L), 128, 128, (byte)alpha);
+                    break;
+                }
 
                 case (long)Core.Enum.DesignType.Blue_Click:
-                    {
-                        bs = 2L;
-                        // render the Blue box
-                        RenderControl_Square(14, left, top, width, height, bs, alpha);
+                {
+                    bs = 2L;
+                    // render the Blue box
+                    RenderControl_Square(14, left, top, width, height, bs, alpha);
 
-                        // render Blue gradient overlay
-                        string argpath12 = System.IO.Path.Combine(Path.Gradients, "10");
-                        GameClient.RenderTexture(ref argpath12, (int)(left + bs), (int)(top + bs), 0, 0, (int)(width - bs * 2L), (int)(height - bs * 2L), 128, 128, (byte)alpha);
-                        break;
-                    }
+                    // render Blue gradient overlay
+                    string argpath12 = System.IO.Path.Combine(Path.Gradients, "10");
+                    GameClient.RenderTexture(ref argpath12, (int)(left + bs), (int)(top + bs), 0, 0, (int)(width - bs * 2L), (int)(height - bs * 2L), 128, 128, (byte)alpha);
+                    break;
+                }
 
                 case (long)Core.Enum.DesignType.Orange:
-                    {
-                        bs = 2L;
-                        // render the Orange box
-                        RenderControl_Square(15, left, top, width, height, bs, alpha);
+                {
+                    bs = 2L;
+                    // render the Orange box
+                    RenderControl_Square(15, left, top, width, height, bs, alpha);
 
-                        // render Orange gradient overlay
-                        string argpath13 = System.IO.Path.Combine(Path.Gradients, "11");
-                        GameClient.RenderTexture(ref argpath13, (int)(left + bs), (int)(top + bs), 0, 0, (int)(width - bs * 2L), (int)(height - bs * 2L), 128, 128, (byte)alpha);
-                        break;
-                    }
+                    // render Orange gradient overlay
+                    string argpath13 = System.IO.Path.Combine(Path.Gradients, "11");
+                    GameClient.RenderTexture(ref argpath13, (int)(left + bs), (int)(top + bs), 0, 0, (int)(width - bs * 2L), (int)(height - bs * 2L), 128, 128, (byte)alpha);
+                    break;
+                }
 
                 case (long)Core.Enum.DesignType.Orange_Hover:
-                    {
-                        bs = 2L;
-                        // render the Orange box
-                        RenderControl_Square(15, left, top, width, height, bs, alpha);
+                {
+                    bs = 2L;
+                    // render the Orange box
+                    RenderControl_Square(15, left, top, width, height, bs, alpha);
 
-                        // render Orange gradient overlay
-                        string argpath14 = System.IO.Path.Combine(Path.Gradients, "12");
-                        GameClient.RenderTexture(ref argpath14, (int)(left + bs), (int)(top + bs), 0, 0, (int)(width - bs * 2L), (int)(height - bs * 2L), 128, 128, (byte)alpha);
-                        break;
-                    }
+                    // render Orange gradient overlay
+                    string argpath14 = System.IO.Path.Combine(Path.Gradients, "12");
+                    GameClient.RenderTexture(ref argpath14, (int)(left + bs), (int)(top + bs), 0, 0, (int)(width - bs * 2L), (int)(height - bs * 2L), 128, 128, (byte)alpha);
+                    break;
+                }
 
                 case (long)Core.Enum.DesignType.Orange_Click:
-                    {
-                        bs = 2L;
-                        // render the Orange box
-                        RenderControl_Square(15, left, top, width, height, bs, alpha);
+                {
+                    bs = 2L;
+                    // render the Orange box
+                    RenderControl_Square(15, left, top, width, height, bs, alpha);
 
-                        // render Orange gradient overlay
-                        string argpath15 = System.IO.Path.Combine(Path.Gradients, "13");
-                        GameClient.RenderTexture(ref argpath15, (int)(left + bs), (int)(top + bs), 0, 0, (int)(width - bs * 2L), (int)(height - bs * 2L), 128, 128, (byte)alpha);
-                        break;
-                    }
+                    // render Orange gradient overlay
+                    string argpath15 = System.IO.Path.Combine(Path.Gradients, "13");
+                    GameClient.RenderTexture(ref argpath15, (int)(left + bs), (int)(top + bs), 0, 0, (int)(width - bs * 2L), (int)(height - bs * 2L), 128, 128, (byte)alpha);
+                    break;
+                }
 
                 case (long)Core.Enum.DesignType.Grey:
-                    {
-                        bs = 2L;
-                        // render the Orange box
-                        RenderControl_Square(17, left, top, width, height, bs, alpha);
+                {
+                    bs = 2L;
+                    // render the Orange box
+                    RenderControl_Square(17, left, top, width, height, bs, alpha);
 
-                        // render Orange gradient overlay
-                        string argpath16 = System.IO.Path.Combine(Path.Gradients, "14");
-                        GameClient.RenderTexture(ref argpath16, (int)(left + bs), (int)(top + bs), 0, 0, (int)(width - bs * 2L), (int)(height - bs * 2L), 128, 128, (byte)alpha);
-                        break;
-                    }
+                    // render Orange gradient overlay
+                    string argpath16 = System.IO.Path.Combine(Path.Gradients, "14");
+                    GameClient.RenderTexture(ref argpath16, (int)(left + bs), (int)(top + bs), 0, 0, (int)(width - bs * 2L), (int)(height - bs * 2L), 128, 128, (byte)alpha);
+                    break;
+                }
 
                 case (long)Core.Enum.DesignType.Parchment:
-                    {
-                        bs = 20L;
-                        // render the parchment box
-                        RenderControl_Square(4, left, top, width, height, bs, alpha);
-                        break;
-                    }
+                {
+                    bs = 20L;
+                    // render the parchment box
+                    RenderControl_Square(4, left, top, width, height, bs, alpha);
+                    break;
+                }
 
                 case (long)Core.Enum.DesignType.BlackOval:
-                    {
-                        bs = 4L;
-                        // render the black oval
-                        RenderControl_Square(5, left, top, width, height, bs, alpha);
-                        break;
-                    }
+                {
+                    bs = 4L;
+                    // render the black oval
+                    RenderControl_Square(5, left, top, width, height, bs, alpha);
+                    break;
+                }
 
                 case (long)Core.Enum.DesignType.TextBlack:
-                    {
-                        bs = 5L;
-                        // render the black oval
-                        RenderControl_Square(6, left, top, width, height, bs, alpha);
-                        break;
-                    }
+                {
+                    bs = 5L;
+                    // render the black oval
+                    RenderControl_Square(6, left, top, width, height, bs, alpha);
+                    break;
+                }
 
                 case (long)Core.Enum.DesignType.TextWhite:
-                    {
-                        bs = 5L;
-                        // render the black oval
-                        RenderControl_Square(7, left, top, width, height, bs, alpha);
-                        break;
-                    }
+                {
+                    bs = 5L;
+                    // render the black oval
+                    RenderControl_Square(7, left, top, width, height, bs, alpha);
+                    break;
+                }
 
                 case (long)Core.Enum.DesignType.TextBlack_Sq:
-                    {
-                        bs = 4L;
-                        // render the black oval
-                        RenderControl_Square(10, left, top, width, height, bs, alpha);
-                        break;
-                    }
+                {
+                    bs = 4L;
+                    // render the black oval
+                    RenderControl_Square(10, left, top, width, height, bs, alpha);
+                    break;
+                }
 
                 case (long)Core.Enum.DesignType.Win_Desc:
-                    {
-                        bs = 8L;
-                        // render black square
-                        RenderControl_Square(11, left, top, width, height, bs, alpha);
-                        break;
-                    }
+                {
+                    bs = 8L;
+                    // render black square
+                    RenderControl_Square(11, left, top, width, height, bs, alpha);
+                    break;
+                }
 
                 case (long)Core.Enum.DesignType.DescPic:
-                    {
-                        bs = 3L;
-                        // render the green box
-                        RenderControl_Square(12, left, top, width, height, bs, alpha);
+                {
+                    bs = 3L;
+                    // render the green box
+                    RenderControl_Square(12, left, top, width, height, bs, alpha);
 
-                        // render green gradient overlay
-                        string argpath17 = System.IO.Path.Combine(Path.Gradients, "7");
-                        GameClient.RenderTexture(ref argpath17, (int)(left + bs), (int)(top + bs), 0, 0, (int)(width - bs * 2L), (int)(height - bs * 2L), 128, 128, (byte)alpha);
-                        break;
-                    }
+                    // render green gradient overlay
+                    string argpath17 = System.IO.Path.Combine(Path.Gradients, "7");
+                    GameClient.RenderTexture(ref argpath17, (int)(left + bs), (int)(top + bs), 0, 0, (int)(width - bs * 2L), (int)(height - bs * 2L), 128, 128, (byte)alpha);
+                    break;
+                }
 
                 case (long)Core.Enum.DesignType.Win_Shadow:
-                    {
-                        bs = 35L;
-                        // render the green box
-                        RenderControl_Square(13, left - bs, top - bs, width + bs * 2L, height + bs * 2L, bs, alpha);
-                        break;
-                    }
+                {
+                    bs = 35L;
+                    // render the green box
+                    RenderControl_Square(13, left - bs, top - bs, width + bs * 2L, height + bs * 2L, bs, alpha);
+                    break;
+                }
 
                 case (long)Core.Enum.DesignType.Win_Party:
-                    {
-                        bs = 12L;
-                        // render black square
-                        RenderControl_Square(16, left, top, width, height, bs, alpha);
-                        break;
-                    }
+                {
+                    bs = 12L;
+                    // render black square
+                    RenderControl_Square(16, left, top, width, height, bs, alpha);
+                    break;
+                }
 
                 case (long)Core.Enum.DesignType.TileBox:
-                    {
-                        bs = 4L;
-                        // render box
-                        RenderControl_Square(18, left, top, width, height, bs, alpha);
-                        break;
-                    }
+                {
+                    bs = 4L;
+                    // render box
+                    RenderControl_Square(18, left, top, width, height, bs, alpha);
+                    break;
+                }
             }
 
         }
@@ -3156,20 +3156,20 @@ namespace Client
             switch (GameState.NewCharJob)
             {
                 case 0L: // Warrior
-                    {
-                        imageChar = 1L;
-                        break;
-                    }
+                {
+                    imageChar = 1L;
+                    break;
+                }
                 case 1L: // Wizard
-                    {
-                        imageChar = 2L;
-                        break;
-                    }
+                {
+                    imageChar = 2L;
+                    break;
+                }
                 case 2L: // Whisperer
-                    {
-                        imageChar = 3L;
-                        break;
-                    }
+                {
+                    imageChar = 3L;
+                    break;
+                }
             }
 
             // Render the character's face
@@ -3201,20 +3201,20 @@ namespace Client
                 switch (GameState.NewCharJob)
                 {
                     case 0L: // Warrior
-                        {
-                            text = "The way of a warrior has never been an easy one. ...";
-                            break;
-                        }
+                    {
+                        text = "The way of a warrior has never been an easy one. ...";
+                        break;
+                    }
                     case 1L: // Wizard
-                        {
-                            text = "Wizards are often mistrusted characters who ... enjoy setting things on fire.";
-                            break;
-                        }
+                    {
+                        text = "Wizards are often mistrusted characters who ... enjoy setting things on fire.";
+                        break;
+                    }
                     case 2L: // Whisperer
-                        {
-                            text = "The art of healing comes with pressure and guilt, ...";
-                            break;
-                        }
+                    {
+                        text = "The art of healing comes with pressure and guilt, ...";
+                        break;
+                    }
                 }
             }
             else
@@ -3258,14 +3258,14 @@ namespace Client
         public static void btnJobs_Right()
         {
             // Exit if the job is invalid or exceeds limits
-            if (GameState.NewCharJob >= Constant.MAX_JOBS - 1 || string.IsNullOrEmpty(Core.Type.Job[(int)GameState.NewCharJob ].Desc) & GameState.NewCharJob >= Constant.MAX_JOBS)
+            if (GameState.NewCharJob >= Constant.MAX_JOBS - 1 || string.IsNullOrEmpty(Core.Type.Job[(int)GameState.NewCharJob].Desc) & GameState.NewCharJob >= Constant.MAX_JOBS)
                 return;
 
             // Move to the next job
             GameState.NewCharJob += 1L;
 
             // Update class name display
-            Windows[GetWindowIndex("winJobs")].Controls[GetControlIndex("winJobs", "lblClassName")].Text = Core.Type.Job[(int)GameState.NewCharJob ].Name;
+            Windows[GetWindowIndex("winJobs")].Controls[GetControlIndex("winJobs", "lblClassName")].Text = Core.Type.Job[(int)GameState.NewCharJob].Name;
         }
 
         public static void btnJobs_Accept()
@@ -3822,28 +3822,28 @@ namespace Client
                 switch (withBlock.Type)
                 {
                     case Core.Enum.PartType.Item:
+                    {
+                        if (withBlock.Value >= 0)
                         {
-                            if (withBlock.Value >= 0)
-                            {
-                                texNum = Core.Type.Item[(int)withBlock.Value].Icon;
-                                string argpath = System.IO.Path.Combine(Path.Items, texNum.ToString());
-                                GameClient.RenderTexture(ref argpath, (int)xO, (int)yO, 0, 0, 32, 32, 32, 32);
-                            }
-
-                            break;
+                            texNum = Core.Type.Item[(int)withBlock.Value].Icon;
+                            string argpath = System.IO.Path.Combine(Path.Items, texNum.ToString());
+                            GameClient.RenderTexture(ref argpath, (int)xO, (int)yO, 0, 0, 32, 32, 32, 32);
                         }
+
+                        break;
+                    }
 
                     case Core.Enum.PartType.Skill:
+                    {
+                        if (withBlock.Value >= 0)
                         {
-                            if (withBlock.Value >= 0)
-                            {
-                                texNum = Core.Type.Skill[(int)withBlock.Value].Icon;
-                                string argpath1 = System.IO.Path.Combine(Path.Skills, texNum.ToString());
-                                GameClient.RenderTexture(ref argpath1, (int)xO, (int)yO, 0, 0, 32, 32, 32, 32);
-                            }
-
-                            break;
+                            texNum = Core.Type.Skill[(int)withBlock.Value].Icon;
+                            string argpath1 = System.IO.Path.Combine(Path.Skills, texNum.ToString());
+                            GameClient.RenderTexture(ref argpath1, (int)xO, (int)yO, 0, 0, 32, 32, 32, 32);
                         }
+
+                        break;
+                    }
                 }
             }
         }
@@ -3854,7 +3854,7 @@ namespace Client
             long i;
             var curWindow = default(long);
             long curControl;
-            Core.Type.RectStruct tmpRec;
+            Rectangle tmpRec;
 
             winIndex = GetWindowIndex("winDragBox");
 
@@ -3894,176 +3894,180 @@ namespace Client
                 switch (Windows[curWindow].Name ?? "")
                 {
                     case "winBank":
+                    {
+                        if (DragBox.Origin == Core.Enum.PartOriginType.Bank)
                         {
-                            if (DragBox.Origin == Core.Enum.PartOriginType.Bank)
+                            if (DragBox.Type == Core.Enum.PartType.Item)
                             {
-                                if (DragBox.Type == Core.Enum.PartType.Item)
+                                // find the slot to switch with
+                                for (i = 0L; i <= Constant.MAX_BANK; i++)
                                 {
-                                    // find the slot to switch with
-                                    for (i = 0L; i <= Constant.MAX_BANK; i++)
-                                    {
-                                        tmpRec.Top = Windows[curWindow].Top + GameState.BankTop + (GameState.BankOffsetY + 32L) * (i / GameState.BankColumns);
-                                        tmpRec.Bottom = tmpRec.Top + 32d;
-                                        tmpRec.Left = Windows[curWindow].Left + GameState.BankLeft + (GameState.BankOffsetX + 32L) * (i % GameState.BankColumns);
-                                        tmpRec.Right = tmpRec.Left + 32d;
+                                    tmpRec = new(
+                                        (int)(Windows[curWindow].Left + GameState.BankLeft + (GameState.BankOffsetX + 32L) * (i % GameState.BankColumns)),
+                                        (int)(Windows[curWindow].Top + GameState.BankTop + (GameState.BankOffsetY + 32L) * (i / GameState.BankColumns)),
+                                        GameState.PicX,
+                                        GameState.PicY);
 
-                                        if (GameState.CurMouseX >= tmpRec.Left & GameState.CurMouseX <= tmpRec.Right)
+                                    if (GameState.CurMouseX >= tmpRec.Left & GameState.CurMouseX <= tmpRec.Right)
+                                    {
+                                        if (GameState.CurMouseY >= tmpRec.Top & GameState.CurMouseY <= tmpRec.Bottom)
                                         {
-                                            if (GameState.CurMouseY >= tmpRec.Top & GameState.CurMouseY <= tmpRec.Bottom)
+                                            // switch the slots
+                                            if (DragBox.Slot != i)
                                             {
-                                                // switch the slots
-                                                if (DragBox.Slot != i)
-                                                {
-                                                    Bank.ChangeBankSlots((int)DragBox.Slot, (int)i);
-                                                    break;
-                                                }
+                                                Bank.ChangeBankSlots((int)DragBox.Slot, (int)i);
+                                                break;
                                             }
                                         }
                                     }
                                 }
                             }
-
-                            if (DragBox.Origin == Core.Enum.PartOriginType.Inventory)
-                            {
-                                if (DragBox.Type == Core.Enum.PartType.Item)
-                                {
-
-                                    if (Core.Type.Item[GetPlayerInv(GameState.MyIndex, (int)DragBox.Slot)].Type != (byte)Core.Enum.ItemType.Currency)
-                                    {
-                                        Bank.DepositItem((int)DragBox.Slot, 1);
-                                    }
-                                    else
-                                    {
-                                        GameLogic.Dialogue("Deposit Item", "Enter the deposit quantity.", "", (byte)Core.Enum.DialogueType.DepositItem, (byte)Core.Enum.DialogueStyle.Input, DragBox.Slot);
-                                    }
-
-                                }
-                            }
-
-                            break;
                         }
+
+                        if (DragBox.Origin == Core.Enum.PartOriginType.Inventory)
+                        {
+                            if (DragBox.Type == Core.Enum.PartType.Item)
+                            {
+
+                                if (Core.Type.Item[GetPlayerInv(GameState.MyIndex, (int)DragBox.Slot)].Type != (byte)Core.Enum.ItemType.Currency)
+                                {
+                                    Bank.DepositItem((int)DragBox.Slot, 1);
+                                }
+                                else
+                                {
+                                    GameLogic.Dialogue("Deposit Item", "Enter the deposit quantity.", "", (byte)Core.Enum.DialogueType.DepositItem, (byte)Core.Enum.DialogueStyle.Input, DragBox.Slot);
+                                }
+
+                            }
+                        }
+
+                        break;
+                    }
 
                     case "winInventory":
+                    {
+                        if (DragBox.Origin == Core.Enum.PartOriginType.Inventory)
                         {
-                            if (DragBox.Origin == Core.Enum.PartOriginType.Inventory)
+                            // it's from the inventory!
+                            if (DragBox.Type == Core.Enum.PartType.Item)
                             {
-                                // it's from the inventory!
-                                if (DragBox.Type == Core.Enum.PartType.Item)
+                                // find the slot to switch with
+                                for (i = 0L; i < Constant.MAX_INV; i++)
                                 {
-                                    // find the slot to switch with
-                                    for (i = 0L; i < Constant.MAX_INV; i++)
-                                    {
-                                        tmpRec.Top = Windows[curWindow].Top + GameState.InvTop + (GameState.InvOffsetY + 32L) * (i / GameState.InvColumns);
-                                        tmpRec.Bottom = tmpRec.Top + 32d;
-                                        tmpRec.Left = Windows[curWindow].Left + GameState.InvLeft + (GameState.InvOffsetX + 32L) * (i % GameState.InvColumns);
-                                        tmpRec.Right = tmpRec.Left + 32d;
+                                    tmpRec = new(
+                                        (int)(Windows[curWindow].Left + GameState.InvLeft + (GameState.InvOffsetX + 32L) * (i % GameState.InvColumns)),
+                                        (int)(Windows[curWindow].Top + GameState.InvTop + (GameState.InvOffsetY + 32L) * (i / GameState.InvColumns)),
+                                        GameState.PicX,
+                                        GameState.PicY);
 
-                                        if (GameState.CurMouseX >= tmpRec.Left & GameState.CurMouseX <= tmpRec.Right)
+                                    if (GameState.CurMouseX >= tmpRec.Left & GameState.CurMouseX <= tmpRec.Right)
+                                    {
+                                        if (GameState.CurMouseY >= tmpRec.Top & GameState.CurMouseY <= tmpRec.Bottom)
                                         {
-                                            if (GameState.CurMouseY >= tmpRec.Top & GameState.CurMouseY <= tmpRec.Bottom)
-                                            {
-                                                // switch the slots
-                                                if (DragBox.Slot != i)
-                                                    NetworkSend.SendChangeInvSlots((int)DragBox.Slot, (int)i);
-                                                break;
-                                            }
+                                            // switch the slots
+                                            if (DragBox.Slot != i)
+                                                NetworkSend.SendChangeInvSlots((int)DragBox.Slot, (int)i);
+                                            break;
                                         }
                                     }
                                 }
                             }
-
-                            if (DragBox.Origin == Core.Enum.PartOriginType.Bank)
-                            {
-                                if (DragBox.Type == Core.Enum.PartType.Item)
-                                {
-
-                                    if (Core.Type.Item[GetBank(GameState.MyIndex, (byte)DragBox.Slot)].Type != (byte)Core.Enum.ItemType.Currency)
-                                    {
-                                        Bank.WithdrawItem((byte)DragBox.Slot, 0);
-                                    }
-                                    else
-                                    {
-                                        GameLogic.Dialogue("Withdraw Item", "Enter the amount you wish to withdraw.", "", (byte)Core.Enum.DialogueType.WithdrawItem, (byte)Core.Enum.DialogueStyle.Input, DragBox.Slot);
-                                    }
-
-                                }
-                            }
-
-                            break;
                         }
+
+                        if (DragBox.Origin == Core.Enum.PartOriginType.Bank)
+                        {
+                            if (DragBox.Type == Core.Enum.PartType.Item)
+                            {
+
+                                if (Core.Type.Item[GetBank(GameState.MyIndex, (byte)DragBox.Slot)].Type != (byte)Core.Enum.ItemType.Currency)
+                                {
+                                    Bank.WithdrawItem((byte)DragBox.Slot, 0);
+                                }
+                                else
+                                {
+                                    GameLogic.Dialogue("Withdraw Item", "Enter the amount you wish to withdraw.", "", (byte)Core.Enum.DialogueType.WithdrawItem, (byte)Core.Enum.DialogueStyle.Input, DragBox.Slot);
+                                }
+
+                            }
+                        }
+
+                        break;
+                    }
 
                     case "winSkills":
+                    {
+                        if (DragBox.Origin == Core.Enum.PartOriginType.Skill)
                         {
-                            if (DragBox.Origin == Core.Enum.PartOriginType.Skill)
+                            if (DragBox.Type == Core.Enum.PartType.Skill)
                             {
-                                if (DragBox.Type == Core.Enum.PartType.Skill)
+                                // find the slot to switch with
+                                for (i = 0L; i < Constant.MAX_PLAYER_SKILLS; i++)
                                 {
-                                    // find the slot to switch with
-                                    for (i = 0L; i < Constant.MAX_PLAYER_SKILLS; i++)
-                                    {
-                                        tmpRec.Top = Windows[curWindow].Top + GameState.SkillTop + (GameState.SkillOffsetY + 32L) * (i / GameState.SkillColumns);
-                                        tmpRec.Bottom = tmpRec.Top + 32d;
-                                        tmpRec.Left = Windows[curWindow].Left + GameState.SkillLeft + (GameState.SkillOffsetX + 32L) * (i % GameState.SkillColumns);
-                                        tmpRec.Right = tmpRec.Left + 32d;
+                                    tmpRec = new(
+                                        (int)(Windows[curWindow].Left + GameState.SkillLeft + (GameState.SkillOffsetX + 32L) * (i % GameState.SkillColumns)),
+                                        (int)(Windows[curWindow].Top + GameState.SkillTop + (GameState.SkillOffsetY + 32L) * (i / GameState.SkillColumns)),
+                                        GameState.PicX,
+                                        GameState.PicY);
 
-                                        if (GameState.CurMouseX >= tmpRec.Left & GameState.CurMouseX <= tmpRec.Right)
+                                    if (GameState.CurMouseX >= tmpRec.Left & GameState.CurMouseX <= tmpRec.Right)
+                                    {
+                                        if (GameState.CurMouseY >= tmpRec.Top & GameState.CurMouseY <= tmpRec.Bottom)
                                         {
-                                            if (GameState.CurMouseY >= tmpRec.Top & GameState.CurMouseY <= tmpRec.Bottom)
-                                            {
-                                                // switch the slots
-                                                if (DragBox.Slot != i)
-                                                    NetworkSend.SendChangeSkillSlots((int)DragBox.Slot, (int)i);
-                                                break;
-                                            }
+                                            // switch the slots
+                                            if (DragBox.Slot != i)
+                                                NetworkSend.SendChangeSkillSlots((int)DragBox.Slot, (int)i);
+                                            break;
                                         }
                                     }
                                 }
                             }
-
-                            break;
                         }
+
+                        break;
+                    }
 
                     case "winHotbar":
+                    {
+                        if (DragBox.Origin != Core.Enum.PartOriginType.None)
                         {
-                            if (DragBox.Origin != Core.Enum.PartOriginType.None)
+                            if (DragBox.Type != Core.Enum.PartType.None)
                             {
-                                if (DragBox.Type != Core.Enum.PartType.None)
+                                // find the slot
+                                for (i = 0L; i < Constant.MAX_HOTBAR; i++)
                                 {
-                                    // find the slot
-                                    for (i = 0L; i < Constant.MAX_HOTBAR; i++)
-                                    {
-                                        tmpRec.Top = Windows[curWindow].Top + GameState.HotbarTop;
-                                        tmpRec.Bottom = tmpRec.Top + 32d;
-                                        tmpRec.Left = Windows[curWindow].Left + GameState.HotbarLeft + i * GameState.HotbarOffsetX;
-                                        tmpRec.Right = tmpRec.Left + 32d;
+                                    tmpRec = new(
+                                        (int)(Windows[curWindow].Left + GameState.HotbarLeft + i * GameState.HotbarOffsetX),
+                                        (int)(Windows[curWindow].Top + GameState.HotbarTop),
+                                        GameState.PicX,
+                                        GameState.PicY);
 
-                                        if (GameState.CurMouseX >= tmpRec.Left & GameState.CurMouseX <= tmpRec.Right)
+                                    if (GameState.CurMouseX >= tmpRec.Left & GameState.CurMouseX <= tmpRec.Right)
+                                    {
+                                        if (GameState.CurMouseY >= tmpRec.Top & GameState.CurMouseY <= tmpRec.Bottom)
                                         {
-                                            if (GameState.CurMouseY >= tmpRec.Top & GameState.CurMouseY <= tmpRec.Bottom)
+                                            // set the Hotbar slot
+                                            if (DragBox.Origin != Core.Enum.PartOriginType.Hotbar)
                                             {
-                                                // set the Hotbar slot
-                                                if (DragBox.Origin != Core.Enum.PartOriginType.Hotbar)
+                                                if (DragBox.Type == Core.Enum.PartType.Item)
                                                 {
-                                                    if (DragBox.Type == Core.Enum.PartType.Item)
-                                                    {
-                                                        NetworkSend.SendSetHotbarSlot((int)Core.Enum.PartOriginsType.Inventory, (int)i, (int)DragBox.Slot, (int)DragBox.Value);
-                                                    }
-                                                    else if (DragBox.Type == Core.Enum.PartType.Skill)
-                                                    {
-                                                        NetworkSend.SendSetHotbarSlot((int)Core.Enum.PartOriginsType.Skill, (int)i, (int)DragBox.Slot, (int)DragBox.Value);
-                                                    }
+                                                    NetworkSend.SendSetHotbarSlot((int)Core.Enum.PartOriginsType.Inventory, (int)i, (int)DragBox.Slot, (int)DragBox.Value);
                                                 }
-                                                else if (DragBox.Slot != i)
-                                                    NetworkSend.SendSetHotbarSlot((int)Core.Enum.PartOriginsType.Hotbar, (int)i, (int)DragBox.Slot, (int)DragBox.Value);
-                                                break;
+                                                else if (DragBox.Type == Core.Enum.PartType.Skill)
+                                                {
+                                                    NetworkSend.SendSetHotbarSlot((int)Core.Enum.PartOriginsType.Skill, (int)i, (int)DragBox.Slot, (int)DragBox.Value);
+                                                }
                                             }
+                                            else if (DragBox.Slot != i)
+                                                NetworkSend.SendSetHotbarSlot((int)Core.Enum.PartOriginsType.Hotbar, (int)i, (int)DragBox.Slot, (int)DragBox.Value);
+                                            break;
                                         }
                                     }
                                 }
                             }
-
-                            break;
                         }
+
+                        break;
+                    }
                 }
             }
             else
@@ -4072,30 +4076,30 @@ namespace Client
                 switch (DragBox.Origin)
                 {
                     case Core.Enum.PartOriginType.Inventory:
+                    {
+                        if (Core.Type.Item[GetPlayerInv(GameState.MyIndex, (int)DragBox.Slot)].Type != (byte)Core.Enum.ItemType.Currency)
                         {
-                            if (Core.Type.Item[GetPlayerInv(GameState.MyIndex, (int)DragBox.Slot)].Type != (byte)Core.Enum.ItemType.Currency)
-                            {
-                                NetworkSend.SendDropItem((int)DragBox.Slot, GetPlayerInv(GameState.MyIndex, (int)DragBox.Slot));
-                            }
-                            else
-                            {
-                                GameLogic.Dialogue("Drop Item", "Please choose how many to drop.", "", (byte)Core.Enum.DialogueType.DropItem, (byte)Core.Enum.DialogueStyle.Input, DragBox.Slot);
-                            }
-
-                            break;
+                            NetworkSend.SendDropItem((int)DragBox.Slot, GetPlayerInv(GameState.MyIndex, (int)DragBox.Slot));
                         }
+                        else
+                        {
+                            GameLogic.Dialogue("Drop Item", "Please choose how many to drop.", "", (byte)Core.Enum.DialogueType.DropItem, (byte)Core.Enum.DialogueStyle.Input, DragBox.Slot);
+                        }
+
+                        break;
+                    }
 
                     case Core.Enum.PartOriginType.Skill:
-                        {
-                            NetworkSend.ForgetSkill((int)DragBox.Slot);
-                            break;
-                        }
+                    {
+                        NetworkSend.ForgetSkill((int)DragBox.Slot);
+                        break;
+                    }
 
                     case Core.Enum.PartOriginType.Hotbar:
-                        {
-                            NetworkSend.SendSetHotbarSlot((int)DragBox.Origin, (int)DragBox.Slot, (int)DragBox.Slot, 0);
-                            break;
-                        }
+                    {
+                        NetworkSend.SendSetHotbarSlot((int)DragBox.Origin, (int)DragBox.Slot, (int)DragBox.Slot, 0);
+                        break;
+                    }
                 }
             }
 
@@ -4129,7 +4133,7 @@ namespace Client
                 withBlock.Value = (long)Core.Type.Player[GameState.MyIndex].Skill[(int)slotNum].Num;
                 withBlock.Origin = Core.Enum.PartOriginType.Skill;
                 withBlock.Slot = slotNum;
-                
+
                 winIndex = GetWindowIndex("winDragBox");
                 {
                     var withBlock1 = Windows[winIndex];
@@ -4225,7 +4229,7 @@ namespace Client
                 withBlock.Value = (long)Core.Type.Player[GameState.MyIndex].Hotbar[(int)slotNum].Slot;
                 withBlock.Origin = Core.Enum.PartOriginType.Hotbar;
                 withBlock.Slot = slotNum;
-                
+
                 winIndex = GetWindowIndex("winDragBox");
                 {
                     var withBlock1 = Windows[winIndex];
@@ -4290,15 +4294,15 @@ namespace Client
                 switch (Core.Type.Player[GameState.MyIndex].Hotbar[(int)slotNum].SlotType)
                 {
                     case 1: // inventory
-                        {
-                            GameLogic.ShowItemDesc(x, y, (long)Core.Type.Player[GameState.MyIndex].Hotbar[(int)slotNum].Slot);
-                            break;
-                        }
+                    {
+                        GameLogic.ShowItemDesc(x, y, (long)Core.Type.Player[GameState.MyIndex].Hotbar[(int)slotNum].Slot);
+                        break;
+                    }
                     case 2: // skill
-                        {
-                            GameLogic.ShowSkillDesc(x, y, (long)Core.Type.Player[GameState.MyIndex].Hotbar[(int)slotNum].Slot, 0L);
-                            break;
-                        }
+                    {
+                        GameLogic.ShowSkillDesc(x, y, (long)Core.Type.Player[GameState.MyIndex].Hotbar[(int)slotNum].Slot, 0L);
+                        break;
+                    }
                 }
             }
             else
@@ -5024,7 +5028,7 @@ namespace Client
             long itemNum;
             var itemIcon = default(long);
 
-            if (GameState.MyIndex < 0| GameState.MyIndex > Constant.MAX_PLAYERS)
+            if (GameState.MyIndex < 0 | GameState.MyIndex > Constant.MAX_PLAYERS)
                 return;
 
             xO = Windows[GetWindowIndex("winCharacter")].Left;
@@ -5170,7 +5174,7 @@ namespace Client
             long amountModifier;
             long tmpItem;
 
-            if (GameState.MyIndex < 0| GameState.MyIndex > Constant.MAX_PLAYERS)
+            if (GameState.MyIndex < 0 | GameState.MyIndex > Constant.MAX_PLAYERS)
                 return;
 
             xO = Windows[GetWindowIndex("winInventory")].Left;
@@ -5207,7 +5211,7 @@ namespace Client
             // actually draw the icons
             for (i = 0L; i < Constant.MAX_INV; i++)
             {
-                itemNum = (long)GetPlayerInv(GameState.MyIndex, (int)i); 
+                itemNum = (long)GetPlayerInv(GameState.MyIndex, (int)i);
 
                 if (itemNum >= 0L & itemNum < Constant.MAX_ITEMS)
                 {
@@ -5225,7 +5229,7 @@ namespace Client
                             for (x = 0L; x < Constant.MAX_INV; x++)
                             {
                                 if (Core.Type.TradeYourOffer[(int)x].Num >= 0)
-                                { 
+                                {
                                     tmpItem = (long)GetPlayerInv(GameState.MyIndex, (int)Core.Type.TradeYourOffer[(int)x].Num);
                                     if (Core.Type.TradeYourOffer[(int)x].Num == i)
                                     {
@@ -5375,34 +5379,34 @@ namespace Client
             switch (GameState.descType)
             {
                 case 1: // Inventory Item
-                    {
-                        texNum = Core.Type.Item[(int)GameState.descItem].Icon;
+                {
+                    texNum = Core.Type.Item[(int)GameState.descItem].Icon;
 
-                        // render sprite
-                        string argpath = System.IO.Path.Combine(Path.Items, texNum.ToString());
-                        GameClient.RenderTexture(ref argpath, (int)(xO + 20L), (int)(yO + 34L), 0, 0, 64, 64, 32, 32);
-                        break;
-                    }
+                    // render sprite
+                    string argpath = System.IO.Path.Combine(Path.Items, texNum.ToString());
+                    GameClient.RenderTexture(ref argpath, (int)(xO + 20L), (int)(yO + 34L), 0, 0, 64, 64, 32, 32);
+                    break;
+                }
 
                 case 2: // Skill Icon
+                {
+                    texNum = Core.Type.Skill[(int)GameState.descItem].Icon;
+
+                    // render bar
                     {
-                        texNum = Core.Type.Skill[(int)GameState.descItem].Icon;
-
-                        // render bar
+                        var withBlock = Windows[GetWindowIndex("winDescription")].Controls[GetControlIndex("winDescription", "picBar")];
+                        if (withBlock.Visible == true)
                         {
-                            var withBlock = Windows[GetWindowIndex("winDescription")].Controls[GetControlIndex("winDescription", "picBar")];
-                            if (withBlock.Visible == true)
-                            {
-                                string argpath1 = System.IO.Path.Combine(Path.Gui, 45.ToString());
-                                GameClient.RenderTexture(ref argpath1, (int)(xO + withBlock.Left), (int)(yO + withBlock.Top), 0, 12, (int)withBlock.Value, 12, (int)withBlock.Value, 12);
-                            }
+                            string argpath1 = System.IO.Path.Combine(Path.Gui, 45.ToString());
+                            GameClient.RenderTexture(ref argpath1, (int)(xO + withBlock.Left), (int)(yO + withBlock.Top), 0, 12, (int)withBlock.Value, 12, (int)withBlock.Value, 12);
                         }
-
-                        // render sprite
-                        string argpath2 = System.IO.Path.Combine(Path.Skills, texNum.ToString());
-                        GameClient.RenderTexture(ref argpath2, (int)(xO + 20L), (int)(yO + 34L), 0, 0, 64, 64, 32, 32);
-                        break;
                     }
+
+                    // render sprite
+                    string argpath2 = System.IO.Path.Combine(Path.Skills, texNum.ToString());
+                    GameClient.RenderTexture(ref argpath2, (int)(xO + 20L), (int)(yO + 34L), 0, 0, 64, 64, 32, 32);
+                    break;
+                }
             }
 
             // render text array
@@ -5848,7 +5852,7 @@ namespace Client
             long Top;
             long Left;
 
-            if (GameState.MyIndex < 0| GameState.MyIndex > Constant.MAX_PLAYERS)
+            if (GameState.MyIndex < 0 | GameState.MyIndex > Constant.MAX_PLAYERS)
                 return;
 
             xO = Windows[GetWindowIndex("winSkills")].Left;
@@ -6277,20 +6281,20 @@ namespace Client
                 switch (Core.Type.Party.MemberCount)
                 {
                     case 2:
-                        {
-                            Height = 78L;
-                            break;
-                        }
+                    {
+                        Height = 78L;
+                        break;
+                    }
                     case 3:
-                        {
-                            Height = 118L;
-                            break;
-                        }
+                    {
+                        Height = 118L;
+                        break;
+                    }
                     case 4:
-                        {
-                            Height = 158L;
-                            break;
-                        }
+                    {
+                        Height = 158L;
+                        break;
+                    }
                 }
                 withBlock.Height = Height;
             }
@@ -6339,7 +6343,7 @@ namespace Client
             long t;
             string sS;
 
-            if (GameState.MyIndex < 0| GameState.MyIndex > Constant.MAX_PLAYERS)
+            if (GameState.MyIndex < 0 | GameState.MyIndex > Constant.MAX_PLAYERS)
                 return;
 
             xO = Windows[GetWindowIndex("winHotbar")].Left;
@@ -6348,8 +6352,6 @@ namespace Client
             // Render start + end wood
             string argpath = System.IO.Path.Combine(Path.Gui, 31.ToString());
             GameClient.RenderTexture(ref argpath, (int)(xO - 1L), (int)(yO + 3L), 0, 0, 11, 26, 11, 26);
-            string argpath1 = System.IO.Path.Combine(Path.Gui, 31.ToString());
-            GameClient.RenderTexture(ref argpath1, (int)(xO + 407L), (int)(yO + 3L), 0, 0, 11, 26, 11, 26);
             for (i = 0L; i < Constant.MAX_HOTBAR; i++)
             {
                 xO = Windows[GetWindowIndex("winHotbar")].Left + GameState.HotbarLeft + i * GameState.HotbarOffsetX;
@@ -6375,39 +6377,39 @@ namespace Client
                     switch (Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].SlotType)
                     {
                         case (byte)Core.Enum.PartOriginType.Inventory:
+                        {
+                            Item.StreamItem((int)Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot);
+                            if (Strings.Len(Core.Type.Item[(int)Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot].Name) > 0 & Core.Type.Item[(int)Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot].Icon > 0)
                             {
-                                Item.StreamItem((int)Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot);
-                                if (Strings.Len(Core.Type.Item[(int)Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot].Name) > 0 & Core.Type.Item[(int)Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot].Icon > 0)
-                                {
-                                    string argpath4 = System.IO.Path.Combine(Path.Items, Core.Type.Item[(int)Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot].Icon.ToString());
-                                    GameClient.RenderTexture(ref argpath4, (int)xO, (int)yO, 0, 0, 32, 32, 32, 32);
-                                }
-
-                                break;
+                                string argpath4 = System.IO.Path.Combine(Path.Items, Core.Type.Item[(int)Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot].Icon.ToString());
+                                GameClient.RenderTexture(ref argpath4, (int)xO, (int)yO, 0, 0, 32, 32, 32, 32);
                             }
 
+                            break;
+                        }
+
                         case (byte)Core.Enum.PartOriginType.Skill:
+                        {
+                            Database.StreamSkill((int)Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot);
+                            if (Strings.Len(Core.Type.Skill[(int)Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot].Name) > 0 & Core.Type.Skill[(int)Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot].Icon > 0)
                             {
-                                Database.StreamSkill((int)Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot);
-                                if (Strings.Len(Core.Type.Skill[(int)Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot].Name) > 0 & Core.Type.Skill[(int)Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot].Icon > 0)
+                                string argpath5 = System.IO.Path.Combine(Path.Skills, Core.Type.Skill[(int)Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot].Icon.ToString());
+                                GameClient.RenderTexture(ref argpath5, (int)xO, (int)yO, 0, 0, 32, 32, 32, 32);
+                                for (t = 0L; t < Constant.MAX_PLAYER_SKILLS; t++)
                                 {
-                                    string argpath5 = System.IO.Path.Combine(Path.Skills, Core.Type.Skill[(int)Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot].Icon.ToString());
-                                    GameClient.RenderTexture(ref argpath5, (int)xO, (int)yO, 0, 0, 32, 32, 32, 32);
-                                    for (t = 0L; t < Constant.MAX_PLAYER_SKILLS; t++)
+                                    if (GetPlayerSkill(GameState.MyIndex, (int)t) >= 0)
                                     {
-                                        if (GetPlayerSkill(GameState.MyIndex, (int)t) >= 0)
+                                        if (GetPlayerSkill(GameState.MyIndex, (int)t) == Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot & GetPlayerSkillCD(GameState.MyIndex, (int)t) > 0)
                                         {
-                                            if (GetPlayerSkill(GameState.MyIndex, (int)t) == Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot & GetPlayerSkillCD(GameState.MyIndex, (int)t) > 0)
-                                            {
-                                                string argpath6 = System.IO.Path.Combine(Path.Skills, Core.Type.Skill[(int)Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot].Icon.ToString());
-                                                GameClient.RenderTexture(ref argpath6, (int)xO, (int)yO, 0, 0, 32, 32, 32, 32, 255, 100, 100, 100);
-                                            }
+                                            string argpath6 = System.IO.Path.Combine(Path.Skills, Core.Type.Skill[(int)Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot].Icon.ToString());
+                                            GameClient.RenderTexture(ref argpath6, (int)xO, (int)yO, 0, 0, 32, 32, 32, 32, 255, 100, 100, 100);
                                         }
                                     }
                                 }
-
-                                break;
                             }
+
+                            break;
+                        }
                     }
                 }
 
@@ -6591,7 +6593,7 @@ namespace Client
             long amount;
             long tmpItem;
 
-            if (GameState.MyIndex < 0| GameState.MyIndex > Constant.MAX_PLAYERS)
+            if (GameState.MyIndex < 0 | GameState.MyIndex > Constant.MAX_PLAYERS)
                 return;
 
             Xo = Windows[GetWindowIndex("winBank")].Left;
@@ -6943,7 +6945,7 @@ namespace Client
             {
                 if (Text.Fonts[fontType].Characters.Contains(ch))
                 {
-                    supportedText.Append(ch);           
+                    supportedText.Append(ch);
                 }
             }
             return supportedText.ToString();

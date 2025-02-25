@@ -478,8 +478,8 @@ namespace Client
             int mouseY = mousePos.Item2;
 
             // Convert adjusted coordinates to game world coordinates
-            GameState.CurX = (int)Math.Round(GameState.TileView.Left + Math.Floor((mouseX + GameState.Camera.Left) / GameState.PicX));
-            GameState.CurY = (int)Math.Round(GameState.TileView.Top + Math.Floor((mouseY + GameState.Camera.Top) / GameState.PicY));
+            GameState.CurX = GameState.TileView.Left + (mouseX + GameState.Camera.Left) / GameState.PicX;
+            GameState.CurY = GameState.TileView.Top + (mouseY + GameState.Camera.Top) / GameState.PicY;
 
             // Store raw mouse coordinates for interface interactions
             GameState.CurMouseX = mouseX;

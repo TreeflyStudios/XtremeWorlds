@@ -193,8 +193,8 @@ namespace Client
         public static int MapEditorHealAmount;
         public static int MapEditorSlideDir;
 
-        public static Core.Type.RectStruct Camera;
-        public static Core.Type.RectStruct TileView;
+        public static Rectangle Camera;
+        public static Rectangle TileView;
 
         // Pinging
         public static int PingStart;
