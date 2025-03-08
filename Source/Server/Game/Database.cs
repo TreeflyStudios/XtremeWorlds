@@ -20,6 +20,7 @@ using static Core.Global.Command;
 using System.Reflection;
 using Core.Data.Actors;
 using Core.Data.Actors.Players;
+using Core.Data.Actors.Skills;
 
 namespace Server
 {
@@ -1483,11 +1484,11 @@ namespace Server
             Core.Type.Player[index].Points = 0;
             Core.Type.Player[index].Sex = 0;
 
-            Core.Type.Player[index].Skill = new Core.Type.PlayerSkillStruct[Core.Constant.MAX_PLAYER_SKILLS];
+            Core.Type.Player[index].Skill = new ActorSkillStruct[Core.Constant.MAX_PLAYER_SKILLS];
             for (int i = 0, loopTo2 = Core.Constant.MAX_PLAYER_SKILLS; i < loopTo2; i++)
             {
-                Core.Type.Player[index].Skill[i].Num = -1;
-                Core.Type.Player[index].Skill[i].CD = 0;
+                Core.Type.Player[index].Skill[i].Id = -1;
+                Core.Type.Player[index].Skill[i].Cooldown = 0;
             }
 
             Core.Type.Player[index].Sprite = 0;

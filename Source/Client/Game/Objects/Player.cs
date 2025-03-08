@@ -6,6 +6,7 @@ using Mirage.Sharp.Asfw;
 using System.Reflection;
 using Core.Data.Actors;
 using Core.Data.Actors.Players;
+using Core.Data.Actors.Skills;
 
 namespace Client
 {
@@ -63,11 +64,11 @@ namespace Client
                 Core.Type.TradeYourOffer[x].Num = -1;
             }
 
-            Core.Type.Player[index].Skill = new Core.Type.PlayerSkillStruct[(Constant.MAX_PLAYER_SKILLS)];
+            Core.Type.Player[index].Skill = new ActorSkillStruct[(Constant.MAX_PLAYER_SKILLS)];
             for (int x = 0; x < Constant.MAX_PLAYER_SKILLS; x++)
             {
-                Core.Type.Player[index].Skill[x].Num = -1;
-                Core.Type.Player[index].Skill[x].CD = 0;
+                Core.Type.Player[index].Skill[x].Id = -1;
+                Core.Type.Player[index].Skill[x].Cooldown = 0;
             }
 
             Core.Type.Player[index].Stat = new byte[(int)Core.Enum.StatType.Count];
@@ -1062,23 +1063,23 @@ namespace Client
             if (skillSlot < 0 | skillSlot > Constant.MAX_PLAYER_SKILLS)
                 return;
 
-            if (Core.Type.Player[GameState.MyIndex].Skill[skillSlot].CD > 0)
+            if (Core.Type.Player[GameState.MyIndex].Skill[skillSlot].Cooldown > 0)
             {
                 Text.AddText("Skill has not cooled down yet!", (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
-            if (Core.Type.Player[GameState.MyIndex].Skill[skillSlot].Num < 0)
+            if (Core.Type.Player[GameState.MyIndex].Skill[skillSlot].Id < 0)
                 return;
 
             // Check if player has enough MP
-            if (GetPlayerVital(GameState.MyIndex, Core.Enum.VitalType.SP) < Core.Type.Skill[(int)Core.Type.Player[GameState.MyIndex].Skill[skillSlot].Num].MpCost)
+            if (GetPlayerVital(GameState.MyIndex, Core.Enum.VitalType.SP) < Core.Type.Skill[(int)Core.Type.Player[GameState.MyIndex].Skill[skillSlot].Id].MpCost)
             {
-                Text.AddText("Not enough MP to cast " + Core.Type.Skill[(int)Core.Type.Player[GameState.MyIndex].Skill[skillSlot].Num].Name + ".", (int)Core.Enum.ColorType.BrightRed);
+                Text.AddText("Not enough MP to cast " + Core.Type.Skill[(int)Core.Type.Player[GameState.MyIndex].Skill[skillSlot].Id].Name + ".", (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
-            if (Core.Type.Player[GameState.MyIndex].Skill[skillSlot].Num >= 0)
+            if (Core.Type.Player[GameState.MyIndex].Skill[skillSlot].Id >= 0)
             {
                 if (General.GetTickCount() > Core.Type.Player[GameState.MyIndex].AttackTimer + 1000)
                 {

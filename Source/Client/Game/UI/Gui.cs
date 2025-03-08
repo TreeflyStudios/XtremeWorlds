@@ -4130,7 +4130,7 @@ namespace Client
             {
                 ref var withBlock = ref DragBox;
                 withBlock.Type = Core.Enum.PartType.Skill;
-                withBlock.Value = (long)Core.Type.Player[GameState.MyIndex].Skill[(int)slotNum].Num;
+                withBlock.Value = (long)Core.Type.Player[GameState.MyIndex].Skill[(int)slotNum].Id;
                 withBlock.Origin = Core.Enum.PartOriginType.Skill;
                 withBlock.Slot = slotNum;
 
@@ -5886,7 +5886,7 @@ namespace Client
             // actually draw the icons
             for (i = 0L; i < Constant.MAX_PLAYER_SKILLS; i++)
             {
-                skillNum = (long)Core.Type.Player[GameState.MyIndex].Skill[(int)i].Num;
+                skillNum = (long)Core.Type.Player[GameState.MyIndex].Skill[(int)i].Id;
                 if (skillNum >= 0L & skillNum < Constant.MAX_SKILLS)
                 {
                     Database.StreamSkill((int)skillNum);

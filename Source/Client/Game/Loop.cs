@@ -160,13 +160,13 @@ namespace Client
                 {
                     for (i = 0; i < Constant.MAX_PLAYER_SKILLS; i++)
                     {
-                        if (Core.Type.Player[GameState.MyIndex].Skill[i].Num >= 0)
+                        if (Core.Type.Player[GameState.MyIndex].Skill[i].Id >= 0)
                         {
-                            if (Core.Type.Player[GameState.MyIndex].Skill[i].CD > 0)
+                            if (Core.Type.Player[GameState.MyIndex].Skill[i].Cooldown > 0)
                             {
-                                if (Core.Type.Player[GameState.MyIndex].Skill[i].CD + Core.Type.Skill[(int)Core.Type.Player[GameState.MyIndex].Skill[i].Num].CdTime * 1000 < tick)
+                                if (Core.Type.Player[GameState.MyIndex].Skill[i].Cooldown + Core.Type.Skill[(int)Core.Type.Player[GameState.MyIndex].Skill[i].Id].CdTime * 1000 < tick)
                                 {
-                                    Core.Type.Player[GameState.MyIndex].Skill[i].CD = 0;
+                                    Core.Type.Player[GameState.MyIndex].Skill[i].Cooldown = 0;
                                 }
                             }
                         }
@@ -176,7 +176,7 @@ namespace Client
                 // check if we need to unlock the player's skill casting restriction
                 if (GameState.SkillBuffer >= 0)
                 {
-                    if (GameState.SkillBufferTimer + Core.Type.Skill[(int)Core.Type.Player[GameState.MyIndex].Skill[GameState.SkillBuffer].Num].CastTime * 1000 < tick)
+                    if (GameState.SkillBufferTimer + Core.Type.Skill[(int)Core.Type.Player[GameState.MyIndex].Skill[GameState.SkillBuffer].Id].CastTime * 1000 < tick)
                     {
                         GameState.SkillBuffer = -1;
                         GameState.SkillBufferTimer = 0;

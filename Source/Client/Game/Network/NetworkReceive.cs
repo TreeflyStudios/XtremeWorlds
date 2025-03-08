@@ -728,7 +728,7 @@ namespace Client
             var buffer = new ByteStream(data);
 
             for (i = 0; i < Constant.MAX_PLAYER_SKILLS; i++)
-                Core.Type.Player[GameState.MyIndex].Skill[i].Num = buffer.ReadInt32();
+                Core.Type.Player[GameState.MyIndex].Skill[i].Id = buffer.ReadInt32();
 
             buffer.Dispose();
         }
@@ -813,7 +813,7 @@ namespace Client
             var buffer = new ByteStream(data);
 
             slot = buffer.ReadInt32();
-            Core.Type.Player[GameState.MyIndex].Skill[slot].CD = General.GetTickCount();
+            Core.Type.Player[GameState.MyIndex].Skill[slot].Cooldown = General.GetTickCount();
 
             buffer.Dispose();
         }

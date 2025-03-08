@@ -1557,9 +1557,9 @@ namespace Client
 
                     if (GameState.SkillBuffer >= 0)
                     {
-                        if ((int)Core.Type.Player[(int)i].Skill[GameState.SkillBuffer].Num >= 0)
+                        if ((int)Core.Type.Player[(int)i].Skill[GameState.SkillBuffer].Id >= 0)
                         {
-                            if (Core.Type.Skill[(int)Core.Type.Player[(int)i].Skill[GameState.SkillBuffer].Num].CastTime > 0)
+                            if (Core.Type.Skill[(int)Core.Type.Player[(int)i].Skill[GameState.SkillBuffer].Id].CastTime > 0)
                             {
                                 // lock to player
                                 tmpX = (long)Math.Round(GetPlayerX((int)i) * GameState.PicX + Core.Type.Player[(int)i].XOffset + 16 - Width / 2d);
@@ -1567,7 +1567,7 @@ namespace Client
 
                                 // calculate the width to fill
                                 if (Width > 0L)
-                                    barWidth = (long)Math.Round((General.GetTickCount() - GameState.SkillBufferTimer) / (double)(Core.Type.Skill[(int)Core.Type.Player[(int)i].Skill[GameState.SkillBuffer].Num].CastTime * 1000) * Width);
+                                    barWidth = (long)Math.Round((General.GetTickCount() - GameState.SkillBufferTimer) / (double)(Core.Type.Skill[(int)Core.Type.Player[(int)i].Skill[GameState.SkillBuffer].Id].CastTime * 1000) * Width);
 
                                 // draw bar background
                                 Top = Height * 3L; // cooldown bar background

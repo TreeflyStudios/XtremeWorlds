@@ -409,17 +409,17 @@ namespace Core.Global
 
         public static int GetPlayerSkill(int index, int skillSlot)
         {
-            return Type.Player[index].Skill[skillSlot].Num;
+            return Type.Player[index].Skill[skillSlot].Id;
         }
 
         public static int GetPlayerSkillCD(int index, int skillSlot)
         {
-            return Type.Player[index].Skill[skillSlot].CD;
+            return Type.Player[index].Skill[skillSlot].Cooldown;
         }
 
         public static void SetPlayerSkillCD(int index, int skillSlot, int value)
         {
-            Type.Player[index].Skill[skillSlot].CD = value;
+            Type.Player[index].Skill[skillSlot].Cooldown = value;
         }
 
         public static bool HasSkill(int index, double skillNum)
@@ -439,7 +439,7 @@ namespace Core.Global
 
         public static void SetPlayerSkill(int index, int Skillslot, int skillNum)
         {
-            Type.Player[index].Skill[Skillslot].Num = skillNum;
+            Type.Player[index].Skill[Skillslot].Id = skillNum;
         }
 
         public static int GetBank(int index, int bankslot)

@@ -2111,7 +2111,7 @@ namespace Server
                 return;
             }
 
-            Core.Type.Player[index].Skill[SkillSlot].Num = -1;
+            Core.Type.Player[index].Skill[SkillSlot].Id = -1;
             NetworkSend.SendPlayerSkills(index);
 
             buffer.Dispose();

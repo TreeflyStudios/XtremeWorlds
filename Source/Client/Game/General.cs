@@ -466,7 +466,7 @@ namespace Client
 
             for (i = 0L; i < Constant.MAX_PLAYER_SKILLS; i++)
             {
-                if (Core.Type.Player[GameState.MyIndex].Skill[(int)i].Num >= 0)
+                if (Core.Type.Player[GameState.MyIndex].Skill[(int)i].Id >= 0)
                 {
                     Rectangle tempRec = new(
                         (int)(StartX + GameState.SkillLeft + (GameState.SkillOffsetX + GameState.PicX) * (i % GameState.SkillColumns)),

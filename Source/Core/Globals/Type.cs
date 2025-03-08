@@ -1,5 +1,6 @@
 ﻿using Core.Data.Actors;
 using Core.Data.Actors.Players;
+using Core.Data.Actors.Skills;
 using Core.Database;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
@@ -114,12 +115,6 @@ namespace Core
             public string Name;
             public int BuyRate;
             public TradeItemStruct[] TradeItem;
-        }
-
-        public struct PlayerSkillStruct
-        {
-            public int Num;
-            public int CD;
         }
 
         public struct BankStruct
@@ -346,7 +341,7 @@ namespace Core
             // Inventory
             public InventorySlotStruct[] Inv;
 
-            public PlayerSkillStruct[] Skill;
+            public ActorSkillStruct[] Skill;
 
             // Position
             public int Map;

@@ -512,7 +512,7 @@ namespace Client
                 return;
 
             // dont let them forget a skill which is in CD
-            if (Core.Type.Player[GameState.MyIndex].Skill[skillSlot].CD > 0)
+            if (Core.Type.Player[GameState.MyIndex].Skill[skillSlot].Cooldown > 0)
             {
                 Text.AddText("Cannot forget a skill which is cooling down!", (int)Core.Enum.ColorType.Red);
                 return;
@@ -525,7 +525,7 @@ namespace Client
                 return;
             }
 
-            if (Core.Type.Player[GameState.MyIndex].Skill[skillSlot].Num >= 0)
+            if (Core.Type.Player[GameState.MyIndex].Skill[skillSlot].Id >= 0)
             {
                 buffer.WriteInt32((int)Packets.ClientPackets.CForgetSkill);
                 buffer.WriteInt32(skillSlot);
