@@ -690,7 +690,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SPlayerDir);
             buffer.WriteInt32(index);
             buffer.WriteInt32(GetPlayerDir(index));
-            NetworkConfig.SendDataToMapBut(index, GetPlayerMap(index), ref buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMapBut(index, GetPlayerMap(index), buffer.Data, buffer.Head);
 
             buffer.Dispose();
 
@@ -727,7 +727,7 @@ namespace Server
             buffer = new ByteStream(4);
             buffer.WriteInt32((int) ServerPackets.SAttack);
             buffer.WriteInt32(index);
-            NetworkConfig.SendDataToMap(GetPlayerMap(index), ref buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMap(GetPlayerMap(index), buffer.Data, buffer.Head);
             buffer.Dispose();
 
             // Projectile check
@@ -758,8 +758,8 @@ namespace Server
             }
 
             // Try to attack a player
-            var loopTo = NetworkConfig.Socket.HighIndex + 1;
-            for (i = 0; i < loopTo; i++)
+            var loopTo = NetworkConfig.Socket.HighIndex;
+            for (i = 0; i <= loopTo; i++)
             {
                 Tempindex = i;
 
@@ -1158,12 +1158,12 @@ namespace Server
 
                     if (Core.Type.Map[mapNum].Event[i].PageCount > 0)
                     {
-                        Core.Type.Map[mapNum].Event[i].Pages = new Core.Type.EventPageStruct[Core.Type.Map[mapNum].Event[i].PageCount + 1];
+                        Core.Type.Map[mapNum].Event[i].Pages = new Core.Type.EventPageStruct[Core.Type.Map[mapNum].Event[i].PageCount];
                         ;
                         Array.Resize(ref Core.Type.TempPlayer[i].EventMap.EventPages, Core.Type.Map[mapNum].Event[i].PageCount);
 
                         var loopTo5 = Core.Type.Map[mapNum].Event[i].PageCount;
-                        for (x = 0; x <= (int)loopTo5; x++)
+                        for (x = 0; x < (int)loopTo5; x++)
                         {
                             {
                                 ref var withBlock2 = ref Core.Type.Map[mapNum].Event[i].Pages[x];
@@ -1238,7 +1238,7 @@ namespace Server
                                         {
                                             {
                                                 ref var withBlock3 = ref Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].Commands[z];
-                                                withBlock3.Index = buffer.ReadByte();
+                                                withBlock3.Index = buffer.ReadInt32();
                                                 withBlock3.Text1 = buffer.ReadString();
                                                 withBlock3.Text2 = buffer.ReadString();
                                                 withBlock3.Text3 = buffer.ReadString();
@@ -1288,8 +1288,8 @@ namespace Server
             NPC.SpawnMapNPCs(mapNum);
             EventLogic.SpawnGlobalEvents(mapNum);
 
-            var loopTo10 = NetworkConfig.Socket.HighIndex + 1;
-            for (i = 0; i < loopTo10; i++)
+            var loopTo10 = NetworkConfig.Socket.HighIndex;
+            for (i = 0; i <= loopTo10; i++)
             {
                 if (NetworkConfig.IsPlaying(i))
                 {
@@ -1313,8 +1313,8 @@ namespace Server
             Resource.CacheResources(mapNum);
 
             // Refresh map for everyone online
-            var loopTo12 = NetworkConfig.Socket.HighIndex + 1;
-            for (i = 0; i < loopTo12; i++)
+            var loopTo12 = NetworkConfig.Socket.HighIndex;
+            for (i = 0; i <= loopTo12; i++)
             {
                 if (NetworkConfig.IsPlaying(i) & GetPlayerMap(i) == mapNum)
                 {
@@ -1482,7 +1482,7 @@ namespace Server
                 {
                     if (GetPlayerAccess(n) < GetPlayerAccess(index))
                     {
-                        Database.Banindex(n, index);
+                        Database.BanPlayer(n, index);
                     }
                     else
                     {
@@ -1510,12 +1510,6 @@ namespace Server
             if (Core.Type.TempPlayer[index].Editor > 0)
                 return;
 
-            if (GetPlayerMap(index) > Core.Constant.MAX_MAPS)
-            {
-                NetworkSend.PlayerMsg(index, "Cant edit instanced maps!", (int) ColorType.BrightRed);
-                return;
-            }
-
             string user;
 
             user = IsEditorLocked(index, (byte) EditorType.Map);
@@ -1539,7 +1533,7 @@ namespace Server
             var buffer = new ByteStream(4);
             buffer.WriteInt32((int) ServerPackets.SEditMap);
 
-            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
             buffer.Dispose();
         }
 
@@ -1569,7 +1563,7 @@ namespace Server
 
             var buffer = new ByteStream(4);
             buffer.WriteInt32((int) ServerPackets.SShopEditor);
-            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
 
             buffer.Dispose();
         }
@@ -1635,7 +1629,7 @@ namespace Server
 
             var buffer = new ByteStream(4);
             buffer.WriteInt32((int) ServerPackets.SSkillEditor);
-            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
 
             buffer.Dispose();
         }
@@ -1781,9 +1775,9 @@ namespace Server
             if (x < 0 | x > (int)Core.Type.Map[GetPlayerMap(index)].MaxX | y < 0 | y > (int)Core.Type.Map[GetPlayerMap(index)].MaxY)
                 return;
 
-            // Check for a player
-            var loopTo = NetworkConfig.Socket.HighIndex + 1;
-            for (i = 0; i < loopTo; i++)
+            // Check for a player   
+            var loopTo = NetworkConfig.Socket.HighIndex;
+            for (i = 0; i <= loopTo; i++)
             {
                 if (GetPlayerMap(index) == GetPlayerMap(i))
                 {
@@ -1971,7 +1965,7 @@ namespace Server
             buffer = new ByteStream(4);
             buffer.WriteInt32((int) ServerPackets.SSendPing);
 
-            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
 
             buffer.Dispose();
         }

@@ -25,10 +25,10 @@ namespace Core
         public static MapStruct MyMap;
         public static TileStruct[,] Tile;
         public static bool[] PlayersOnMap = new bool[Constant.MAX_MAPS];
-        public static MapItemStruct[,] MapItem = new MapItemStruct[Constant.MAX_MAPS, (Constant.MAX_MAP_ITEMS)];
-        public static MapItemStruct[] MyMapItem = new MapItemStruct[(Constant.MAX_MAP_ITEMS)];
-        public static MapDataStruct[] MapNPC = new MapDataStruct[(Constant.MAX_MAP_NPCS)];
-        public static MapNPCStruct[] MyMapNPC = new MapNPCStruct[(Constant.MAX_MAP_NPCS)];
+        public static MapItemStruct[,] MapItem = new MapItemStruct[Constant.MAX_MAPS, Constant.MAX_MAP_ITEMS];
+        public static MapItemStruct[] MyMapItem = new MapItemStruct[Constant.MAX_MAP_ITEMS];
+        public static MapDataStruct[] MapNPC = new MapDataStruct[Constant.MAX_MAP_NPCS];
+        public static MapNPCStruct[] MyMapNPC = new MapNPCStruct[Constant.MAX_MAP_NPCS];
         public static BankStruct[] Bank = new BankStruct[Constant.MAX_PLAYERS];
         public static TempPlayerStruct[] TempPlayer = new TempPlayerStruct[Constant.MAX_PLAYERS];
         public static AccountStruct[] Account = new AccountStruct[Constant.MAX_PLAYERS];
@@ -778,7 +778,6 @@ namespace Core
 
             public int RepeatMoveRoute;
             public int IgnoreIfCannotMove;
-            public int QuestNum;
 
             public int MoveTimer;
             public int[] SelfSwitches; // 0 to 4
