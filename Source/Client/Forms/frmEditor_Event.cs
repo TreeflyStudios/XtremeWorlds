@@ -1800,11 +1800,17 @@ namespace Client
                     // Variable
                     if (Event.RenameIndex > 0 & Event.RenameIndex < Constant.NAX_VARIABLES + 1)
                     {
-                        Event.Variables[Event.RenameIndex] = txtRename.Text;
-                        FraRenaming.Visible = false;
-                        fraLabeling.Visible = true;
-                        Event.RenameType = 0;
-                        Event.RenameIndex = 0;
+                        // Variable
+                        if (Event.RenameIndex >= 0 & Event.RenameIndex < Constant.NAX_VARIABLES)
+                        {
+                            Event.Variables[Event.RenameIndex] = txtRename.Text;
+                            FraRenaming.Visible = false;
+                            fraLabeling.Visible = true;
+                            Event.RenameType = 0;
+                            Event.RenameIndex = 0;
+                        }
+
+                        break;
                     }
 
                     break;
@@ -1814,11 +1820,17 @@ namespace Client
                     // Switch
                     if (Event.RenameIndex > 0 & Event.RenameIndex < Constant.MAX_SWITCHES + 1)
                     {
-                        Event.Switches[Event.RenameIndex] = txtRename.Text;
-                        FraRenaming.Visible = false;
-                        fraLabeling.Visible = true;
-                        Event.RenameType = 0;
-                        Event.RenameIndex = 0;
+                        // Switch
+                        if (Event.RenameIndex >= 0 & Event.RenameIndex < Constant.MAX_SWITCHES)
+                        {
+                            Event.Switches[Event.RenameIndex] = txtRename.Text;
+                            FraRenaming.Visible = false;
+                            fraLabeling.Visible = true;
+                            Event.RenameType = 0;
+                            Event.RenameIndex = 0;
+                        }
+
+                        break;
                     }
 
                     break;
@@ -1826,12 +1838,12 @@ namespace Client
             }
             lstSwitches.Items.Clear();
             for (int i = 0; i < Constant.MAX_SWITCHES; i++)
-                lstSwitches.Items.Add(i.ToString() + ". " + Strings.Trim(Event.Switches[i]));
+                lstSwitches.Items.Add((i + 1).ToString() + ". " + Strings.Trim(Event.Switches[i]));
             lstSwitches.SelectedIndex = 0;
             lstVariables.Items.Clear();
 
             for (int i = 0; i < Constant.NAX_VARIABLES; i++)
-                lstVariables.Items.Add(i.ToString() + ". " + Strings.Trim(Event.Variables[i]));
+                lstVariables.Items.Add((i + 1).ToString() + ". " + Strings.Trim(Event.Variables[i]));
             lstVariables.SelectedIndex = 0;
         }
 
@@ -1845,12 +1857,12 @@ namespace Client
             lstSwitches.Items.Clear();
 
             for (int i = 0; i < Constant.MAX_SWITCHES; i++)
-                lstSwitches.Items.Add(i.ToString() + ". " + Strings.Trim(Event.Switches[i]));
+                lstSwitches.Items.Add((i + 1).ToString() + ". " + Event.Switches[i]);
             lstSwitches.SelectedIndex = 0;
             lstVariables.Items.Clear();
 
             for (int i = 0; i < Constant.NAX_VARIABLES; i++)
-                lstVariables.Items.Add(i.ToString() + ". " + Strings.Trim(Event.Variables[i]));
+                lstVariables.Items.Add((i + 1).ToString() + ". " + Event.Variables[i]);
             lstVariables.SelectedIndex = 0;
         }
 
@@ -1865,7 +1877,7 @@ namespace Client
             {
                 FraRenaming.Visible = true;
                 fraLabeling.Visible = false;
-                lblEditing.Text = "Editing Variable #" + lstVariables.SelectedIndex.ToString();
+                lblEditing.Text = "Editing Variable: " + lstVariables.SelectedIndex.ToString();
                 txtRename.Text = Event.Variables[lstVariables.SelectedIndex];
                 Event.RenameType = 1;
                 Event.RenameIndex = lstVariables.SelectedIndex;
@@ -1878,7 +1890,7 @@ namespace Client
             {
                 FraRenaming.Visible = true;
                 fraLabeling.Visible = false;
-                lblEditing.Text = "Editing Switch #" + lstSwitches.SelectedIndex.ToString();
+                lblEditing.Text = "Editing Switch: " + lstSwitches.SelectedIndex.ToString();
                 txtRename.Text = Event.Switches[lstSwitches.SelectedIndex];
                 Event.RenameType = 2;
                 Event.RenameIndex = lstSwitches.SelectedIndex;
@@ -1891,7 +1903,7 @@ namespace Client
             {
                 FraRenaming.Visible = true;
                 fraLabeling.Visible = false;
-                lblEditing.Text = "Editing Variable #" + lstVariables.SelectedIndex.ToString();
+                lblEditing.Text = "Editing Variable: " + lstVariables.SelectedIndex.ToString();
                 txtRename.Text = Event.Variables[lstVariables.SelectedIndex];
                 Event.RenameType = 1;
                 Event.RenameIndex = lstVariables.SelectedIndex;
@@ -1903,7 +1915,7 @@ namespace Client
             if (lstSwitches.SelectedIndex > -1 & lstSwitches.SelectedIndex < Constant.MAX_SWITCHES)
             {
                 FraRenaming.Visible = true;
-                lblEditing.Text = "Editing Switch #" + lstSwitches.SelectedIndex.ToString();
+                lblEditing.Text = "Editing Switch: " + lstSwitches.SelectedIndex.ToString();
                 txtRename.Text = Event.Switches[lstSwitches.SelectedIndex];
                 Event.RenameType = 2;
                 Event.RenameIndex = lstSwitches.SelectedIndex;

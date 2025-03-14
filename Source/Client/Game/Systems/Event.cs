@@ -848,6 +848,8 @@ namespace Client
                                         string variableValue = Variables[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1];
                                         if (variableValue == "")
                                             variableValue = ": None";
+                                        else
+                                            variableValue = ": " + variableValue;
 
                                         switch (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data2)
                                         {
@@ -880,6 +882,8 @@ namespace Client
                                         string switchValue = Variables[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1];
                                         if (switchValue == "")
                                             switchValue = ": None";
+                                        else
+                                            switchValue = ": " + switchValue;
 
                                         if (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data2 == 0)
                                         {
@@ -3815,6 +3819,7 @@ namespace Client
 
             for (i = 0; i < Constant.MAX_SWITCHES; i++)
                 buffer.WriteString(Switches[i]);
+
             for (i = 0; i < Constant.NAX_VARIABLES; i++)
                 buffer.WriteString(Variables[i]);
 
