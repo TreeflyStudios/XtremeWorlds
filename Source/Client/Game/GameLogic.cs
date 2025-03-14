@@ -1356,6 +1356,9 @@ namespace Client
                             }
                         }
 
+                        break;
+                    }
+
                     case (long)Core.Enum.DialogueType.FillAttributes:
                         {
                             TileType type = TileType.None;
