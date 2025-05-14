@@ -121,15 +121,6 @@ namespace Server
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CLeaveParty] = Party.Packet_LeaveParty;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CPartyChatMsg] = Party.Packet_PartyChatMsg;
 
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestPets] = Pet.Packet_RequestPets;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSummonPet] = Pet.Packet_SummonPet;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CPetMove] = Pet.Packet_PetMove;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSetBehaviour] = Pet.Packet_SetPetBehaviour;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CReleasePet] = Pet.Packet_ReleasePet;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CPetSkill] = Pet.Packet_PetSkill;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CPetUseStatPoint] = Pet.Packet_UsePetStatPoint;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestPet] = Pet.Packet_RequestPet;
-
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditItem] = Item.Packet_EditItem;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveItem] = Item.Packet_SaveItem;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditNPC] = NPC.Packet_EditNPC;
@@ -146,9 +137,6 @@ namespace Server
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveProjectile] = Projectile.HandleSaveProjectile;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditJob] = Packet_RequestEditJob;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveJob] = Packet_SaveJob;
-
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditPet] = Pet.Packet_RequestEditPet;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSavePet] = Pet.Packet_SavePet;
 
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestMoral] = Moral.Packet_RequestMoral;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditMoral] = Moral.Packet_RequestEditMoral;

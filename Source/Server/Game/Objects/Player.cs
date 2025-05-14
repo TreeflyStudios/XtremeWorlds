@@ -1156,16 +1156,7 @@ namespace Server
             SetPlayerX(index, x);
             SetPlayerY(index, y);
             SetPlayerDir(index, dir);
-
-            if (Pet.PetAlive(index))
-            {
-                Pet.SetPetX(index, x);
-                Pet.SetPetY(index, y);
-                Core.Type.TempPlayer[index].PetTarget = 0;
-                Core.Type.TempPlayer[index].PetTargetType = 0;
-                Pet.SendPetXy(index, x, y);
-            }
-
+            
             NetworkSend.SendPlayerXY(index);
 
             // send equipment of all people on new map
@@ -2466,7 +2457,6 @@ namespace Server
                             TakeInv(index, itemNum, 0);
                         }
                         n = Core.Type.Item[itemNum].Data1;
-                        Pet.AdoptPet(index, n);
                         break;
                     }
             }
@@ -2809,7 +2799,6 @@ namespace Server
 
                 Console.WriteLine(string.Format("{0} has left {1}!", GetPlayerName(index), SettingsManager.Instance.GameName));
 
-                Pet.RecallPet(index);
                 Database.SaveCharacter(index, Core.Type.TempPlayer[index].Slot);
                 Database.SaveBank(index);
             }

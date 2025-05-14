@@ -1566,11 +1566,9 @@ namespace Server
             ClearBank(index);
 
             Core.Type.TempPlayer[index].SkillCD = new int[Core.Constant.MAX_PLAYER_SKILLS];
-            Core.Type.TempPlayer[index].PetSkillCD = new int[Core.Constant.MAX_PET_SKILLS];
             Core.Type.TempPlayer[index].TradeOffer = new PlayerInvStruct[Core.Constant.MAX_INV];
 
             Core.Type.TempPlayer[index].SkillCD = new int[Core.Constant.MAX_PLAYER_SKILLS];
-            Core.Type.TempPlayer[index].PetSkillCD = new int[Core.Constant.MAX_PET_SKILLS];
             Core.Type.TempPlayer[index].Editor = -1;
             Core.Type.TempPlayer[index].SkillBuffer = -1;
             Core.Type.TempPlayer[index].InShop = -1;
@@ -1700,30 +1698,6 @@ namespace Server
 
             for (int i = 0, loopTo9 = (byte)EquipmentType.Count; i < loopTo9; i++)
                 Core.Type.Player[index].Equipment[i] = -1;
-
-            Core.Type.Player[index].Pet.Num = 0;
-            Core.Type.Player[index].Pet.Health = 0;
-            Core.Type.Player[index].Pet.Mana = 0;
-            Core.Type.Player[index].Pet.Level = 0;
-
-            Core.Type.Player[index].Pet.Stat = new byte[(byte)StatType.Count];
-
-            for (int i = 0, loopTo10 = (byte)StatType.Count; i < loopTo10; i++)
-                Core.Type.Player[index].Pet.Stat[i] = 0;
-
-            Core.Type.Player[index].Pet.Skill = new int[Core.Constant.MAX_PET_SKILLS];
-            for (int i = 0; i < Core.Constant.MAX_PET_SKILLS; i++)
-                Core.Type.Player[index].Pet.Skill[i] = -1;
-
-            Core.Type.Player[index].Pet.Num = -1;
-            Core.Type.Player[index].Pet.X = 0;
-            Core.Type.Player[index].Pet.Y = 0;
-            Core.Type.Player[index].Pet.Dir = 0;
-            Core.Type.Player[index].Pet.Alive = 0;
-            Core.Type.Player[index].Pet.AttackBehaviour = 0;
-            Core.Type.Player[index].Pet.AdoptiveStats = 0;
-            Core.Type.Player[index].Pet.Points = 0;
-            Core.Type.Player[index].Pet.Exp = 0;
         }
 
         public static bool LoadCharacter(int index, int charNum)

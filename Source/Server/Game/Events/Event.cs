@@ -832,19 +832,6 @@ namespace Server
             SetPlayerExp(index, GetPlayerExp(index) + exp);
             NetworkSend.SendActionMsg(GetPlayerMap(index), $"+{exp} Exp", (int)ColorType.BrightGreen, 1, GetPlayerX(index) * 32, GetPlayerY(index) * 32);
             Player.CheckPlayerLevelUp(index);
-
-            if (Pet.PetAlive(index))
-            {
-                int petNum = (int)Pet.GetPetNum(index);
-                if (Core.Type.Pet[petNum].LevelingType == 1)
-                {
-                    int petExp = (int)Math.Round(exp * (Core.Type.Pet[petNum].ExpGain / 100d));
-                    Pet.SetPetExp(index, Pet.GetPetExp(index) + petExp);
-                    NetworkSend.SendActionMsg(GetPlayerMap(index), $"+{petExp} Exp", (int)ColorType.BrightGreen, 1, Pet.GetPetX(index) * 32, Pet.GetPetY(index) * 32);
-                    Pet.CheckPetLevelUp(index);
-                    Pet.SendPetExp(index);
-                }
-            }
             NetworkSend.SendExp(index);
         }
 

@@ -50,22 +50,7 @@ namespace Server
                     var playerstuns = (from p in onlinePlayers
                                        where p.player.StunDuration > 0 && General.GetTimeMs() > p.player.StunTimer + p.player.StunDuration * 1000
                                        select new { p.Index, Success = HandleClearStun((int)p.Index) }).ToArray();
-
-                    // Check if any of our pets has completed casting and get their skill going if they have.
-                    var petskills = (from p in onlinePlayers
-                                     where (int)Core.Type.Player[(int)p.Index].Pet.Num >= 0 && Core.Type.Player[(int)p.Index].Pet.Alive == 1 && Core.Type.TempPlayer[(int)p.Index].PetSkillBuffer.Skill >= 0 && General.GetTimeMs() > p.player.PetSkillBuffer.Timer + Core.Type.Skill[(int)Core.Type.Player[(int)p.Index].Pet.Skill[p.player.PetSkillBuffer.Skill]].CastTime * 1000
-                                     select new { p.Index, Success = HandlePetSkill((int)p.Index) }).ToArray();
-
-                    // Check if we need to clear any of our pets from being stunned.
-                    var petstuns = (from p in onlinePlayers
-                                    where p.player.PetStunDuration > 0 && General.GetTimeMs() > p.player.PetStunTimer + p.player.PetStunDuration * 1000
-                                    select new { p.Index, Success = HandleClearPetStun((int)p.Index) }).ToArray();
-
-                    // check pet regen timer
-                    var petregen = (from p in onlinePlayers
-                                    where p.player.PetStopRegen && p.player.PetStopRegenTimer + 5000 < General.GetTimeMs()
-                                    select new { p.Index, Success = HandleStopPetRegen((int)p.Index) }).ToArray();
-
+                    
                     // Update all our available events.
                     EventLogic.UpdateEventLogic();
 
@@ -90,7 +75,6 @@ namespace Server
                 if (General.GetTimeMs() > tmr300)
                 {
                     UpdateNPCAi();
-                    Pet.UpdatePetAi();
                     tmr300 = General.GetTimeMs() + 300;
                 }
 
@@ -318,56 +302,27 @@ namespace Server
                                             {
                                                 if (GetPlayerMap(i) == mapNum & Core.Type.MapNPC[mapNum].NPC[x].TargetType == 0 & GetPlayerAccess(i) <= (byte)AccessType.Moderator)
                                                 {
-                                                    if (Pet.PetAlive(i))
+                                                    n = Core.Type.NPC[(int)NPCNum].Range;
+                                                    distanceX = Core.Type.MapNPC[mapNum].NPC[x].X - GetPlayerX(i);
+                                                    distanceY = Core.Type.MapNPC[mapNum].NPC[x].Y - GetPlayerY(i);
+
+                                                    // Make sure we get a positive value
+                                                    if (distanceX < 0)
+                                                        distanceX *= -1;
+                                                    if (distanceY < 0)
+                                                        distanceY *= -1;
+
+                                                    // Are they in range?  if so GET'M!
+                                                    if (distanceX <= n & distanceY <= n)
                                                     {
-                                                        n = Core.Type.NPC[(int)NPCNum].Range;
-                                                        distanceX = Core.Type.MapNPC[mapNum].NPC[x].X - Core.Type.Player[i].Pet.X;
-                                                        distanceY = Core.Type.MapNPC[mapNum].NPC[x].Y - Core.Type.Player[i].Pet.Y;
-
-                                                        // Make sure we get a positive value
-                                                        if (distanceX < 0)
-                                                            distanceX *= -1;
-                                                        if (distanceY < 0)
-                                                            distanceY *= -1;
-
-                                                        // Are they in range?  if so GET'M!
-                                                        if (distanceX <= n & distanceY <= n)
+                                                        if (Core.Type.NPC[(int)NPCNum].Behaviour == (byte)NPCBehavior.AttackOnSight | GetPlayerPK(i) == 1)
                                                         {
-                                                            if (Core.Type.NPC[(int)NPCNum].Behaviour == (byte)NPCBehavior.AttackOnSight | GetPlayerPK(i) == i)
+                                                            if (Core.Type.NPC[(int)NPCNum].AttackSay.Length > 0)
                                                             {
-                                                                if (Strings.Len(Core.Type.NPC[(int)NPCNum].AttackSay) > 0)
-                                                                {
-                                                                    NetworkSend.PlayerMsg(i, Core.Type.NPC[(int)NPCNum].Name + " says: " + Core.Type.NPC[(int)NPCNum].AttackSay, (int)ColorType.White);
-                                                                }
-                                                                Core.Type.MapNPC[mapNum].NPC[x].TargetType = (byte)Core.Enum.TargetType.Pet;
-                                                                Core.Type.MapNPC[mapNum].NPC[x].Target = i;
+                                                                NetworkSend.PlayerMsg(i, GameLogic.CheckGrammar(Core.Type.NPC[(int)NPCNum].Name, 1) + " says, '" + Core.Type.NPC[(int)NPCNum].AttackSay + "' to you.", (int)ColorType.Yellow);
                                                             }
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        n = Core.Type.NPC[(int)NPCNum].Range;
-                                                        distanceX = Core.Type.MapNPC[mapNum].NPC[x].X - GetPlayerX(i);
-                                                        distanceY = Core.Type.MapNPC[mapNum].NPC[x].Y - GetPlayerY(i);
-
-                                                        // Make sure we get a positive value
-                                                        if (distanceX < 0)
-                                                            distanceX *= -1;
-                                                        if (distanceY < 0)
-                                                            distanceY *= -1;
-
-                                                        // Are they in range?  if so GET'M!
-                                                        if (distanceX <= n & distanceY <= n)
-                                                        {
-                                                            if (Core.Type.NPC[(int)NPCNum].Behaviour == (byte)NPCBehavior.AttackOnSight | GetPlayerPK(i) == 1)
-                                                            {
-                                                                if (Core.Type.NPC[(int)NPCNum].AttackSay.Length > 0)
-                                                                {
-                                                                    NetworkSend.PlayerMsg(i, GameLogic.CheckGrammar(Core.Type.NPC[(int)NPCNum].Name, 1) + " says, '" + Core.Type.NPC[(int)NPCNum].AttackSay + "' to you.", (int)ColorType.Yellow);
-                                                                }
-                                                                Core.Type.MapNPC[mapNum].NPC[x].TargetType = (byte)Core.Enum.TargetType.Player;
-                                                                Core.Type.MapNPC[mapNum].NPC[x].Target = i;
-                                                            }
+                                                            Core.Type.MapNPC[mapNum].NPC[x].TargetType = (byte)Core.Enum.TargetType.Player;
+                                                            Core.Type.MapNPC[mapNum].NPC[x].Target = i;
                                                         }
                                                     }
                                                 }
@@ -477,17 +432,8 @@ namespace Server
                                         {
                                             if (target > 0)
                                             {
-                                                if (Conversions.ToInteger(NetworkConfig.IsPlaying(target)) == 1 & GetPlayerMap(target) == mapNum & Pet.PetAlive(target))
-                                                {
-                                                    targetVerify = Conversions.ToBoolean(1);
-                                                    targetY = Core.Type.Player[target].Pet.Y;
-                                                    targetX = Core.Type.Player[target].Pet.X;
-                                                }
-                                                else
-                                                {
-                                                    Core.Type.MapNPC[mapNum].NPC[x].TargetType = 0; // clear
-                                                    Core.Type.MapNPC[mapNum].NPC[x].Target = 0;
-                                                }
+                                                Core.Type.MapNPC[mapNum].NPC[x].TargetType = 0; // clear
+                                                Core.Type.MapNPC[mapNum].NPC[x].Target = 0;
                                             }
                                         }
 
@@ -617,17 +563,11 @@ namespace Server
                                 }
                                 else if (targetType == (byte)Core.Enum.TargetType.Pet)
                                 {
-                                    if (NetworkConfig.IsPlaying(target) & GetPlayerMap(target) == mapNum & Pet.PetAlive(target))
-                                    {
-                                        Pet.TryNPCAttackPet(x, target);
-                                    }
-                                    else
-                                    {
-                                        // Player left map or game, set target to 0
-                                        Core.Type.MapNPC[mapNum].NPC[x].Target = 0;
-                                        Core.Type.MapNPC[mapNum].NPC[x].TargetType = 0;
-                                    } // clear
-                                }
+                                    // Player left map or game, set target to 0
+                                    Core.Type.MapNPC[mapNum].NPC[x].Target = 0;
+                                    Core.Type.MapNPC[mapNum].NPC[x].TargetType = 0;
+                                } // clear
+                            
                             }
                         }
 
@@ -739,19 +679,7 @@ namespace Server
             return GetNPCVitalRegenRet;
 
         }
-
-        public static bool HandlePetSkill(int index)
-        {
-            bool HandlePetSkillRet = default;
-            Pet.PetCastSkill(index, Core.Type.TempPlayer[index].PetSkillBuffer.Skill, Core.Type.TempPlayer[index].PetSkillBuffer.Target, Core.Type.TempPlayer[index].PetSkillBuffer.TargetType, true);
-            Core.Type.TempPlayer[index].PetSkillBuffer.Skill = 0;
-            Core.Type.TempPlayer[index].PetSkillBuffer.Timer = 0;
-            Core.Type.TempPlayer[index].PetSkillBuffer.Target = 0;
-            Core.Type.TempPlayer[index].PetSkillBuffer.TargetType = 0;
-            HandlePetSkillRet = Conversions.ToBoolean(1);
-            return HandlePetSkillRet;
-        }
-
+     
         public static bool HandleClearStun(int index)
         {
             bool HandleClearStunRet = default;

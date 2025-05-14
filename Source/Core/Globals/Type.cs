@@ -38,7 +38,6 @@ namespace Core
         public static PartyStruct MyParty;
         public static ResourceStruct[] Resource = new ResourceStruct[Constant.MAX_RESOURCES];
         public static CharList Char;
-        public static PetStruct[] Pet = new PetStruct[Constant.MAX_PETS];
         public static ChatBubbleStruct[] ChatBubble = new ChatBubbleStruct[byte.MaxValue];
 
         // New feature arrays
@@ -339,7 +338,6 @@ namespace Core
             public byte[] Switches;
             public int[] Variables;
             public ResourceTypetruct[] GatherSkills;
-            public PlayerPetStruct Pet;
             public int XOffset;
             public int YOffset;
             public byte Moving;
