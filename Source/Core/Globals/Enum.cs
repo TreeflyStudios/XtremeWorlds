@@ -414,10 +414,7 @@ namespace Core
             NPC,
             Skill,
             Shop,
-            Resource,
             Animation,
-            Pet,
-            Quest,
             Job,
             Projectile,
             Moral
