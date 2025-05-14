@@ -623,8 +623,7 @@ namespace Client
         public static void Packet_EditMap(ref byte[] data)
         {
             var buffer = new ByteStream(data);
-
-            GameState.InitMapEditor = true;
+            
             Gui.HideWindows();
 
             buffer.Dispose();

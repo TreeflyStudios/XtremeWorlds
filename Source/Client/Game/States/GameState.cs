@@ -34,6 +34,7 @@ namespace Client
         public static long shopSelectedSlot;
         public static long shopSelectedItem;
         public static bool shopIsSelling;
+        public static int ShopAction;
 
         // right click menu
         public static long PlayerMenuIndex;
@@ -217,7 +218,6 @@ namespace Client
         public static int[] Animation_Loaded = new int[Core.Constant.MAX_RESOURCES];
         public static int[] Skill_Loaded = new int[Core.Constant.MAX_SKILLS];
         public static int[] Shop_Loaded = new int[Core.Constant.MAX_SHOPS];
-        public static int[] Pet_Loaded = new int[Core.Constant.MAX_PETS];
         public static int[] Moral_Loaded = new int[(Constant.MAX_MORALS)];
         public static int[] Projectile_Loaded = new int[(Constant.MAX_PROJECTILES)];
 
@@ -371,9 +371,6 @@ namespace Client
         public static int AutoTileFrame;
 
         public static int NumProjectiles;
-        public static bool InitProjectileEditor;
-        public const byte EditorProjectile = 10;
-        public static bool[] ProjectileChanged = new bool[256];
 
         public static int ResourceIndex;
         public static bool ResourcesInit;
@@ -396,34 +393,5 @@ namespace Client
         public static int DrawThunder;
 
         public static int InShop; // is the player in a shop?
-        public static byte ShopAction; // stores the current shop action
-
-        // Editors
-        public static bool InitEditor;
-        public static bool InitMapEditor;
-        public static bool InitPetEditor;
-        public static bool InitItemEditor;
-        public static bool InitResourceEditor;
-        public static bool InitNPCEditor;
-        public static bool InitSkillEditor;
-        public static bool InitShopEditor;
-        public static bool InitAnimationEditor;
-        public static bool InitJobEditor;
-        public static bool InitMoralEditor;
-        public static bool InitAdminForm;
-        public static bool InitMapReport;
-        public static bool InitEventEditorForm;
-
-        // Editor edited items array
-        public static bool[] Item_Changed = new bool[Constant.MAX_ITEMS];
-        public static bool[] NPC_Changed = new bool[Constant.MAX_NPCS];
-        public static bool[] Resource_Changed = new bool[Constant.MAX_RESOURCES];
-        public static bool[] Animation_Changed = new bool[Constant.MAX_ANIMATIONS];
-        public static bool[] Skill_Changed = new bool[Constant.MAX_SKILLS];
-        public static bool[] Shop_Changed = new bool[Constant.MAX_SHOPS];
-        public static bool[] Pet_Changed = new bool[Constant.MAX_PETS];
-        public static bool[] Job_Changed = new bool[(Constant.MAX_JOBS)];
-        public static bool[] Moral_Changed = new bool[(Constant.MAX_MORALS)];
-
     }
 }

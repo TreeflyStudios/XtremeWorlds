@@ -185,8 +185,7 @@ namespace Core
             None,
             Player,
             NPC,
-            Event,
-            Pet
+            Event
         }
 
         /// <Summary> Action Message Constant </Summary>

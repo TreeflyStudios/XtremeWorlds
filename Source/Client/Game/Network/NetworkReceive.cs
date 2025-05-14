@@ -54,8 +54,6 @@ namespace Client
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SUpdateSkill] = Packet_UpdateSkill;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SSkills] = Packet_Skills;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SLeftMap] = Packet_LeftMap;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SMapResource] = MapResource.Packet_MapResource;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SUpdateResource] = MapResource.Packet_UpdateResource;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SSendPing] = Packet_Ping;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SActionMsg] = Packet_ActionMessage;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPlayerEXP] = Player.Packet_PlayerExp;
@@ -117,16 +115,6 @@ namespace Client
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPartyUpdate] = Party.Packet_PartyUpdate;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPartyVitals] = Party.Packet_PartyVitals;
 
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SUpdatePet] = Pet.Packet_UpdatePet;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SUpdatePlayerPet] = Pet.Packet_UpdatePlayerPet;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPetMove] = Pet.Packet_PetMove;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPetDir] = Pet.Packet_PetDir;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPetVital] = Pet.Packet_PetVital;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SClearPetSkillBuffer] = Pet.Packet_ClearPetSkillBuffer;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPetAttack] = Pet.Packet_PetAttack;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPetXY] = Pet.Packet_PetXY;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPetExp] = Pet.Packet_PetExperience;
-
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SClock] = Packet_Clock;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.STime] = Packet_Time;
 
@@ -134,11 +122,9 @@ namespace Client
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SNPCEditor] = Packet_NPCEditor;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SShopEditor] = Packet_EditShop;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SSkillEditor] = Packet_EditSkill;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SResourceEditor] = Packet_ResourceEditor;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SAnimationEditor] = Packet_EditAnimation;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SProjectileEditor] = HandleProjectileEditor;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SJobEditor] = Packet_JobEditor;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPetEditor] = Packet_PetEditor;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SUpdateMoral] = Packet_UpdateMoral;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SMoralEditor] = Packet_EditMoral;
 
@@ -948,14 +934,12 @@ namespace Client
             for (i = 0; i < Constant.MAX_MAPS; i++)
                 GameState.MapNames[i] = buffer.ReadString();
 
-            GameState.InitMapReport = true;
-
             buffer.Dispose();
         }
 
         private static void Packet_Admin(ref byte[] data)
         {
-            GameState.InitAdminForm = true;
+
         }
 
         private static void Packet_MapNames(ref byte[] data)
@@ -1025,47 +1009,37 @@ namespace Client
         // *****************
         private static void Packet_EditAnimation(ref byte[] data)
         {
-            GameState.InitAnimationEditor = true;
+
         }
 
         private static void Packet_JobEditor(ref byte[] data)
         {
-            GameState.InitJobEditor = true;
+
         }
 
         public static void Packet_EditItem(ref byte[] data)
         {
-            GameState.InitItemEditor = true;
+
         }
 
         private static void Packet_NPCEditor(ref byte[] data)
         {
-            GameState.InitNPCEditor = true;
-        }
 
-        private static void Packet_ResourceEditor(ref byte[] data)
-        {
-            GameState.InitResourceEditor = true;
-        }
-
-        public static void Packet_PetEditor(ref byte[] data)
-        {
-            GameState.InitPetEditor = true;
         }
 
         public static void HandleProjectileEditor(ref byte[] data)
         {
-            GameState.InitProjectileEditor = true;
+
         }
 
         private static void Packet_EditShop(ref byte[] data)
         {
-            GameState.InitShopEditor = true;
+
         }
 
         private static void Packet_EditSkill(ref byte[] data)
         {
-            GameState.InitSkillEditor = true;
+
         }
 
         private static void Packet_Clock(ref byte[] data)
@@ -1129,7 +1103,7 @@ namespace Client
 
         public static void Packet_EditMoral(ref byte[] data)
         {
-            GameState.InitMoralEditor = true;
+
         }
 
         public static void Packet_UpdateMoral(ref byte[] data)

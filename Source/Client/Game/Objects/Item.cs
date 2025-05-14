@@ -31,11 +31,6 @@ namespace Client
 
         }
 
-        public static void ClearChangedItem()
-        {
-            GameState.Item_Changed = new bool[Core.Constant.MAX_ITEMS];
-        }
-
         public static void StreamItem(int itemNum)
         {
             if (itemNum >= 0 && string.IsNullOrEmpty(Core.Type.Item[itemNum].Name) && GameState.Item_Loaded[itemNum] == 0)

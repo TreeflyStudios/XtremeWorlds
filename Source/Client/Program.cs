@@ -908,21 +908,8 @@ namespace Client
             // In-game interactions for left click
             if (GameState.InGame == true)
             {
-                if (IsMouseButtonDown(MouseButton.Left))
-                {
-                    if (Conversions.ToBoolean(Pet.PetAlive(GameState.MyIndex) && GameLogic.IsInBounds()))
-                    {
-                        Pet.PetMove(GameState.CurX, GameState.CurY);
-                    }
-                }
-                
                 if (IsSeartchCooldownElapsed())
                 {
-                    if (Conversions.ToBoolean(Pet.PetAlive(GameState.MyIndex) && GameLogic.IsInBounds()))
-                    {
-                        Pet.PetMove(GameState.CurX, GameState.CurY);
-                    }
-
                     Player.CheckAttack(true);
                     NetworkSend.PlayerSearch(GameState.CurX, GameState.CurY, 0);
                     lastSearchTime = DateTime.Now;
@@ -1850,14 +1837,7 @@ namespace Client
                         y = GameLogic.ConvertMapY(Core.Type.MyMapNPC[withBlock.Target].Y * 32) - 32;
                         break;
                     }
-
-                    case (byte)TargetType.Pet:
-                    {
-                        x = GameLogic.ConvertMapX(Core.Type.Player[GameState.MyIndex].Pet.X * 32) + 16;
-                        y = GameLogic.ConvertMapY(Core.Type.Player[GameState.MyIndex].Pet.Y * 32) - 32;
-                        break;
-                    }
-
+                    
                     default:
                     {
                         return;
@@ -2605,14 +2585,6 @@ namespace Client
                     {
                         if (IsPlaying(i) & GetPlayerMap(i) == GetPlayerMap(GameState.MyIndex))
                         {
-                            if (Pet.PetAlive(i))
-                            {
-                                if (Core.Type.Player[i].Pet.Y == y)
-                                {
-                                    Pet.DrawPet(i);
-                                }
-                            }
-
                             if (Core.Type.Player[i].Y == y)
                             {
                                 DrawPlayer(i);
@@ -2670,15 +2642,6 @@ namespace Client
                                     Core.Type.MyMapNPC[GameState.MyTarget].Y * 32 +
                                     Core.Type.MyMapNPC[GameState.MyTarget].YOffset);
                                 break;
-
-                            case (int)TargetType.Pet:
-                                DrawTarget(
-                                    Core.Type.Player[GameState.MyTarget].Pet.X * 32 - 16 +
-                                    Core.Type.Player[GameState.MyTarget].Pet.XOffset,
-                                    Core.Type.Player[GameState.MyTarget].Pet.Y * 32 +
-                                    Core.Type.Player[GameState.MyTarget].Pet.YOffset);
-                                break;
-
                         }
                     }
 
@@ -2704,25 +2667,6 @@ namespace Client
                                     }
                                 }
 
-                            }
-                        }
-                    }
-                }
-
-                // Resources
-                if (GameState.NumResources > 0)
-                {
-                    if (GameState.ResourcesInit)
-                    {
-                        if (GameState.ResourceIndex > 0)
-                        {
-                            var loopTo5 = GameState.ResourceIndex;
-                            for (i = 0; i < loopTo5; i++)
-                            {
-                                if (Core.Type.MyMapResource[i].Y == y)
-                                {
-                                    MapResource.DrawMapResource(i);
-                                }
                             }
                         }
                     }
@@ -2795,10 +2739,6 @@ namespace Client
                 if (IsPlaying(i) & GetPlayerMap(i) == GetPlayerMap(GameState.MyIndex))
                 {
                     Text.DrawPlayerName(i);
-                    if (Pet.PetAlive(i))
-                    {
-                        Pet.DrawPlayerPetName(i);
-                    }
                 }
             }
 

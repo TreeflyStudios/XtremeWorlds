@@ -732,19 +732,6 @@ namespace Client
                         }
 
                     // // Developer Admin Commands //
-                    case "/editresource":
-                        {
-
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
-                            {
-                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            NetworkSend.SendRequestEditResource();
-                            break;
-                        }
-
                     case "/editanimation":
                         {
 
@@ -755,19 +742,6 @@ namespace Client
                             }
 
                             NetworkSend.SendRequestEditAnimation();
-                            break;
-                        }
-
-                    case "/editpet":
-                        {
-
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
-                            {
-                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
-                                goto Continue1;
-                            }
-
-                            Pet.SendRequestEditPet();
                             break;
                         }
 

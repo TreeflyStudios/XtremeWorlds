@@ -268,13 +268,11 @@ namespace Client
             Map.ClearMapNPCs();
             Map.ClearMapItems();
             Database.ClearNPCs();
-            MapResource.ClearResources();
             Item.ClearItems();
             Shop.ClearShops();
             Database.ClearSkills();
             Animation.ClearAnimations();
             Projectile.ClearProjectile();
-            Pet.ClearPets();
             Database.ClearJobs();
             Moral.ClearMorals();
             Bank.ClearBanks();

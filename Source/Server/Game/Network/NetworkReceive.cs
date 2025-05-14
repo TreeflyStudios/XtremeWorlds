@@ -72,7 +72,6 @@ namespace Server
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestPlayerData] = Packet_RequestPlayerData;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestItem] = Item.Packet_RequestItem;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestNPC] = Packet_RequestNPC;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestResource] = Resource.Packet_RequestResource;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSpawnItem] = Packet_SpawnItem;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CTrainStat] = Packet_TrainStat;
 
@@ -129,8 +128,6 @@ namespace Server
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveShop] = Packet_SaveShop;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditSkill] = Packet_EditSkill;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveSkill] = Packet_SaveSkill;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditResource] = Resource.Packet_EditResource;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveResource] = Resource.Packet_SaveResource;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditAnimation] = Animation.Packet_EditAnimation;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveAnimation] = Animation.Packet_SaveAnimation;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditProjectile] = Projectile.HandleRequestEditProjectile;
@@ -820,9 +817,6 @@ namespace Server
                         break;
                     }
             }
-
-            Resource.CheckResource(index, x, y);
-
             buffer.Dispose();
         }
 
@@ -1274,8 +1268,7 @@ namespace Server
 
             // Respawn
             Item.SpawnMapItems(GetPlayerMap(index));
-            Resource.CacheResources(mapNum);
-
+            
             // Refresh map for everyone online
             var loopTo12 = NetworkConfig.Socket.HighIndex;
             for (i = 0; i <= loopTo12; i++)
@@ -1350,7 +1343,6 @@ namespace Server
 
             EventLogic.SpawnMapEventsFor(index, GetPlayerMap(index));
 
-            Resource.CacheResources(GetPlayerMap(index));
             NetworkSend.PlayerMsg(index, "Map respawned.", (int) ColorType.BrightGreen);
             Log.Add(GetPlayerName(index) + " has respawned map #" + GetPlayerMap(index), Constant.ADMIN_LOG);
 
@@ -1486,7 +1478,6 @@ namespace Server
             Item.SendItems(index);
             Animation.SendAnimations(index);
             NetworkSend.SendShops(index);
-            Resource.SendResources(index);
             Event.SendMapEventData(index);
             Moral.SendMorals(index);
 

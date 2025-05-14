@@ -229,30 +229,6 @@ namespace Server
                     }
                 }
 
-                // Respawning Resources
-                if (Core.Type.MapResource[mapNum].ResourceCount > 0)
-                {
-                    var loopTo2 = Core.Type.MapResource[mapNum].ResourceCount;
-                    for (i = 0; i < loopTo2; i++)
-                    {
-                        resourceindex = Core.Type.Map[mapNum].Tile[Core.Type.MapResource[mapNum].ResourceData[i].X, Core.Type.MapResource[mapNum].ResourceData[i].Y].Data1;
-
-                        if (resourceindex > 0)
-                        {
-                            if (Core.Type.MapResource[mapNum].ResourceData[i].State == 1 | Core.Type.MapResource[mapNum].ResourceData[i].Health < 1)  // dead or fucked up
-
-                                if (Core.Type.MapResource[mapNum].ResourceData[i].Timer + Core.Type.Resource[resourceindex].RespawnTime * 1000 < General.GetTimeMs())
-                                {
-                                    Core.Type.MapResource[mapNum].ResourceData[i].Timer = General.GetTimeMs();
-                                    Core.Type.MapResource[mapNum].ResourceData[i].State = 0; // normal
-                                                                                             // re-set health to resource root
-                                    Core.Type.MapResource[mapNum].ResourceData[i].Health = (byte)Core.Type.Resource[resourceindex].Health;
-                                    Resource.SendMapResourceToMap(mapNum, i);
-                                }
-                        }
-                    }
-                }
-
                 if (General.IsServerDestroyed)
                 {
                     return;
@@ -428,14 +404,6 @@ namespace Server
                                                 }
                                             }
                                         }
-                                        else if (targetType == (byte)Core.Enum.TargetType.Pet)
-                                        {
-                                            if (target > 0)
-                                            {
-                                                Core.Type.MapNPC[mapNum].NPC[x].TargetType = 0; // clear
-                                                Core.Type.MapNPC[mapNum].NPC[x].Target = 0;
-                                            }
-                                        }
 
                                         if (targetVerify)
                                         {
@@ -561,13 +529,6 @@ namespace Server
                                         Core.Type.MapNPC[mapNum].NPC[x].TargetType = 0;
                                     } // clear
                                 }
-                                else if (targetType == (byte)Core.Enum.TargetType.Pet)
-                                {
-                                    // Player left map or game, set target to 0
-                                    Core.Type.MapNPC[mapNum].NPC[x].Target = 0;
-                                    Core.Type.MapNPC[mapNum].NPC[x].TargetType = 0;
-                                } // clear
-                            
                             }
                         }
 

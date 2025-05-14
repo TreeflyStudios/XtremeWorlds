@@ -573,41 +573,6 @@ namespace Client
             buffer.Dispose();
         }
 
-        public static void SendRequestEditResource()
-        {
-            var buffer = new ByteStream(4);
-
-            buffer.WriteInt32((int)Packets.ClientPackets.CRequestEditResource);
-            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
-            buffer.Dispose();
-        }
-
-        public static void SendSaveResource(int ResourceNum)
-        {
-            var buffer = new ByteStream(4);
-
-            buffer.WriteInt32((int)Packets.ClientPackets.CSaveResource);
-
-            buffer.WriteInt32(ResourceNum);
-            buffer.WriteInt32(Core.Type.Resource[ResourceNum].Animation);
-            buffer.WriteString(Core.Type.Resource[ResourceNum].EmptyMessage);
-            buffer.WriteInt32(Core.Type.Resource[ResourceNum].ExhaustedImage);
-            buffer.WriteInt32(Core.Type.Resource[ResourceNum].Health);
-            buffer.WriteInt32(Core.Type.Resource[ResourceNum].ExpReward);
-            buffer.WriteInt32(Core.Type.Resource[ResourceNum].ItemReward);
-            buffer.WriteString(Core.Type.Resource[ResourceNum].Name);
-            buffer.WriteInt32(Core.Type.Resource[ResourceNum].ResourceImage);
-            buffer.WriteInt32(Core.Type.Resource[ResourceNum].ResourceType);
-            buffer.WriteInt32(Core.Type.Resource[ResourceNum].RespawnTime);
-            buffer.WriteString(Core.Type.Resource[ResourceNum].SuccessMessage);
-            buffer.WriteInt32(Core.Type.Resource[ResourceNum].LvlRequired);
-            buffer.WriteInt32(Core.Type.Resource[ResourceNum].ToolRequired);
-            buffer.WriteInt32(Conversions.ToInteger(Core.Type.Resource[ResourceNum].Walkthrough));
-
-            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
-            buffer.Dispose();
-        }
-
         public static void SendRequestEditNPC()
         {
             var buffer = new ByteStream(4);

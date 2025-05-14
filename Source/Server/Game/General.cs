@@ -400,12 +400,6 @@ namespace Server
                 }),
                 LoadWithSemaphoreAsync(semaphore,
                 async () => {
-                    Logger.LogInformation("Loading resources...");
-                    await Resource.LoadResourcesAsync();
-                    Logger.LogInformation("Resources loaded.");
-                }),
-                LoadWithSemaphoreAsync(semaphore,
-                async () => {
                     Logger.LogInformation("Loading shops...");
                     await Database.LoadShopsAsync();
                     Logger.LogInformation("Shops loaded.");
