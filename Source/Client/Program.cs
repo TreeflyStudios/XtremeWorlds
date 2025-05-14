@@ -13,9 +13,6 @@ using Keys = Microsoft.Xna.Framework.Input.Keys;
 using Point = Microsoft.Xna.Framework.Point;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
-using System;
-using System.Reflection;
-using static Client.GameClient;
 
 namespace Client
 {
@@ -840,42 +837,6 @@ namespace Client
             {
                 GameLogic.ScrollChatBox(0); // Scroll up
 
-                if (GameState.MyEditorType == (int)EditorType.Map)
-                {
-                    if (Conversions.ToInteger(GameState.VbKeyShift) == (int)Keys.LeftShift)
-                    {
-                        if (frmEditor_Map.Instance.cmbLayers.SelectedIndex < (int)LayerType.Count)
-                        {
-                            frmEditor_Map.Instance.cmbLayers.SelectedIndex = frmEditor_Map.Instance.cmbLayers.SelectedIndex;
-                        }
-                    }
-
-                    else if (frmEditor_Map.Instance.cmbTileSets.SelectedIndex > 0)
-                    {
-                        frmEditor_Map.Instance.cmbTileSets.SelectedIndex = frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1;
-                    }
-
-                }
-            }
-            else if (scrollValue < 0)
-            {
-                GameLogic.ScrollChatBox(1); // Scroll down
-
-                if (GameState.MyEditorType == (int)EditorType.Map)
-                {
-                    if (Conversions.ToInteger(GameState.VbKeyShift) == (int)Keys.LeftShift)
-                    {
-                        if (frmEditor_Map.Instance.cmbLayers.SelectedIndex > 0)
-                        {
-                            frmEditor_Map.Instance.cmbLayers.SelectedIndex = frmEditor_Map.Instance.cmbLayers.SelectedIndex - 1;
-                        }
-                    }
-                    else if (frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1 < GameState.NumTileSets)
-                    {
-                        frmEditor_Map.Instance.cmbTileSets.SelectedIndex = frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1;
-                    }
-                }
-
                 if (scrollValue != 0)
                 {
                     Gui.HandleInterfaceEvents(EntState.MouseScroll);
@@ -949,9 +910,9 @@ namespace Client
             {
                 if (IsMouseButtonDown(MouseButton.Left))
                 {
-                    if (GameState.MyEditorType == (int)EditorType.Map)
+                    if (Conversions.ToBoolean(Pet.PetAlive(GameState.MyIndex) && GameLogic.IsInBounds()))
                     {
-                        frmEditor_Map.MapEditorMouseDown(GameState.CurX, GameState.CurY, false);
+                        Pet.PetMove(GameState.CurX, GameState.CurY);
                     }
                 }
                 
@@ -976,14 +937,6 @@ namespace Client
                     if (slotNum >= 0L)
                     {
                         NetworkSend.SendDeleteHotbar(slotNum);
-                    }
-
-                    if (GameState.MyEditorType == (int)EditorType.Map)
-                    {
-                        if ((DateTime.Now - lastMouseClickTime).TotalMilliseconds >= GameClient.MouseRepeatInterval)
-                        {
-                            frmEditor_Map.MapEditorMouseDown(GameState.CurX, GameState.CurY, false);
-                        }
                     }
 
                     if (GameState.VbKeyShift == true)
@@ -2881,28 +2834,6 @@ namespace Client
             for (i = 0; i < byte.MaxValue; i++)
                 Text.DrawActionMsg(i);
 
-            if (GameState.MyEditorType == (int)EditorType.Map)
-            {
-                if (ReferenceEquals(frmEditor_Map.Instance.tabpages.SelectedTab, frmEditor_Map.Instance.tpDirBlock))
-                {
-                    var loopTo10 = (int)Math.Round(GameState.TileView.Right + 1d);
-                    for (x = (int)Math.Round(GameState.TileView.Left - 1d); x < loopTo10; x++)
-                    {
-                        var loopTo11 = (int)Math.Round(GameState.TileView.Bottom + 1d);
-                        for (y = (int)Math.Round(GameState.TileView.Top - 1d); y < loopTo11; y++)
-                        {
-                            if (GameLogic.IsValidMapPoint(x, y))
-                            {
-                                DrawDirections(x, y);
-                            }
-                        }
-                    }
-                }
-
-                if (ReferenceEquals(frmEditor_Map.Instance.tabpages.SelectedTab, frmEditor_Map.Instance.tpAttributes))
-                    Text.DrawMapAttributes();
-            }
-
             for (i = 0; i < byte.MaxValue; i++)
             {
                 if (Core.Type.ChatBubble[i].Active)
@@ -2934,14 +2865,6 @@ namespace Client
             }
 
             Text.DrawMapName();
-
-            if (GameState.MyEditorType == (int)EditorType.Map)
-            {
-                if (ReferenceEquals(frmEditor_Map.Instance.tabpages.SelectedTab, frmEditor_Map.Instance.tpEvents))
-                {
-                    DrawEvents();
-                }
-            }
 
             DrawBars();
             Map.DrawMapFade();
