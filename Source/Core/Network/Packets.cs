@@ -28,13 +28,10 @@ namespace Core
             CGetStats,
             CRequestNewMap,
             CNeedMap,
-            CMapGetItem,
-            CMapDropItem,
             CKickPlayer,
             CBanList,
             CBanDestroy,
             CBanPlayer,
-            CRequestEditMap,
 
             CSetAccess,
             CWhosOnline,
@@ -48,13 +45,8 @@ namespace Core
 
             CCheckPing,
             CUnequip,
-            CRequestPlayerData,
-            CRequestItem,
-            CRequestNPC,
-            CSpawnItem,
             CTrainStat,
-
-            CRequestAnimation,
+            
             CRequestSkill,
             CRequestShop,
             CRequestLevelUp,
@@ -77,10 +69,6 @@ namespace Core
             CSetHotbarSlot,
             CDeleteHotbarSlot,
             CUseHotbarSlot,
-            CEventChatReply,
-            CEvent,
-            CSwitchesAndVariables,
-            CRequestSwitchesAndVariables,
 
             CRequestProjectile,
             CClearProjectile,
@@ -90,14 +78,6 @@ namespace Core
             CDeclineParty,
             CLeaveParty,
             CPartyChatMsg,
-            CRequestPets,
-            CSummonPet,
-            CPetMove,
-            CSetBehaviour,
-            CReleasePet,
-            CPetSkill,
-            CPetUseStatPoint,
-            CRequestPet,
 
             // *************************
             // ***   EDITOR PACKETS  ***
@@ -106,31 +86,7 @@ namespace Core
             CMapReport,
             CSaveMap,
             CSkillLearn,
-
-            // ####################
-            // ### Dev+ Packets ###
-            // ####################
-            CRequestEditAnimation,
-            CSaveAnimation,
-            CRequestEditJob,
-            CSaveJob,
-            CRequestEditItem,
-            CSaveItem,
-            CRequestEditNPC,
-            CSaveNPC,
-            CRequestEditProjectile,
-            CSaveProjectile,
-            CRequestEditShop,
-            CSaveShop,
-            CRequestEditSkill,
-            CSaveSkill,
-
-            CRequestMoral,
-            CSaveMoral,
-            CRequestEditMoral,
-
-            CCloseEditor,
-
+            
             // Make sure COUNT is below everything else
             Count
         }
@@ -160,7 +116,6 @@ namespace Core
             SNPCAttack,
             SCheckForMap,
             SMapData,
-            SMapItemData,
             SMapNPCData,
             SMapNPCUpdate,
             SGlobalMsg,
@@ -226,23 +181,15 @@ namespace Core
             SSpecialEffect,
             SPic,
             SHoldPlayer,
-            SProjectileEditor,
-            SUpdateProjectile,
-            SMapProjectile,
-            SJobEditor,
-            SUpdateJob,
-            SUpdateMoral,
             SEmote,
             SPartyInvite,
             SPartyUpdate,
             SPartyVitals,
-            SMoralEditor,
 
             STime,
             SClock,
 
-            // Make sure COUNT is below everything else
-            COUNT
+            Count
         }
 
     }
